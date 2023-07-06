@@ -1,0 +1,11 @@
+﻿@model BoxModalViewModel
+
+ 
+ <!-- BEGIN: Notification Content -->
+ <div id="@Model.Id" class="toastify-content hidden flex"> <i class="@Model.IconColor" data-lucide="@Model.Icon"></i>
+     <div class="ml-4 mr-4">
+         <div class="font-medium">@Model.Title</div>
+         <div class="text-slate-500 mt-1">@Model.Text</div>
+     </div>
+ </div>
+ <!-- END: Notification Content -->

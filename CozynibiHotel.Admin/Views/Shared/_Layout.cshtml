@@ -1,0 +1,1619 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+     <link href="~/dist/images/logo.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CozynibiHotel.Admin</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.9.0/toastify.min.css" integrity="sha512-rmosti/cladrrwtmpbhlqnilm1q7xnrto8bwmw1mw5voa8ss6j/pfaqhfjxtcbnyckaoq2xzc8+drtiu/qv3xa==" crossorigin="anonymous" referrerpolicy="no-referrer" />*@
+
+    <link rel="stylesheet" href="~/dist/css/app.css" />
+</head>
+
+
+
+<body class="main">
+    @await Component.InvokeAsync("NotFound")
+    <!-- BEGIN: Mobile Menu -->
+    <div class="main-layout mobile-menu md:hidden">
+        <div class="mobile-menu-bar">
+            <a href="#" class="flex mr-auto">
+                <img alt="Midone - HTML Admin Template" class="w-6" src="~/dist/images/logo.svg">
+            </a>
+            <a href="javascript:;" class="mobile-menu-toggler"> <i data-lucide="bar-chart-2"
+                    class="w-8 h-8 text-white transform -rotate-90"></i> </a>
+        </div>
+        <div class="scrollable">
+            <a href="javascript:;" class="mobile-menu-toggler"> <i data-lucide="x-circle"
+                    class="w-8 h-8 text-white transform -rotate-90"></i> </a>
+            <ul class="scrollable__content py-2">
+                <!-- dashboard  -->
+                <li>
+                    <a href="javascript:;.html" class="menu menu--active">
+                        <div class="menu__icon"> <i data-lucide="home"></i> </div>
+                        <div class="menu__title">
+                            Dashboard
+                            <div class="menu__sub-icon transform"> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu menu--active">
+                                <div class="menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="menu__title"> General Report</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="menu__title"> Contact & Booking </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="menu__title"> Sales </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="menu__title"> Custommer </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Accommodation -->
+                <li>
+                    <a href="javascript:;" class="menu side-accommodation">
+                        <div class="menu__icon"> <i data-lucide="bed-double"></i> </div>
+                        <div class="menu__title">
+                            Accommodation
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="side-accommodation-wrapper">
+                        <li>
+                            <a href="javascript:;" class="menu side-roomCategory">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Room Category
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+
+                            </a>
+                            <ul class="side-roomCategory-wrapper">
+                                <li>
+                                    <a href="#" class="menu side-roomCategory-list">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu side-roomCategory-add">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu side-roomCategory-trash">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li>
+                            <a href="javascript:;" class="menu side-room">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Room List
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+                            </a>
+                            <ul class="side-room-wrapper">
+                                <li>
+                                    <a href="#" class="menu side-room-list">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu side-add">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu side-room-trash">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Menu  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="concierge-bell"></i> </div>
+                        <div class="menu__title">
+                            Menu
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Food Category
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Food List
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Food Ordered
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Tour Travel  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="map"></i> </div>
+                        <div class="menu__title">
+                            Tour Travel
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                <div class="menu__title">List</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                <div class="menu__title">Add New</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                <div class="menu__title">Trash</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Services  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="helping-hand"></i> </div>
+                        <div class="menu__title">
+                            Service
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                <div class="menu__title">List</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                <div class="menu__title">Add New</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                <div class="menu__title">Trash</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- news  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="newspaper"></i> </div>
+                        <div class="menu__title">
+                            News
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> News Category
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> News List
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu__devider my-6"></li>
+                <!-- Custommer  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="users"></i> </div>
+                        <div class="menu__title">
+                            Custommer
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                <div class="menu__title">List</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                <div class="menu__title">Add New</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                <div class="menu__title">Trash</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Booking & contact  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="contact"></i> </div>
+                        <div class="menu__title">
+                            Contact
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="javascript:;" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Previews
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Booking List
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li>
+                            <a href="javascript:;" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Contact List
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu__devider my-6"></li>
+                <!-- information  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="file-text"></i> </div>
+                        <div class="menu__title">
+                            Information
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                <div class="menu__title">List</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                <div class="menu__title">Add New</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                <div class="menu__title">Trash</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- introduction  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="trello"></i> </div>
+                        <div class="menu__title">
+                            Introduction
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                <div class="menu__title">List</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                <div class="menu__title">Add New</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                <div class="menu__title">Trash</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- gallery  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="image"></i> </div>
+                        <div class="menu__title">
+                            Gallery
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="grid"></i> </div>
+                                <div class="menu__title">List</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                <div class="menu__title">Add New</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                <div class="menu__title">Trash</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu__devider my-6"></li>
+                <!-- Role  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="user"></i> </div>
+                        <div class="menu__title">
+                            Users
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="javascript:;" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Role
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li>
+                            <a href="javascript:;" class="menu">
+                                <div class="menu__icon"> <i data-lucide="box"></i> </div>
+                                <div class="menu__title"> Account
+                                    <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                </div>
+                            </a>
+                            <ul class="">
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="list"></i> </div>
+                                        <div class="menu__title">List</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                        <div class="menu__title">Add New</div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu">
+                                        <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                        <div class="menu__title">Trash</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Languages  -->
+                <li>
+                    <a href="javascript:;" class="menu">
+                        <div class="menu__icon"> <i data-lucide="languages"></i> </div>
+                        <div class="menu__title">
+                            Languages
+                            <div class="menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="grid"></i> </div>
+                                <div class="menu__title">List</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                <div class="menu__title">Add New</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="menu">
+                                <div class="menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                <div class="menu__title">Trash</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END: Mobile Menu -->
+    <!-- BEGIN: Top Bar -->
+    <div
+        class="main-layout top-bar-boxed h-[70px] z-[51] relative border-b border-white/[0.08] mt-12 md:-mt-5 -mx-3 sm:-mx-8 px-3 sm:px-8 md:pt-0 mb-12">
+        <div class="h-full flex items-center">
+            <!-- BEGIN: Logo -->
+            <a href="#" class="-intro-x hidden md:flex">
+                <img alt="Midone - HTML Admin Template" class="w-6" src="~/dist/images/logo.svg">
+                <span class="text-white text-lg ml-3"> ConyzibiHotel </span>
+            </a>
+            <!-- END: Logo -->
+            <!-- BEGIN: Breadcrumb -->
+            <nav aria-label="breadcrumb" class="-intro-x h-full mr-auto road-thumbnail">
+                <ol class="breadcrumb breadcrumb-light">
+                    
+                </ol>
+            </nav>
+            <!-- END: Breadcrumb -->
+            <!-- BEGIN: Search -->
+            <div class="intro-x relative mr-3 sm:mr-6">
+                <div class="search hidden sm:block">
+                    <input type="text" class="search__input form-control border-transparent" placeholder="Search...">
+                    <i data-lucide="search" class="search__icon dark:text-slate-500"></i>
+                </div>
+                <a class="notification notification--light sm:hidden" href="#"> <i data-lucide="search"
+                        class="notification__icon dark:text-slate-500"></i> </a>
+                <div class="search-result">
+                    <div class="search-result__content">
+                        <div class="search-result__content__title">Pages</div>
+                        <div class="mb-5">
+                            <a href="#" class="flex items-center">
+                                <div
+                                    class="w-8 h-8 bg-success/20 dark:bg-success/10 text-success flex items-center justify-center rounded-full">
+                                    <i class="w-4 h-4" data-lucide="inbox"></i>
+                                </div>
+                                <div class="ml-3">Mail Settings</div>
+                            </a>
+                            <a href="#" class="flex items-center mt-2">
+                                <div
+                                    class="w-8 h-8 bg-pending/10 text-pending flex items-center justify-center rounded-full">
+                                    <i class="w-4 h-4" data-lucide="users"></i>
+                                </div>
+                                <div class="ml-3">Users & Permissions</div>
+                            </a>
+                            <a href="#" class="flex items-center mt-2">
+                                <div
+                                    class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
+                                    <i class="w-4 h-4" data-lucide="credit-card"></i>
+                                </div>
+                                <div class="ml-3">Transactions Report</div>
+                            </a>
+                        </div>
+                        <div class="search-result__content__title">Users</div>
+                        <div class="mb-5">
+                            <a href="#" class="flex items-center mt-2">
+                                <div class="w-8 h-8 image-fit">
+                                    <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                        src="~/dist/images/profile-1.jpg">
+                                </div>
+                                <div class="ml-3">Russell Crowe</div>
+                                <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">
+                                    russellcrowe@left4code.com</div>
+                            </a>
+                            <a href="#" class="flex items-center mt-2">
+                                <div class="w-8 h-8 image-fit">
+                                    <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                        src="~/dist/images/profile-11.jpg">
+                                </div>
+                                <div class="ml-3">Denzel Washington</div>
+                                <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">
+                                    denzelwashington@left4code.com</div>
+                            </a>
+                            <a href="#" class="flex items-center mt-2">
+                                <div class="w-8 h-8 image-fit">
+                                    <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                        src="~/dist/images/profile-3.jpg">
+                                </div>
+                                <div class="ml-3">Arnold Schwarzenegger</div>
+                                <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">
+                                    arnoldschwarzenegger@left4code.com</div>
+                            </a>
+                            <a href="#" class="flex items-center mt-2">
+                                <div class="w-8 h-8 image-fit">
+                                    <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                        src="~/dist/images/profile-11.jpg">
+                                </div>
+                                <div class="ml-3">Johnny Depp</div>
+                                <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">
+                                    johnnydepp@left4code.com</div>
+                            </a>
+                        </div>
+                        <div class="search-result__content__title">Products</div>
+                        <a href="#" class="flex items-center mt-2">
+                            <div class="w-8 h-8 image-fit">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/preview-14.jpg">
+                            </div>
+                            <div class="ml-3">Samsung Galaxy S20 Ultra</div>
+                            <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">Smartphone &amp; Tablet
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center mt-2">
+                            <div class="w-8 h-8 image-fit">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/preview-8.jpg">
+                            </div>
+                            <div class="ml-3">Sony A7 III</div>
+                            <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">Photography</div>
+                        </a>
+                        <a href="#" class="flex items-center mt-2">
+                            <div class="w-8 h-8 image-fit">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/preview-5.jpg">
+                            </div>
+                            <div class="ml-3">Nike Tanjun</div>
+                            <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">Sport &amp; Outdoor
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center mt-2">
+                            <div class="w-8 h-8 image-fit">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/preview-8.jpg">
+                            </div>
+                            <div class="ml-3">Samsung Galaxy S20 Ultra</div>
+                            <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">Smartphone &amp; Tablet
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- END: Search -->
+            <!-- BEGIN: Notifications -->
+            <div class="intro-x dropdown mr-4 sm:mr-6">
+                <div class="dropdown-toggle notification notification--bullet cursor-pointer" role="button"
+                    aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="bell"
+                        class="notification__icon dark:text-slate-500"></i> </div>
+                <div class="notification-content pt-2 dropdown-menu">
+                    <div class="notification-content__box dropdown-content">
+                        <div class="notification-content__title">Notifications</div>
+                        <div class="cursor-pointer relative flex items-center ">
+                            <div class="w-12 h-12 flex-none image-fit mr-1">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/profile-1.jpg">
+                                <div
+                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
+                                </div>
+                            </div>
+                            <div class="ml-2 overflow-hidden">
+                                <div class="flex items-center">
+                                    <a href="javascript:;" class="font-medium truncate mr-5">Russell Crowe</a>
+                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">01:10 PM</div>
+                                </div>
+                                <div class="w-full truncate text-slate-500 mt-0.5">It is a long established fact that a
+                                    reader will be distracted by the readable content of a page when looking at its
+                                    layout. The point of using Lorem </div>
+                            </div>
+                        </div>
+                        <div class="cursor-pointer relative flex items-center mt-5">
+                            <div class="w-12 h-12 flex-none image-fit mr-1">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/profile-11.jpg">
+                                <div
+                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
+                                </div>
+                            </div>
+                            <div class="ml-2 overflow-hidden">
+                                <div class="flex items-center">
+                                    <a href="javascript:;" class="font-medium truncate mr-5">Denzel Washington</a>
+                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">01:10 PM</div>
+                                </div>
+                                <div class="w-full truncate text-slate-500 mt-0.5">Contrary to popular belief, Lorem
+                                    Ipsum is not simply random text. It has roots in a piece of classical Latin
+                                    literature from 45 BC, making it over 20</div>
+                            </div>
+                        </div>
+                        <div class="cursor-pointer relative flex items-center mt-5">
+                            <div class="w-12 h-12 flex-none image-fit mr-1">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/profile-3.jpg">
+                                <div
+                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
+                                </div>
+                            </div>
+                            <div class="ml-2 overflow-hidden">
+                                <div class="flex items-center">
+                                    <a href="javascript:;" class="font-medium truncate mr-5">Arnold Schwarzenegger</a>
+                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">05:09 AM</div>
+                                </div>
+                                <div class="w-full truncate text-slate-500 mt-0.5">There are many variations of passages
+                                    of Lorem Ipsum available, but the majority have suffered alteration in some form, by
+                                    injected humour, or randomi</div>
+                            </div>
+                        </div>
+                        <div class="cursor-pointer relative flex items-center mt-5">
+                            <div class="w-12 h-12 flex-none image-fit mr-1">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/profile-11.jpg">
+                                <div
+                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
+                                </div>
+                            </div>
+                            <div class="ml-2 overflow-hidden">
+                                <div class="flex items-center">
+                                    <a href="javascript:;" class="font-medium truncate mr-5">Johnny Depp</a>
+                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">01:10 PM</div>
+                                </div>
+                                <div class="w-full truncate text-slate-500 mt-0.5">There are many variations of passages
+                                    of Lorem Ipsum available, but the majority have suffered alteration in some form, by
+                                    injected humour, or randomi</div>
+                            </div>
+                        </div>
+                        <div class="cursor-pointer relative flex items-center mt-5">
+                            <div class="w-12 h-12 flex-none image-fit mr-1">
+                                <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="~/dist/images/profile-4.jpg">
+                                <div
+                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
+                                </div>
+                            </div>
+                            <div class="ml-2 overflow-hidden">
+                                <div class="flex items-center">
+                                    <a href="javascript:;" class="font-medium truncate mr-5">Al Pacino</a>
+                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">06:05 AM</div>
+                                </div>
+                                <div class="w-full truncate text-slate-500 mt-0.5">It is a long established fact that a
+                                    reader will be distracted by the readable content of a page when looking at its
+                                    layout. The point of using Lorem </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END: Notifications -->
+            <!-- BEGIN: Account Menu -->
+            <div class="intro-x dropdown w-8 h-8">
+                <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110"
+                    role="button" aria-expanded="false" data-tw-toggle="dropdown">
+                    <img alt="user-avatar" class="user-avatar" src="~/dist/images/profile-4.jpg">
+                </div>
+                <div class="dropdown-menu w-56">
+                    <ul
+                        class="dropdown-content bg-primary/80 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white">
+                        <li class="p-2">
+                            <div class="font-medium user-fullname">Russell Crowe</div>
+                            <div class="text-xs text-white/60 mt-0.5 dark:text-slate-500 user-role" style="text-transform:capitalize">Software Engineer</div>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider border-white/[0.08]">
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item hover:bg-white/5"> <i data-lucide="user"
+                                    class="w-4 h-4 mr-2"></i> Profile </a>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item hover:bg-white/5"> <i data-lucide="edit"
+                                    class="w-4 h-4 mr-2"></i> Add Account </a>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item hover:bg-white/5"> <i data-lucide="lock"
+                                    class="w-4 h-4 mr-2"></i> Reset Password </a>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item hover:bg-white/5"> <i data-lucide="help-circle"
+                                    class="w-4 h-4 mr-2"></i> Help </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider border-white/[0.08]">
+                        </li>
+                        <li>
+                            <a href="/Admin/LogOut" class="dropdown-item hover:bg-white/5"> <i data-lucide="toggle-right"
+                                    class="w-4 h-4 mr-2"></i> Logout </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- END: Account Menu -->
+        </div>
+    </div>
+    <!-- END: Top Bar -->
+    <div class="main-layout wrapper">
+        <div class="wrapper-box">
+            <!-- BEGIN: Side Menu -->
+            <nav class="side-nav">
+                <ul>
+                    <!-- dashboard  -->
+                    <li>
+                        <a href="javascript:;.html" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
+                            <div class="side-menu__title">
+                                Dashboard
+                                <div class="side-menu__sub-icon transform"> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="side-menu__title"> General Report</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="side-menu__title"> Contact & Booking </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="side-menu__title"> Sales </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="side-menu__title"> Custommer </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Accommodation -->
+                    <li>
+                        <a href="javascript:;" class="side-menu side-menu--active side-accommodation">
+                            <div class="side-menu__icon"> <i data-lucide="bed-double"></i> </div>
+                            <div class="side-menu__title">
+                                Accommodation
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="side-accommodation-wrapper">
+                            <li>
+                                <a href="javascript:;" class="side-menu side-roomCategory">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Room Category
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+
+                                </a>
+                                <ul class="side-roomCategory-wrapper">
+                                    <li>
+                                        <a href="/Admin/Accommodation/RoomCategory" class="side-menu side-roomCategory-list">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Accommodation/RoomCategory/AddNew" class="side-menu side-roomCategory-add">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Accommodation/RoomCategory/Trash" class="side-menu side-roomCategory-trash">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu side-room">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Room List
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+                                </a>
+                                <ul class="side-room-wrapper">
+                                    <li>
+                                        <a href="#" class="side-menu side-room-list">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-room-add">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-room-trash">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Menu  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu side-MENU">
+                            <div class="side-menu__icon"> <i data-lucide="concierge-bell"></i> </div>
+                            <div class="side-menu__title">
+                                Menu
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="side-MENU-wrapper">
+                            <li>
+                                <a href="#" class="side-menu side-foodCategory">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Food Category
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+                                </a>
+                                <ul class="side-foodCategory-wrapper">
+                                    <li>
+                                        <a href="#" class="side-menu side-foodCategory-list">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-foodCategory-add">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-foodCategory-trash">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu side-food">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Food List
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+                                </a>
+                                <ul class="side-food-wrapper">
+                                    <li>
+                                        <a href="#" class="side-menu side-food-list">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-food-add">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-food-trash">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu side-foodOrder">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Food Ordered
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+                                </a>
+                                <ul class="side-foodOrder-wrapper">
+                                    <li>
+                                        <a href="#" class="side-menu side-foodOrder-list">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu  side-foodOrder-add">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu  side-foodOrder-trash">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Tour Travel  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu side-tour">
+                            <div class="side-menu__icon"> <i data-lucide="map"></i> </div>
+                            <div class="side-menu__title">
+                                Tour Travel
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="side-tour-wrapper">
+                            <li>
+                                <a href="#" class="side-menu side-tour-list">
+                                    <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                    <div class="side-menu__title">List</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu side-tour-add">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                    <div class="side-menu__title">Add New</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu side-tour-trash">
+                                    <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                    <div class="side-menu__title">Trash</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Services  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu side-service">
+                            <div class="side-menu__icon"> <i data-lucide="helping-hand"></i> </div>
+                            <div class="side-menu__title">
+                                Service
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="side-service-wrapper">
+                            <li>
+                                <a href="#" class="side-menu side-service-list">
+                                    <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                    <div class="side-menu__title">List</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu side-service-add">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                    <div class="side-menu__title">Add New</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu side-service-trash">
+                                    <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                    <div class="side-menu__title">Trash</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- news  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu side-news">
+                            <div class="side-menu__icon"> <i data-lucide="newspaper"></i> </div>
+                            <div class="side-menu__title">
+                                News
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="side-news-wrapper">
+                            <li>
+                                <a href="#" class="side-menu side-newsCategory">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> News Category
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+
+                                </a>
+                                <ul class="side-newsCategory-wrapper">
+                                    <li>
+                                        <a href="#" class="side-menu side-newsCategory-list">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-newsCategory-add">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-newsCategory-trash">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu side-newsList">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> News List
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+                                </a>
+                                <ul class="side-newsList-wrapper">
+                                    <li>
+                                        <a href="#" class="side-menu side-newsList-list">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-newsList-add">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu side-newsList-trash">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="side-nav__devider my-6"></li>
+                    <!-- Custommer  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="users"></i> </div>
+                            <div class="side-menu__title">
+                                Custommer
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                    <div class="side-menu__title">List</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                    <div class="side-menu__title">Add New</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                    <div class="side-menu__title">Trash</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Booking & contact  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="contact"></i> </div>
+                            <div class="side-menu__title">
+                                Contact
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Previews
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Booking List
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Contact List
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="side-nav__devider my-6"></li>
+                    <!-- information  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="file-text"></i> </div>
+                            <div class="side-menu__title">
+                                Information
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                    <div class="side-menu__title">List</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                    <div class="side-menu__title">Add New</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                    <div class="side-menu__title">Trash</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- introduction  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="trello"></i> </div>
+                            <div class="side-menu__title">
+                                Introduction
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                    <div class="side-menu__title">List</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                    <div class="side-menu__title">Add New</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                    <div class="side-menu__title">Trash</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- gallery  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="image"></i> </div>
+                            <div class="side-menu__title">
+                                Gallery
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="grid"></i> </div>
+                                    <div class="side-menu__title">List</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                    <div class="side-menu__title">Add New</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                    <div class="side-menu__title">Trash</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="side-nav__devider my-6"></li>
+                    <!-- Role  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="user"></i> </div>
+                            <div class="side-menu__title">
+                                Users
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Role
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
+                                    <div class="side-menu__title"> Account
+                                        <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                                    </div>
+                                </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
+                                            <div class="side-menu__title">List</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                            <div class="side-menu__title">Add New</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="side-menu">
+                                            <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                            <div class="side-menu__title">Trash</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Languages  -->
+                    <li>
+                        <a href="javascript:;" class="side-menu">
+                            <div class="side-menu__icon"> <i data-lucide="languages"></i> </div>
+                            <div class="side-menu__title">
+                                Languages
+                                <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="grid"></i> </div>
+                                    <div class="side-menu__title">List</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
+                                    <div class="side-menu__title">Add New</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="side-menu">
+                                    <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
+                                    <div class="side-menu__title">Trash</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- END: Side Menu -->
+            <!-- BEGIN: Content -->
+            @RenderBody()
+            <!-- END: Content -->
+        </div>
+    </div>
+    <!-- BEGIN: Dark Mode Switcher-->
+    <div data-url="side-menu-dark-dashboard-overview-2.html"
+        class="main-layout dark-mode-switcher cursor-pointer shadow-md fixed bottom-0 right-0 box border rounded-full w-40 h-12 flex items-center justify-center z-50 mb-10 mr-10">
+        <div class="mr-4 text-slate-600 dark:text-slate-200">Dark Mode</div>
+        <div class="dark-mode-switcher__toggle border"></div>
+    </div>
+    <!-- END: Dark Mode Switcher-->
+
+    <!-- BEGIN: JS Assets-->
+    @*<script src="~/../developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="~/https://maps.googleapis.com/maps/api/js?key=["your-google-map-api"]&libraries=places"></script>*@
+    
+    <!-- END: JS Assets--> 
+    <script src="~/dist/js/app.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.9.0/toastify.min.js" integrity="sha512-41ixkHMR43jJQooROKfIXRKpWuPrssMtSfY2nAmM8/iraS+CaKjkVEerk4/T7hKBBtmjy/QSP7Hx21xvhN/hwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/js/layout.js" type="module"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+   
+
+</body>
+</html>

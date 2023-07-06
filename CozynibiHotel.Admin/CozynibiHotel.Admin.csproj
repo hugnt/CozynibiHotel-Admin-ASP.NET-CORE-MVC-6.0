@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\room\room-index.js" />
+    <Content Remove="wwwroot\js\room\room-trash.js" />
+    <Content Remove="wwwroot\js\roomCategory\roomCategory-trash.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\room\room-index.js" />
+    <None Include="wwwroot\js\room\room-trash.js" />
+    <None Include="wwwroot\js\roomCategory\roomCategory-trash.js" />
+    <None Include="wwwroot\js\roomCategory\roomCategory-index.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>

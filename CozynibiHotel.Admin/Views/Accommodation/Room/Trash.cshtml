@@ -1,0 +1,139 @@
+﻿@{
+	ViewData["Title"] = "Room Category";
+
+	var boxNotice = new BoxModalViewModel()
+			{
+				Id = "restore-success-modal",
+				Title = "Restore to the list!",
+				Text = "Restore the item successfully",
+				Icon = "check-circle",
+				IconColor = "text-success"
+			};
+
+	var boxNoticeDelete = new BoxModalViewModel()
+			{
+				Id = "delete-success-modal",
+				Title = "Deleted!",
+				Text = "Deleted the item successfully",
+				Icon = "check-circle",
+				IconColor = "text-success"
+			};
+}
+
+
+@await Component.InvokeAsync("Loading")
+@await Component.InvokeAsync("CanNotSearch")
+
+<div class="content main-content" style="display:none">
+	<h2 class="intro-y text-lg font-medium mt-10">
+		Trash
+	</h2>
+	<div class="grid grid-cols-12 gap-6 mt-5">
+		<div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2" style="justify-content: space-between;">
+			<div class="showing-page-title hidden md:block text-slate-500">Showing 1 to 10 of 150 entries</div>
+			<div class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
+				<div class="w-56 relative text-slate-500">
+					<input type="text" class="form-control w-56 box pr-10 search-box-table" placeholder="Search...">
+					<i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0 search-btn" data-lucide="search"></i>
+				</div>
+				<button class="btn btn-danger shadow-md ml-2 btn-multi-delete">Delete</button>
+				<button class="btn btn-primary shadow-md ml-2 btn-multi-restore">Restore</button>
+			</div>
+		</div>
+		<!-- BEGIN: Data List -->
+		<div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
+			<table class="table table-report -mt-2">
+				<thead>
+					<tr>
+						<th class="whitespace-nowrap">
+							<input class="form-check-input check-all" type="checkbox">
+						</th>
+						<th class="whitespace-nowrap">ID</th>
+						<th class="whitespace-nowrap">CATEGORY NAME</th>
+						<th class="text-center whitespace-nowrap">IMAGES</th>
+						<th class="text-center whitespace-nowrap">AREA</th>
+						<th class="text-center whitespace-nowrap">HIGHT</th>
+						<th class="text-center whitespace-nowrap">BED SIZE</th>
+						<th class="text-center whitespace-nowrap">RATE</th>
+						<th class="text-center whitespace-nowrap">ACTIONS</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- RENDER: Data List -->
+				</tbody>
+			</table>
+		</div>
+		<!-- END: Data List -->
+		<!-- BEGIN: Pagination -->
+		<div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+			<nav class="w-full sm:w-auto sm:mr-auto">
+				<ul class="pagination">
+					<li class="page-item prev-page">
+						<a class="page-link">
+							<i class="w-4 h-4" data-lucide="chevron-left"></i>
+						</a>
+					</li>
+					<li class="page-item more-page-before" style="display:none;"> <a class="page-link">...</a> </li>
+					<li class="page-item more-page-after" style="display:none;"> <a class="page-link">...</a> </li>
+					<li class="page-item next-page">
+						<a class="page-link">
+							<i class="w-4 h-4" data-lucide="chevron-right"></i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+			<select class="pageSize-select w-20 form-select box mt-3 sm:mt-0">
+				<option value="10">10</option>
+				<option value="25">25</option>
+				<option value="35">35</option>
+				<option value="50">50</option>
+				<option value="1">1</option>
+			</select>
+		</div>
+		<!-- END: Pagination -->
+	</div>
+	<!-- BEGIN: Delete Confirmation Modal -->
+	<div id="delete-confirmation-modal" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body p-0">
+					<div class="p-5 text-center">
+						<i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+						<div class="text-3xl mt-5">Are you sure?</div>
+						<div class="text-slate-500 mt-2">
+							Do you really want to delete these records?
+							<br>
+							This process cannot be undone.
+						</div>
+					</div>
+					<div class="px-5 pb-8 text-center">
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-secondary w-24 mr-1">
+							Cancel
+						</button>
+						<button type="button" class="btn btn-danger w-24 btn-remove">Delete</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END: Delete Confirmation Modal -->
+
+	<!-- BEGIN: Modal Notice Content -->
+	@await Component.InvokeAsync("NoticeModal", boxNotice)
+	@await Component.InvokeAsync("NoticeModal", boxNoticeDelete)
+	<!-- END: Modal Notice Content -->
+</div>
+
+
+
+@section Scripts{
+<script>
+	$('.side-accommodation').addClass("side-menu--active");
+	$('.side-roomCategory').addClass("side-menu--active");
+	$('.side-roomCategory-trash').addClass("side-menu--active");
+	$('.side-accommodation-wrapper').addClass("side-menu__sub-open");
+	$('.side-roomCategory-wrapper').addClass("side-menu__sub-open");
+</script>
+<script src="~/js/roomCategory/roomCategory-trash.js" type="module"></script>
+}
