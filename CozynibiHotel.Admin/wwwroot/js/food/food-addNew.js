@@ -8,19 +8,16 @@ $(document).ready(async function () {
     var accessToken = $.cookie('AccessToken');
     var decoded = jwt_decode(accessToken);
     const USER_ID = decoded.Id;
-    const GET_CATEGORIES = HOST +"/api/RoomCategory"
+    const GET_CATEGORIES = HOST +"/api/FoodCategory"
     var cateList = [];
 
     var imgList = [];
-    var POST_RECORD = HOST + "/api/Room";
+    var POST_RECORD = HOST + "/api/Food";
     var newRecord = {
         Images: [],
         Name: "",
         CategoryId: 0,
-        Width: 0,
-        Height: 0,
-        Hight: 0,
-        BedSize: "",
+        Price:0,
         Description: "",
     }
 
@@ -50,6 +47,7 @@ $(document).ready(async function () {
         if (file) {
             var reader = new FileReader();
             reader.onload = function (e) {
+                $(".img-show").html("");
                 $(".img-show").append(`
                     <div class="img-file col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in">
 						<img class="rounded-md" src="${e.target.result}" alt="${file.name}">
@@ -59,6 +57,7 @@ $(document).ready(async function () {
 						</div>
 					</div>
                 `);
+                imgList = [];
                 imgList.push(file);
                 $(".delete-file").click(function () {
                     let imgName = $(this).parent(".img-file").find('img').prop("alt");
@@ -95,24 +94,20 @@ $(document).ready(async function () {
         var name = $("#record-name").val();
         var categoryId = $("#category").val();
 
-        //room size
-        var width = $("#width").val();
-        var height = $("#height").val();
-        var hight = $("#hight").val();
-        var bedSize = $("#bedSize").val();
-
+        //food price
+        var price = $("#price").val();
+  
         //description
         var desc = editor.getData();
 
         newRecord.Name = name;
-        newRecord.Width = width;
-        newRecord.Height = height;
-        newRecord.Hight = hight;
-        newRecord.BedSize = bedSize;
+        newRecord.Price = price;
+        
         newRecord.Description = desc;
         newRecord.CategoryId = categoryId;
 
         console.log(newRecord);
+
         var isValid = getValidation(newRecord);
         if (!isValid.status) {
             console.log("Invalid " + isValid.message);
@@ -142,10 +137,7 @@ $(document).ready(async function () {
     function getValidation(newRecord) {
         var validatObj = {
             name: newRecord.Name,
-            width: newRecord.Width,
-            height: newRecord.Height,
-            hight: newRecord.Hight,
-            bedSize: newRecord.BedSize,
+            price: newRecord.Price,
             categoryId: newRecord.CategoryId,
         }
         for (let prop in validatObj) {
@@ -168,28 +160,10 @@ $(document).ready(async function () {
                 message: "Category is required"
             };
         }
-        if (validatObj.width < 0 || validatObj.width > 100) {
+        if (validatObj.price < 0) {
             return {
                 status: false,
-                message: "Checking the width field"
-            }
-        }
-        if (validatObj.height < 0 || validatObj.height > 100) {
-            return {
-                status: false,
-                message: "Checking the height field"
-            }
-        }
-        if (validatObj.hight < 0 || validatObj.hight > 10) {
-            return {
-                status: false,
-                message: "Checking the hight field"
-            }
-        }
-        if (validatObj.bedSize.length < 3 || validatObj.bedSize.length >= 30) {
-            return {
-                status: false,
-                message: "Checking the bedSize field"
+                message: "Checking the price field"
             }
         }
         return {
@@ -201,19 +175,14 @@ $(document).ready(async function () {
     async function postNewRecord(newRecord, imagesUpload) {
         var formData = new FormData();
         formData.append("Name", newRecord.Name);
-        for (var i = 0; i < newRecord.Images.length; i++) {
-            formData.append("Images", newRecord.Images[i]);
-        }
+        formData.append("Image", newRecord.Images[0]);
         formData.append("CategoryId", newRecord.CategoryId);
-        formData.append("Width", newRecord.Width);
-        formData.append("Height", newRecord.Height);
-        formData.append("Hight", newRecord.Hight);
-        formData.append("BedSize", newRecord.BedSize);
+        formData.append("Price", newRecord.Price);
         formData.append("Description", newRecord.Description);
         formData.append("CreatedBy", USER_ID);
-        for (var i = 0; i < imagesUpload.length; i++) {
-            formData.append("images", imagesUpload[i]);
-        }
+       
+        formData.append("images", imagesUpload[0]);
+        
         for (var pair of formData.entries()) {
             console.log(pair[0] + ': ' + pair[1]);
         }
@@ -239,7 +208,7 @@ $(document).ready(async function () {
 
                 const myModal = tailwind.Modal.getInstance(document.querySelector("#success-modal-preview"));
                 $("#success-modal-preview").on('blur', function () {
-                    window.location.href = '/Admin/Accommodation/Room';
+                    window.location.href = '/Admin/Menu/Food';
                 });
                 myModal.show();
             }

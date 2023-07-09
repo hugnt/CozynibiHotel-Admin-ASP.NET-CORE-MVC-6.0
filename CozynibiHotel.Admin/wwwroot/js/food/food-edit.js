@@ -17,18 +17,15 @@ $(document).ready(async function () {
     var currentUrl = window.location.href;
     const RECORD_ID = currentUrl.split('/').pop();
 
-    const GET_RECORD = HOST + "/api/Room/" + RECORD_ID;
-    const PUT_RECORD = HOST + "/api/Room/" + RECORD_ID;
-    const GET_CATEGORIES = HOST + "/api/RoomCategory"
+    const GET_RECORD = HOST + "/api/Food/" + RECORD_ID;
+    const PUT_RECORD = HOST + "/api/Food/" + RECORD_ID;
+    const GET_CATEGORIES = HOST + "/api/FoodCategory"
 
     var newRecord = {
         Images: [],
         CategoryId: 0,
         Name: "",
-        Width: 0,
-        Height: 0,
-        Hight: 0,
-        BedSize: "",
+        Price:0,
         Description: "",
         isActive: false,
         isDeleted: false,
@@ -64,8 +61,10 @@ $(document).ready(async function () {
         var file = this.files[0];
 
         if (file) {
+
             var reader = new FileReader();
             reader.onload = function (e) {
+                $(".img-show").html("");
                 $(".img-show").append(`
                     <div class="img-file col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in">
 						<img class="rounded-md" src="${e.target.result}" alt="${file.name}">
@@ -75,13 +74,16 @@ $(document).ready(async function () {
 						</div>
 					</div>
                 `);
+                editRecord.image = file.name;
+                imgList = [];
                 imgList.push(file);
                 $(".delete-file").click(function () {
                     let imgName = $(this).parent(".img-file").find('img').prop("alt");
                     $(this).parent(".img-file").remove();
                     imgList = imgList.filter(function (file) {
                         return file.name != imgName;
-                    })
+                    });
+                    editRecord.image = "";
                     console.log(imgList);
                 });
                 $(".upload-img").val("");
@@ -139,36 +141,29 @@ $(document).ready(async function () {
         }
 
         //images
-        var IMAGE_SRC = GET_IMAGE_URL + "room/";
-        for (var i = 0; i < record.images.length; i++) {
-            $(".img-show").append(`
+        var IMAGE_SRC = GET_IMAGE_URL + "menu/";
+        $(".img-show").html("");
+        $(".img-show").append(`
                 <div class="img-file col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in">
-					<img class="rounded-md" src="${IMAGE_SRC + record.images[i]}" alt="${record.images[i]}">
+					<img class="rounded-md" src="${IMAGE_SRC + record.image}" alt="${record.image}">
 					<div title="Remove this image?"
 							class="delete-file tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
 						<span>X</span>
 					</div>
 				</div>
             `);
-            $(".delete-file").click(function () {
-                let imgName = $(this).parent(".img-file").find('img').prop("alt");
-                $(this).parent(".img-file").remove();
-                editRecord.images = editRecord.images.filter(function (file) {
-                    return file != imgName;
-                });
-                console.log(editRecord.images);
-                
-            });
-        }
+        $(".delete-file").click(function () {
+            $(this).parent(".img-file").remove();
+            editRecord.image = "";
+            console.log(editRecord.images);
+
+        });
 
         //name
         $("#record-name").val(record.name);
 
-        //room size
-        $("#width").val(record.width);
-        $("#height").val(record.height);
-        $("#hight").val(record.hight);
-        $("#bedSize").val(record.bedSize);
+        //food price
+        $("#price").val(record.price);
 
         //description
         if (record.description) {
@@ -228,43 +223,7 @@ $(document).ready(async function () {
 
     }
    
-    function getValidation(newRecord) {
-        var validatObj = {
-            name: newRecord.Name,
-            price: newRecord.Price,
-            categoryId: newRecord.CategoryId,
-        }
-        for (let prop in validatObj) {
-            if (validatObj[prop] == null || validatObj[prop] == '' || validatObj[prop] == undefined) {
-                return {
-                    status: false,
-                    message: `${prop} required `
-                };
-            }
-        }
-        if (validatObj.name.length < 5 || validatObj.name.length >= 30) {
-            return {
-                status: false,
-                message: "Checking the name field"
-            }
-        }
-        if (validatObj.categoryId == 0) {
-            return {
-                status: false,
-                message: "Category is required"
-            };
-        }
-        if (validatObj.price < 0) {
-            return {
-                status: false,
-                message: "Checking the price field"
-            }
-        }
-        return {
-            status: true,
-            message: "All valid"
-        }
-    }
+
 
     //ADD NEW
  
@@ -275,30 +234,19 @@ $(document).ready(async function () {
 
     async function getUpdatedRecord() {
         //images
-        for (var i = 0; i < editRecord.images.length; i++) {
-            newRecord.Images.push(editRecord.images[i]);
-        }
-        for (var i = 0; i < imgList.length; i++) {
-            newRecord.Images.push(imgList[i].name);
-        }
+        newRecord.Images.push(editRecord.image);
         //name
         var name = $("#record-name").val();
         var categoryId = $("#category").val();
 
-        //room size
-        var width = $("#width").val();
-        var height = $("#height").val();
-        var hight = $("#hight").val();
-        var bedSize = $("#bedSize").val();
+        //food size
+        var price = $("#price").val();
 
         //description
         var desc = editor.getData();
 
         newRecord.Name = name;
-        newRecord.Width = width;
-        newRecord.Height = height;
-        newRecord.Hight = hight;
-        newRecord.BedSize = bedSize;
+        newRecord.Price = price;
         newRecord.Description = desc;
         newRecord.CategoryId = categoryId;
         newRecord.isActive = $('#status-active').prop('checked');
@@ -337,11 +285,6 @@ $(document).ready(async function () {
     function getValidation(newRecord) {
         var validatObj = {
             name: newRecord.Name,
-            width: newRecord.Width,
-            height: newRecord.Height,
-            hight: newRecord.Hight,
-            bedSize: newRecord.BedSize,
-            categoryId: newRecord.CategoryId,
         }
         for (let prop in validatObj) {
             if (validatObj[prop] == null || validatObj[prop] == '' || validatObj[prop] == undefined) {
@@ -351,40 +294,10 @@ $(document).ready(async function () {
                 };
             }
         }
-        if (validatObj.name.length < 3 || validatObj.name.length >= 30) {
+        if (validatObj.name.length < 5 || validatObj.name.length >= 30) {
             return {
                 status: false,
                 message: "Checking the name field"
-            }
-        }
-        if (validatObj.categoryId == 0) {
-            return {
-                status: false,
-                message: "Category is required"
-            };
-        }
-        if (validatObj.width < 0 || validatObj.width > 100) {
-            return {
-                status: false,
-                message: "Checking the width field"
-            }
-        }
-        if (validatObj.height < 0 || validatObj.height > 100) {
-            return {
-                status: false,
-                message: "Checking the height field"
-            }
-        }
-        if (validatObj.hight < 0 || validatObj.hight > 10) {
-            return {
-                status: false,
-                message: "Checking the hight field"
-            }
-        }
-        if (validatObj.bedSize.length < 3 || validatObj.bedSize.length >= 30) {
-            return {
-                status: false,
-                message: "Checking the bedSize field"
             }
         }
         return {
@@ -395,25 +308,18 @@ $(document).ready(async function () {
 
     async function putUpdatedRecord(newRecord, imagesUpload) {
         var formData = new FormData();
-        formData.append("roomId", RECORD_ID);
+        formData.append("foodId", RECORD_ID);
         formData.append("Id", RECORD_ID);
         formData.append("Name", newRecord.Name);
-        for (var i = 0; i < newRecord.Images.length; i++) {
-            formData.append("Images", newRecord.Images[i]);
-        }
+        formData.append("Image", newRecord.Images[0]);
         formData.append("CategoryId", newRecord.CategoryId);
-        formData.append("Width", newRecord.Width);
-        formData.append("Height", newRecord.Height);
-        formData.append("Hight", newRecord.Hight);
-        formData.append("BedSize", newRecord.BedSize);
+        formData.append("Price", newRecord.Price);
         formData.append("Description", newRecord.Description);
         formData.append("IsActive", newRecord.isActive);
         formData.append("UpdatedBy", USER_ID);
         formData.append("CreatedBy", newRecord.CreatedBy);
 
-        for (var i = 0; i < imagesUpload.length; i++) {
-            formData.append("images", imagesUpload[i]);
-        }
+        formData.append("images", imagesUpload[0]);
         for (var pair of formData.entries()) {
             console.log(pair[0] + ': ' + pair[1]);
         }
@@ -437,7 +343,7 @@ $(document).ready(async function () {
 
             const myModal = tailwind.Modal.getInstance(document.querySelector("#success-modal-preview"));
             $("#success-modal-preview").on('blur', function () {
-                window.location.href = '/Admin/Accommodation/Room';
+                window.location.href = '/Admin/Menu/Food';
             });
             myModal.show();
         } catch (e) {

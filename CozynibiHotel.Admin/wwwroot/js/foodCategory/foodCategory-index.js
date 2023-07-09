@@ -3,8 +3,8 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/RoomCategory";
-    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "accommodation_2"
+    var BASE_URL = HOST + "/api/FoodCategory";
+    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "menu"
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
@@ -65,23 +65,17 @@ $(document).ready(async function () {
             if (cate.isDeleted == true) continue;
             let imgHtml = "";
             console.log(cate)
-            for (let j = 0; j < cate.images.length; j++) {
-                let img = cate.images[j];
-                let imgString = `${CATEGORY_IMG_SRC}/${img}`;
-                if (j == 0) {
-                    imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
-									<img alt="img" class="tooltip rounded-full"
-									src="${imgString}" title="img">
-								</div>`
-                }
-                else {
-                    imgHtml += `<div class="w-10 h-10 image-fit zoom-in -ml-5">
-									<img alt="img" class="tooltip rounded-full"
-									src="${imgString}" title="img">
-								</div>`
-                }
 
-            }
+            //IMAGE
+            let imgString = `${CATEGORY_IMG_SRC}/${cate.image}`;
+           
+            imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
+							<img alt="img" class="tooltip rounded-full"
+							src="${imgString}" title="img">
+						</div>`
+            
+        
+            
             let status = "";
             if (cate.isActive) {
                 status = `
@@ -99,7 +93,7 @@ $(document).ready(async function () {
             }
             let html = `
 							<tr class="intro-x">
-								<td class="w-10">RC${cate.id}</td>
+								<td class="w-10">FC${cate.id}</td>
 								<td>
 									<a href="#" class="font-medium whitespace-nowrap" style="text-transform:capitalize">${cate.name}</a>
 								</td>
@@ -111,16 +105,13 @@ $(document).ready(async function () {
                 `
 									</div>
 								</td>
-								<td class="text-center">${cate.area} m²</td>
-								<td class="text-center">${cate.hight} m</td>
-								<td class="text-center">${cate.bedSize} m</td>
-								<td class="text-center">${cate.roomRate ? cate.roomRate : 0}/5</td>
+								<td class="text-center">${cate.foodRate ? cate.foodRate : 0}/5</td>
 								<td class="w-40">
 									${status}							
 								</td>
 								<td class="table-report__action w-56">
 									<div class="flex justify-center items-center">
-										<a class="flex items-center mr-3 btn-edit" style="cursor:pointer;" data-cate-id="${cate.id}" onclick="window.location.href='/Admin/Accommodation/RoomCategory/Edit/${cate.id}';">
+										<a class="flex items-center mr-3 btn-edit" style="cursor:pointer;" data-cate-id="${cate.id}" onclick="window.location.href='/Admin/Menu/FoodCategory/Edit/${cate.id}';">
 											${lucide.checkSquare} Edit
 										</a>
 										<a class="flex items-center text-danger mr-3 btn-delete" style="cursor:pointer"
@@ -153,17 +144,15 @@ $(document).ready(async function () {
                 //images
                 $(".multiple-items").html("");
                 let imgHtml = "";
-                for (let i = 0; i < cate.images.length; i++) {
-                    let img = cate.images[i];
-                    let imgString = `${CATEGORY_IMG_SRC}/${img}`;
-                    imgHtml += `
-					<div class="h-32 px-2">
-						<div class="h-full bg-slate-100 dark:bg-darkmode-400 rounded-md">
-							<img src="${imgString}"/>
-						</div>
+             
+                let imgString = `${CATEGORY_IMG_SRC}/${cate.image}`;
+                imgHtml += `
+				<div class="h-32 px-2">
+					<div class="h-full bg-slate-100 dark:bg-darkmode-400 rounded-md">
+						<img src="${imgString}"/>
 					</div>
-				`;
-                }
+				</div>`;
+                
                 $(".multiple-items").append(imgHtml);
                 if ($(".multiple-items").length) {
                     $(".multiple-items").each(function () {
@@ -189,25 +178,17 @@ $(document).ready(async function () {
                     });
                 }
                 //informations
-                cate.roomRate = (cate.roomRate == null || cate.roomRate == "") ? 0 : cate.roomRate;
-                $('#id').val("RC0" + cate.id);
+                cate.foodRate = (cate.foodRate == null || cate.foodRate == "") ? 0 : cate.foodRate;
+                $('#id').val("FC0" + cate.id);
                 $('#name').val(cate.name);
                 $('#status').val(cate.isActive ? "Active" : "Inactive");
-                $('#area').val(cate.area);
-                $('#hight').val(cate.hight);
-                $('#bedSize').val(cate.bedSize);
-                $('#roomRate').val(cate.roomRate + "/5");
+                $('#foodRate').val(cate.foodRate + "/5");
                 $('#description').html(cate.description);
                 $('#createdAt').val(cate.createdAt);
                 $('#createdBy').val(CREATED_ONE.fullName);
                 $('#updatedAt').val(cate.updatedAt);
                 $('#updatedBy').val(UPDATED_ONE.fullName);
 
-                var lstEquipments = "";
-                for (var i = 0; i < cate.equipments.length; i++) {
-                    lstEquipments += "- " + cate.equipments[i] + '\n';
-                }
-                $("#equipments").val(lstEquipments);
                 $('#modal-details').css("display", "block");
             }
         });
@@ -219,9 +200,9 @@ $(document).ready(async function () {
     }
 
     $("#delete-confirmation-modal .btn-remove ").click(async function () {
-        const PUT_RECORD = HOST + "/api/RoomCategory/" + RECORD_ID +"/" +true;
+        const PUT_RECORD = HOST + "/api/FoodCategory/" + RECORD_ID +"/" +true;
         var formData = new FormData();
-        formData.append("roomCategoryId", RECORD_ID);
+        formData.append("foodCategoryId", RECORD_ID);
         formData.append("isDelete", true);
         try {
             const res = await $.ajax({
@@ -439,6 +420,7 @@ $(document).ready(async function () {
                 $(".loading").css("display", "none");
                 $(".cantSearch").css("display", "block");
             }
+
         } catch (e) {
             console.log(e);
             $(".loading").css("display", "none");

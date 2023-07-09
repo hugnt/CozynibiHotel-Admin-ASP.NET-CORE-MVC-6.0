@@ -7,36 +7,36 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using CozynibiHotel.Admin.Attributes;
 
-namespace CozynibiHotel.Admin.Controllers.Accommodation
+namespace CozynibiHotel.Admin.Controllers.Menu
 {
 
     [CustomAuthorize]
-    [Route("Admin/Accommodation/Room")]
+    [Route("Admin/Menu/Food")]
     public class FoodController : Controller
     {
         [Route("")]
         [Route("Index")]
         public IActionResult Index()
         {
-            return View("~/Views/Accommodation/Room/Index.cshtml");
+            return View("~/Views/Menu/Food/Index.cshtml");
         }
 
         [Route("AddNew")]
         public IActionResult AddNew()
         {
-            return View("~/Views/Accommodation/Room/AddNew.cshtml");
+            return View("~/Views/Menu/Food/AddNew.cshtml");
         }
 
         [Route("Edit/{id}")]
         public IActionResult Edit(int id)
         {
-            return View("~/Views/Accommodation/Room/Edit.cshtml");
+            return View("~/Views/Menu/Food/Edit.cshtml");
         }
 
         [Route("Trash")]
         public IActionResult Trash()
         {
-            return View("~/Views/Accommodation/Room/Trash.cshtml");
+            return View("~/Views/Menu/Food/Trash.cshtml");
         }
     }
 }

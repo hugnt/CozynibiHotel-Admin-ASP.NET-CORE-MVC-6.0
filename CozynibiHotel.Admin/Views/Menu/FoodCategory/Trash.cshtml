@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Room";
+	ViewData["Title"] = "Food Category";
 
 	var boxNotice = new BoxModalViewModel()
 			{
@@ -49,12 +49,8 @@
 							<input class="form-check-input check-all" type="checkbox">
 						</th>
 						<th class="whitespace-nowrap">ID</th>
-						<th class="whitespace-nowrap">ROOM NAME</th>
-						<th class="text-center whitespace-nowrap">IMAGES</th>
-						<th class="text-center whitespace-nowrap">WIDTH</th>
-						<th class="text-center whitespace-nowrap">HEIGHT</th>
-						<th class="text-center whitespace-nowrap">HIGHT</th>
-						<th class="text-center whitespace-nowrap">BED SIZE</th>
+						<th class="whitespace-nowrap">CATEGORY NAME</th>
+						<th class="text-center whitespace-nowrap">IMAGE</th>
 						<th class="text-center whitespace-nowrap">RATE</th>
 						<th class="text-center whitespace-nowrap">ACTIONS</th>
 					</tr>
@@ -130,11 +126,11 @@
 
 @section Scripts{
 <script>
-	$('.side-accommodation').addClass("side-menu--active");
-	$('.side-room').addClass("side-menu--active");
-	$('.side-room-trash').addClass("side-menu--active");
-	$('.side-accommodation-wrapper').addClass("side-menu__sub-open");
-	$('.side-room-wrapper').addClass("side-menu__sub-open");
+	$('.side-MENU').addClass("side-menu--active");
+	$('.side-foodCategory').addClass("side-menu--active");
+	$('.side-foodCategory-trash').addClass("side-menu--active");
+	$('.side-MENU-wrapper').addClass("side-menu__sub-open");
+	$('.side-foodCategory-wrapper').addClass("side-menu__sub-open");
 </script>
-<script src="~/js/room/room-trash.js" type="module"></script>
+<script src="~/js/foodCategory/foodCategory-trash.js" type="module"></script>
 }

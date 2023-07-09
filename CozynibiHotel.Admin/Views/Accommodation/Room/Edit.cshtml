@@ -1,5 +1,5 @@
 ﻿ @{
-	ViewData["Title"] = "Edit Room Category";
+	ViewData["Title"] = "Edit Room";
 
 	var boxSuccess = new BoxModalViewModel()
 			{
@@ -7,7 +7,7 @@
 				Text = "Continue to add a new one or go to the list",
 				LstButton = new List<Button>()
 		{
-			new Button("Go to list", "btn-primary", "window.location.href='/Admin/Accommodation/RoomCategory';"),
+			new Button("Go to list", "btn-primary", "window.location.href='/Admin/Accommodation/Room';"),
 			new Button("Resfesh", "btn-primary", "window.location.reload();"),
 		}
 
@@ -26,7 +26,7 @@
 <div class="content main-content" style="display:none;">
 	<div class="intro-y flex items-center mt-8">
 		<h2 class="text-lg font-medium mr-auto">
-			Edit Room Category
+			Edit Room
 		</h2>
 	</div>
 	<div class="grid grid-cols-11 gap-x-6 mt-5 pb-20">
@@ -144,6 +144,21 @@
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
+										<div class="font-medium">Category</div>
+										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">Required</div>
+									</div>
+								</div>
+							</div>
+							<div class="w-full mt-3 xl:mt-0 flex-1">
+								<select id="category" class="form-select">
+								<!-- RENDER: CATEGORIES -->
+								</select>
+							</div>
+						</div>
+						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
+							<div class="form-label xl:w-64 xl:!mr-10">
+								<div class="text-left">
+									<div class="flex items-center">
 										<div class="font-medium">Room Size</div>
 										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
 											Required
@@ -156,17 +171,22 @@
 								</div>
 							</div>
 							<div class="w-full mt-3 xl:mt-0 flex-1">
-								<div class="sm:grid grid-cols-3 gap-2">
+								<div class="sm:grid grid-cols-4 gap-2">
 									<div class="input-form">
 										<div class="input-group">
-											<input id="area" type="number" class="form-control" placeholder="Area" minlength="1" required>
-											<div class="input-group-text">m²</div>
+											<input id="width" type="number" class="form-control" placeholder="Width" minlength="1" required>
+											<div class="input-group-text">m</div>
 										</div>
 									</div>
-
+									<div class="input-form">
+										<div class="input-group">
+											<input id="height" type="number" class="form-control" placeholder="Height" minlength="1" required>
+											<div class="input-group-text">m</div>
+										</div>
+									</div>
 									<div class="input-form">
 										<div class="input-group mt-2 sm:mt-0">
-											<input id="hight" type="text" class="form-control" placeholder="Hight" minlength="1" required>
+											<input id="hight" type="number" class="form-control" placeholder="Hight" minlength="1" required>
 											<div class="input-group-text">m</div>
 										</div>
 									</div>
@@ -212,35 +232,8 @@
 				</div>
 			</div>
 			<!-- END: Product Information -->
-			<!-- BEGIN: Product Detail -->
-			<div class="intro-y box p-5 mt-5" id="section3">
-				<div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
-					<div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
-						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Room Equipment
-					</div>
-					<div class="mt-5 equipment-info">
-						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
-							<div class="form-label xl:w-64 xl:!mr-10">
-								<div class="text-left">
-									<div class="flex items-center">
-										<div class="font-medium">Select the room equipment</div>
-									</div>
-									<div class="leading-relaxed text-slate-500 text-xs mt-3"> You can add a new equipment or choose from the existing equipment list. </div>
-								</div>
-							</div>
-							<div class="w-full mt-3 xl:mt-0 flex-1">
-								<select id="equipment-select" autocomplete="off" placeholder="Choose an equipment" class="w-full equipment-select" multiple>
-									<!-- RENDER: EQUIPMENT :LIST -->
-									@*<option value="TEsst">TEsst</option>*@
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- END: Product Detail -->
 			<div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
-				<button type="button" onclick = "window.location.href='/Admin/Accommodation/RoomCategory';"
+				<button type="button" onclick = "window.location.href='/Admin/Accommodation/Room';"
 						class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">
 
 					Cancel
@@ -252,7 +245,7 @@
 					Reset
 
 				</button>
-				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-update">Save & Update Category</button>
+				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-update">Save & Update Room</button>
 			</div>
 		</div>
 		<div class="intro-y col-span-2 hidden 2xl:block">
@@ -262,10 +255,7 @@
 						<a href="#section1">Upload Room Images</a>
 					</li>
 					<li class="mb-4 border-l-2 pl-5 border-transparent dark:border-transparent section-preview">
-						<a href="#section2">Category Information</a>
-					</li>
-					<li class="mb-4 border-l-2 pl-5 border-transparent dark:border-transparent section-preview">
-						<a href="#section3">Room Equipment</a>
+						<a href="#section2">Room Information</a>
 					</li>
 				</ul>
 				<div class="mt-10 bg-warning/20 dark:bg-darkmode-600 border border-warning dark:border-0 rounded-md relative p-5">
@@ -274,7 +264,7 @@
 					<h2 class="text-lg font-medium">
 						Tips
 					</h2>
-					<div class="mt-5 font-medium">Category</div>
+					<div class="mt-5 font-medium">Room</div>
 					<div class="leading-relaxed text-xs mt-2 text-slate-600 dark:text-slate-500">
 						<div>
 
@@ -310,10 +300,10 @@
 @section Scripts{
 <script>
 	$('.side-accommodation').addClass("side-menu--active");
-	$('.side-roomCategory').addClass("side-menu--active");
+	$('.side-room').addClass("side-menu--active");
 	$('.side-accommodation-wrapper').addClass("side-menu__sub-open");
 </script>
 <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
-<script src="~/js/roomCategory/roomCategory-edit.js" type="module"></script>
+<script src="~/js/room/room-edit.js" type="module"></script>
 
 }

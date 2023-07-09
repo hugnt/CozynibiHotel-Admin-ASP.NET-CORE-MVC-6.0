@@ -1,5 +1,5 @@
 ﻿ @{
-	ViewData["Title"] = "Add Room";
+	ViewData["Title"] = "Add Food";
 
 	var boxSuccess = new BoxModalViewModel()
 			{
@@ -7,7 +7,7 @@
 				Text = "Continue to add a new one or go to the list",
 				LstButton = new List<Button>()
 		{
-			new Button("Go to list", "btn-primary", "window.location.href='/Admin/Accommodation/Room';"),
+			new Button("Go to list", "btn-primary", "window.location.href='/Admin/Menu/Food';"),
 			new Button("Add new", "btn-primary", "window.location.reload();"),
 		}
 
@@ -26,7 +26,7 @@
 <div class="content main-content" style="display:none;">
 	<div class="intro-y flex items-center mt-8">
 		<h2 class="text-lg font-medium mr-auto">
-			Add Room
+			Add Food
 		</h2>
 	</div>
 	<div class="grid grid-cols-11 gap-x-6 mt-5 pb-20">
@@ -35,7 +35,7 @@
 			<div class="intro-y box p-5" id="section1">
 				<div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
 					<div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
-						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Upload Room Images
+						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Upload Food Images
 					</div>
 					<div class="mt-5">
 						<div class="flex items-center text-slate-500">
@@ -43,8 +43,8 @@
 							<div class="ml-2">
 								<span class="mr-1">
 
-									Avoid selling counterfeit rooms /
-									violating Intellectual Property Rights, so that your rooms are not
+									Avoid selling counterfeit foods /
+									violating Intellectual Property Rights, so that your foods are not
 									deleted.
 
 								</span> <a href="https://themeforest.net/item/midone-jquery-tailwindcss-html-admin-template/26366820"
@@ -55,7 +55,7 @@
 							<div class="form-label w-full xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Room Photos</div>
+										<div class="font-medium">Food Photos</div>
 									</div>
 									<div class="leading-relaxed text-slate-500 text-xs mt-3">
 										<div>
@@ -95,7 +95,7 @@
 			<div class="intro-y box p-5 mt-5" id="section2">
 				<div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
 					<div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
-						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Room Information
+						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Food Information
 					</div>
 					<div class="mt-5">
 						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
@@ -117,7 +117,7 @@
 							</div>
 							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
 								<input id="record-name" type="text" class="form-control"
-									   placeholder="Room name" minlength="5" required>
+									   placeholder="Food name" minlength="5" required>
 								<div class="form-help text-right">Maximum character 30</div>
 							</div>
 						</div>
@@ -140,42 +140,23 @@
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Room Size</div>
+										<div class="font-medium">Price</div>
 										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
 											Required
 										</div>
 									</div>
 									<div class="leading-relaxed text-slate-500 text-xs mt-3">
 										Enter the
-										room size contains area, hight and bed size.
+										food price in $ curency
 									</div>
 								</div>
 							</div>
 							<div class="w-full mt-3 xl:mt-0 flex-1">
-								<div class="sm:grid grid-cols-4 gap-2">
+								<div class="sm:grid grid-cols-1 gap-2">
 									<div class="input-form">
 										<div class="input-group">
-											<input id="width" type="number" class="form-control" placeholder="Width" minlength="1" required>
-											<div class="input-group-text">m</div>
-										</div>
-									</div>
-									<div class="input-form">
-										<div class="input-group">
-											<input id="height" type="number" class="form-control" placeholder="Height" minlength="1" required>
-											<div class="input-group-text">m</div>
-										</div>
-									</div>
-									<div class="input-form">
-										<div class="input-group mt-2 sm:mt-0">
-											<input id="hight" type="number" class="form-control" placeholder="Hight" minlength="1" required>
-											<div class="input-group-text">m</div>
-										</div>
-									</div>
-
-									<div class="input-form">
-										<div class="input-group mt-2 sm:mt-0">
-											<input id="bedSize" type="text" class="form-control" placeholder="Bed Size (x*y)" minlength="3" required>
-											<div class="input-group-text">m x m</div>
+											<input id="price" type="text" class="form-control" placeholder="Price" required>
+											<div class="input-group-text">$</div>
 										</div>
 									</div>
 								</div>
@@ -185,12 +166,12 @@
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Room Description</div>
+										<div class="font-medium">Food Description</div>
 									</div>
 									<div class="leading-relaxed text-slate-500 text-xs mt-3">
 										<div>
-											Make sure the room description provides a detailed
-											explanation of your room so that it is easy to understand and
+											Make sure the food description provides a detailed
+											explanation of your food so that it is easy to understand and
 											find your category.
 										</div>
 										<div class="mt-2">
@@ -214,7 +195,7 @@
 			</div>
 			<!-- END: Product Information -->
 			<div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
-				<button type="button" onclick="window.location.href='/Admin/Accommodation/Room';"
+				<button type="button" onclick="window.location.href='/Admin/Menu/Food';"
 						class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">
 
 					Cancel
@@ -226,17 +207,17 @@
 					Reset
 
 				</button>
-				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-addnew">Save & Add New Room</button>
+				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-addnew">Save & Add New Food</button>
 			</div>
 		</div>
 		<div class="intro-y col-span-2 hidden 2xl:block">
 			<div class="pt-10 sticky top-0">
 				<ul class="text-slate-500 relative before:content-[''] before:w-[2px] before:bg-slate-200 before:dark:bg-darkmode-600 before:h-full before:absolute before:left-0 before:z-[-1]">
 					<li class="mb-4 border-l-2 pl-5 border-primary dark:border-primary text-primary font-medium section-preview">
-						<a href="#section1">Upload Room Images</a>
+						<a href="#section1">Upload Food Images</a>
 					</li>
 					<li class="mb-4 border-l-2 pl-5 border-transparent dark:border-transparent section-preview">
-						<a href="#section2">Category Information</a>
+						<a href="#section2">Food Information</a>
 					</li>
 				</ul>
 				<div class="mt-10 bg-warning/20 dark:bg-darkmode-600 border border-warning dark:border-0 rounded-md relative p-5">
@@ -245,7 +226,7 @@
 					<h2 class="text-lg font-medium">
 						Tips
 					</h2>
-					<div class="mt-5 font-medium">Room</div>
+					<div class="mt-5 font-medium">Food</div>
 					<div class="leading-relaxed text-xs mt-2 text-slate-600 dark:text-slate-500">
 						<div>
 
@@ -280,13 +261,13 @@
 <!-- END: Content -->
 @section Scripts{
 <script>
-	$('.side-accommodation').addClass("side-menu--active");
-	$('.side-room').addClass("side-menu--active");
-	$('.side-room-add').addClass("side-menu--active");
-	$('.side-accommodation-wrapper').addClass("side-menu__sub-open");
-	$('.side-room-wrapper').addClass("side-menu__sub-open");
+	$('.side-MENU').addClass("side-menu--active");
+	$('.side-food').addClass("side-menu--active");
+	$('.side-food-add').addClass("side-menu--active");
+	$('.side-MENU-wrapper').addClass("side-menu__sub-open");
+	$('.side-food-wrapper').addClass("side-menu__sub-open");
 </script>
 <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
-<script src="~/js/room/room-addNew.js" type="module"></script>
+<script src="~/js/food/food-addNew.js" type="module"></script>
 
 }

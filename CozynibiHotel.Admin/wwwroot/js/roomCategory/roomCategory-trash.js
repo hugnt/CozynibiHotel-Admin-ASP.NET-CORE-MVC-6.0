@@ -39,7 +39,12 @@ $(document).ready(async function () {
                 }
             });
             if (res && res.length > 0) {
-                cateList = res;
+                cateList = [];
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].isDeleted == true) {
+                        cateList.push(res[i]);
+                    }
+                }
                 updatePagination(pagination);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
@@ -374,10 +379,13 @@ $(document).ready(async function () {
                 }
             });
             if (res && res.length > 0) {
-                cateList = res;
+                cateList = [];
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].isDeleted == true) {
+                        cateList.push(res[i]);
+                    }
+                }
                 updatePagination(pagination);
-                renderPagination(pagination);
-                renderListData(pagination.recordShow);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
                 console.log(res);

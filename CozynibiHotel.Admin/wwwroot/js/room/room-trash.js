@@ -3,8 +3,8 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/RoomCategory";
-    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "accommodation_2"
+    var BASE_URL = HOST + "/api/Room";
+    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "room"
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
@@ -20,7 +20,6 @@ $(document).ready(async function () {
         totalPages: 0,
 
     }
-
     await getList();
 
     //DATA RENDERING
@@ -29,18 +28,23 @@ $(document).ready(async function () {
             const res = await $.ajax({
                 url: BASE_URL,
                 type: "GET",
+                contentType: "application/json",
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
-                contentType: "application/json",
                 beforeSend: function () {
                     $(".loading").css("display", "block");
                     $(".main-content").css("display", "none");
                 }
             });
             if (res && res.length > 0) {
-                cateList = res;
-                updatePagination(pagination);
+                cateList = [];
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].isDeleted == true) {
+                        cateList.push(res[i]);
+                    }
+                }
+                await updatePagination(pagination);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
             }
@@ -51,13 +55,18 @@ $(document).ready(async function () {
 
     }
 
-    function renderListData(res) {
+    async function renderListData(res) {
         $('.table-report tbody').html('');
         for (let i = 0; i < res.length; i++) {
             let cate = res[i];
             if (cate.isDeleted == false) continue;
             let imgHtml = "";
+
+            var category = await getCate(cate.categoryId);
+
+            console.log(cate)
             for (let j = 0; j < cate.images.length; j++) {
+                if (j > 3) break;
                 let img = cate.images[j];
                 let imgString = `${CATEGORY_IMG_SRC}/${img}`;
                 if (j == 0) {
@@ -80,9 +89,10 @@ $(document).ready(async function () {
                                 <td class="w-10">
 							        <input class="form-check-input check-item checkBox-${cate.id}" data-id="${cate.id}" type="checkbox">
 						        </td>
-								<td class="w-10">RC${cate.id}</td>
+								<td class="w-10">R${cate.id}</td>
 								<td>
 									<a href="#" class="font-medium whitespace-nowrap" style="text-transform:capitalize">${cate.name}</a>
+                                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5" style="text-transform: capitalize">${category.name}</div>
 								</td>
 								<td class="w-40">
 									<div class="flex justify-center">`
@@ -90,11 +100,12 @@ $(document).ready(async function () {
                 imgHtml
                 +
                 `
-							        </div>
+									</div>
 								</td>
-								<td class="text-center">${cate.area} m²</td>
-								<td class="text-center">${cate.hight} m</td>
-								<td class="text-center">${cate.bedSize} m</td>
+								<td class="text-center">${cate.width ? cate.width : 0} m</td>
+                                <td class="text-center">${cate.height ? cate.height : 0} m</td>
+								<td class="text-center">${cate.hight ? cate.hight : 0} m</td>
+								<td class="text-center">${cate.bedSize ? cate.bedSize : 0} m</td>
 								<td class="text-center">${cate.roomRate ? cate.roomRate : 0}/5</td>
 								<td class="table-report__action w-56">
 							        <div class="flex justify-center items-center">
@@ -113,12 +124,12 @@ $(document).ready(async function () {
 
         $(".check-all").change(function () {
             $(".check-item").prop("checked", $(this).is(':checked'));
-           
+
         });
 
         $(".btn-delete").click(function () {
             $(`.checkBox-${$(this).data("id")}`).prop("checked", true);
-            
+
         });
 
         $(".btn-restore").click(async function () {
@@ -126,7 +137,6 @@ $(document).ready(async function () {
         });
 
     }
-
     $("#delete-confirmation-modal .btn-remove").click(async function () {
         
         $(".check-item:checked").map(async function () {
@@ -153,9 +163,9 @@ $(document).ready(async function () {
     });
 
     async function putRecordStatus(ID) {
-        const PUT_RECORD = HOST + "/api/RoomCategory/" + ID + "/" + false;
+        const PUT_RECORD = HOST + "/api/Room/" + ID + "/" + false;
         var formData = new FormData();
-        formData.append("roomCategoryId", ID);
+        formData.append("rooId", ID);
         formData.append("isDelete", false);
         try {
             const res = await $.ajax({
@@ -198,7 +208,7 @@ $(document).ready(async function () {
     }
 
     async function deleteRecord(ID) {
-        const DELETE_RECORD = HOST + "/api/RoomCategory/" + ID;
+        const DELETE_RECORD = HOST + "/api/Room/" + ID;
         try {
             const res = await $.ajax({
                 url: DELETE_RECORD,
@@ -244,7 +254,7 @@ $(document).ready(async function () {
 
     //PAGINATION HANDLING
 
-    function updatePagination(pagination) {
+    async function updatePagination(pagination) {
         pagination.pageSize = parseInt($(".pageSize-select").val()); //records per view
         pagination.skip = pagination.pageNumber * pagination.pageSize - pagination.pageSize; // skip to move to next 5 recordds
 
@@ -253,7 +263,7 @@ $(document).ready(async function () {
         pagination.recordShow = cateList.slice(pagination.skip, pagination.skip + pagination.pageSize);
         pagination.totalPages = Math.ceil(pagination.recordCount / pagination.pageSize);
 
-        renderListData(pagination.recordShow);
+        await renderListData(pagination.recordShow);
         renderPagination(pagination);
         formatPagination(pagination.pageNumber, pagination.totalPages);
         destroyPaginationEvents();
@@ -321,30 +331,30 @@ $(document).ready(async function () {
 
     function handlePagination() {
         //handling pagination
-        $(".page-number").click(function () {
+        $(".page-number").click(async function () {
             $(".page-number").removeClass("active");
             $(this).addClass("active");
             pagination.pageNumber = $(this).find('a').data('pageNumber');
-            updatePagination(pagination);
+            await updatePagination(pagination);
         });
-        $(".next-page").click(function () {
+        $(".next-page").click(async function () {
             pagination.pageNumber += 1;
             let activePage = $(".active.page-number");
             $(".page-number").removeClass("active");
             activePage.next(".page-number").addClass("active");
-            updatePagination(pagination);
+            await updatePagination(pagination);
         });
-        $(".prev-page").click(function () {
+        $(".prev-page").click(async function () {
             pagination.pageNumber -= 1;
             let activePage = $(".active.page-number");
             $(".page-number").removeClass("active");
             activePage.prev(".page-number").addClass("active");
-            updatePagination(pagination);
+            await updatePagination(pagination);
         });
-        $(".pageSize-select").change(function () {
+        $(".pageSize-select").change(async function () {
             pagination.pageNumber = parseInt("1");
             pagination.pageSize = $(".pageSize-select").val();
-            updatePagination(pagination);
+            await updatePagination(pagination);
 
         });
     }
@@ -364,20 +374,24 @@ $(document).ready(async function () {
             const res = await $.ajax({
                 url: `${BASE_URL}/${field}/${keyWords}`,
                 type: "GET",
+                contentType: "application/json",
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
-                contentType: "application/json",
                 beforeSend: function () {
                     $(".main-content").css("display", "none");
                     $(".loading").css("display", "block");
                 }
             });
             if (res && res.length > 0) {
-                cateList = res;
-                updatePagination(pagination);
-                renderPagination(pagination);
-                renderListData(pagination.recordShow);
+                cateList = [];
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].isDeleted == true) {
+                        cateList.push(res[i]);
+                    }
+                }
+                console.log(cateList)
+                await updatePagination(pagination);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
                 console.log(res);
@@ -397,7 +411,7 @@ $(document).ready(async function () {
         await searchFor(field, keyWords);
     });
 
-    $(".search-box-table").on("keypress keydown", function (event) {
+    $(".search-box-table").on("keypress", function (event) {
         if (event.which === 13) {
             $(".search-btn").click();
         }
@@ -414,6 +428,27 @@ $(document).ready(async function () {
 
     function resetToolBar() {
         $(".search-box-table").val("");
+        $(".filter-select").find(".default").prop("selected", true);
+    }
+
+    //USER
+
+    async function getCate(cateId) {
+        try {
+            const res = await $.ajax({
+                url: HOST + "/api/RoomCategory/" + cateId,
+                type: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            if (res) {
+                return res;
+            }
+            return null;
+        } catch (e) {
+            return null;
+        }
     }
 
 

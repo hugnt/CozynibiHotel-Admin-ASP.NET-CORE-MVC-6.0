@@ -40,7 +40,12 @@ $(document).ready(async function () {
                 }
             });
             if (res && res.length > 0) {
-                cateList = res;
+                cateList = [];
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].isDeleted != true) {
+                        cateList.push(res[i]);
+                    }
+                }
                 await updatePagination(pagination);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
@@ -120,7 +125,7 @@ $(document).ready(async function () {
 								</td>
 								<td class="table-report__action w-56">
 									<div class="flex justify-center items-center">
-										<a class="flex items-center mr-3 btn-edit" style="cursor:pointer;" data-cate-id="${cate.id}" onclick="window.location.href='/Admin/Accommodation/RoomCategory/Edit/${cate.id}';">
+										<a class="flex items-center mr-3 btn-edit" style="cursor:pointer;" data-cate-id="${cate.id}" onclick="window.location.href='/Admin/Accommodation/Room/Edit/${cate.id}';">
 											${lucide.checkSquare} Edit
 										</a>
 										<a class="flex items-center text-danger mr-3 btn-delete" style="cursor:pointer"
@@ -217,9 +222,9 @@ $(document).ready(async function () {
     }
 
     $("#delete-confirmation-modal .btn-remove ").click(async function () {
-        const PUT_RECORD = HOST + "/api/RoomCategory/" + RECORD_ID +"/" +true;
+        const PUT_RECORD = HOST + "/api/Room/" + RECORD_ID +"/" +true;
         var formData = new FormData();
-        formData.append("roomCategoryId", RECORD_ID);
+        formData.append("roomId", RECORD_ID);
         formData.append("isDelete", true);
         try {
             const res = await $.ajax({
@@ -241,6 +246,8 @@ $(document).ready(async function () {
             $(".main-content").css("display", "block");
             const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
             myModalDel.hide();
+
+            await getList();
             Toastify({
                 node: $("#notice-notification-content").clone().removeClass("hidden")[0],
                 duration: 3000,
@@ -251,7 +258,7 @@ $(document).ready(async function () {
                 stopOnFocus: true
             }).showToast();
 
-            await getList();
+            
 
         } catch (e) {
             const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
@@ -400,8 +407,6 @@ $(document).ready(async function () {
     $(".sortby-select").change(async function () {
         sortBy($(this).val());
         await updatePagination(pagination);
-        renderPagination(pagination);
-        await renderListData(pagination.recordShow);
     });
 
     async function searchFor(field, keyWords) {
@@ -419,13 +424,21 @@ $(document).ready(async function () {
                 }
             });
             if (res && res.length > 0) {
-                cateList = res;
+                cateList = [];
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].isDeleted != true) {
+                        cateList.push(res[i])
+                    }
+                }
+                console.log(cateList)
                 await updatePagination(pagination);
-                renderPagination(pagination);
-                await renderListData(pagination.recordShow);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
                 console.log(res);
+            }
+            else {
+                $(".loading").css("display", "none");
+                $(".cantSearch").css("display", "block");
             }
         } catch (e) {
             console.log(e);
@@ -442,7 +455,7 @@ $(document).ready(async function () {
         await searchFor(field, keyWords);
     });
 
-    $(".search-box-table").on("keypress keydown", function (event) {
+    $(".search-box-table").on("keypress", function (event) {
         if (event.which === 13) {
             $(".search-btn").click();
         }

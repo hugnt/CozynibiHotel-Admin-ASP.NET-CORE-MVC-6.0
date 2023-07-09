@@ -7,14 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\foodCategory\foodCategory-index.js" />
+    <Content Remove="wwwroot\js\foodCategory\foodCategory-trash.js" />
+    <Content Remove="wwwroot\js\food\food-index.js" />
+    <Content Remove="wwwroot\js\food\food-trash.js" />
     <Content Remove="wwwroot\js\room\room-index.js" />
     <Content Remove="wwwroot\js\room\room-trash.js" />
     <Content Remove="wwwroot\js\roomCategory\roomCategory-trash.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\foodCategory\foodCategory-index.js" />
+    <None Include="wwwroot\js\foodCategory\foodCategory-trash.js" />
     <None Include="wwwroot\js\room\room-index.js" />
     <None Include="wwwroot\js\room\room-trash.js" />
+    <None Include="wwwroot\js\food\food-index.js" />
+    <None Include="wwwroot\js\food\food-trash.js" />
     <None Include="wwwroot\js\roomCategory\roomCategory-trash.js" />
     <None Include="wwwroot\js\roomCategory\roomCategory-index.js" />
   </ItemGroup>
