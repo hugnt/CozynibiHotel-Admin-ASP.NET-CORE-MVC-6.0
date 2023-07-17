@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Food";
+	ViewData["Title"] = "Trash";
 
 	var boxNotice = new BoxModalViewModel()
 			{
@@ -49,10 +49,9 @@
 							<input class="form-check-input check-all" type="checkbox">
 						</th>
 						<th class="whitespace-nowrap">ID</th>
-						<th class="whitespace-nowrap">FOOD NAME</th>
+						<th class="whitespace-nowrap">SERVICE NAME</th>
 						<th class="text-center whitespace-nowrap">IMAGE</th>
-						<th class="text-center whitespace-nowrap">PRICE</th>
-						<th class="text-center whitespace-nowrap">RATE</th>
+						<th class="text-center whitespace-nowrap">ICON</th>
 						<th class="text-center whitespace-nowrap">ACTIONS</th>
 					</tr>
 				</thead>
@@ -127,11 +126,9 @@
 
 @section Scripts{
 <script>
-	$('.side-MENU').addClass("side-menu--active");
-	$('.side-food').addClass("side-menu--active");
-	$('.side-food-trash').addClass("side-menu--active");
-	$('.side-MENU-wrapper').addClass("side-menu__sub-open");
-	$('.side-food-wrapper').addClass("side-menu__sub-open");
+	$('.side-service').addClass("side-menu--active");
+	$('.side-service-trash').addClass("side-menu--active");
+	$('.side-service-wrapper').addClass("side-menu__sub-open");
 </script>
-<script src="~/js/food/food-trash.js" type="module"></script>
+<script src="~/js/service/service-trash.js" type="module"></script>
 }

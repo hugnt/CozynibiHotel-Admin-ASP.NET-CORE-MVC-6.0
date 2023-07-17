@@ -1,0 +1,289 @@
+﻿@{
+	ViewData["Title"] = "Tour Travel";
+
+	var boxNotice = new BoxModalViewModel()
+	{
+		Id = "notice-notification-content",
+		Title = "Record moved to trash!",
+		Text = "Remove the item successfully",
+		Icon = "trash-2",
+		IconColor = "text-success"
+	};
+}
+<style>
+	#description{
+		--tw-bg-opacity: 1;
+		background-color: rgb(var(--color-slate-100) / var(--tw-bg-opacity));
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		/* background-color: #fff; */
+		/* border-color: #6b7280; */
+		border-width: 1px;
+		/* border-radius: 0px; */
+		padding-top: 0.5rem;
+		padding-right: 0.75rem;
+		padding-bottom: 0.5rem;
+		padding-left: 0.75rem;
+		font-size: 1rem;
+		line-height: 1.5rem;
+		--tw-shadow: 0 0 #0000;
+		min-height:3rem;
+	}
+</style>
+
+@await Component.InvokeAsync("Loading")
+@await Component.InvokeAsync("CanNotSearch")
+<div class="content main-content" style="display:none;">
+	<h2 class="intro-y text-lg font-medium mt-10">
+		Tour Travel List
+	</h2>
+	<div class="grid grid-cols-12 gap-6 mt-5">
+		<div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+			<button class="btn btn-primary shadow-md mr-2" onclick="window.location.href = '/Admin/TourTravel/AddNew'">Add New Trip</button>
+			<div class="dropdown">
+				<button class="dropdown-toggle btn px-2 box" aria-expanded="false"
+						data-tw-toggle="dropdown">
+					<span class="w-5 h-5 flex items-center justify-center">
+						<i class="w-4 h-4"
+						   data-lucide="plus"></i>
+					</span>
+				</button>
+				<div class="dropdown-menu w-40">
+					<ul class="dropdown-content">
+						<li>
+							<a href="#" class="dropdown-item">
+								<i data-lucide="printer"
+								   class="w-4 h-4 mr-2"></i> Print
+							</a>
+						</li>
+						<li>
+							<a href="#" class="dropdown-item">
+								<i data-lucide="file-text"
+								   class="w-4 h-4 mr-2"></i> Export to Excel
+							</a>
+						</li>
+						<li>
+							<a href="#" class="dropdown-item">
+								<i data-lucide="file-text"
+								   class="w-4 h-4 mr-2"></i> Export to PDF
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="showing-page-title hidden md:block mx-auto text-slate-500">Showing 1 to 10 of 150 entries</div>
+			<div class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
+				<div class="w-56 relative text-slate-500">
+					<input type="text" class="form-control w-56 box pr-10 search-box-table" placeholder="Search...">
+					<i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0 search-btn" data-lucide="search"></i>
+				</div>
+				<select class="filter-select w-56 xl:w-auto form-select box ml-2">
+					<option value="name" disabled selected class="default">Filter by</option>
+					<option value="name">All</option>
+					<option value="isActive">Status</option>
+					<option value="name">Name</option>
+					<option value="id">Id</option>
+				</select>
+				<select class="sortby-select w-56 xl:w-auto form-select box ml-2">
+					<option disabled selected class="default">Sort by</option>
+					<option value="isActive">Status</option>
+					<option value="name">Name</option>
+					<option value="id">Id</option>
+				</select>
+			</div>
+		</div>
+		<!-- BEGIN: Data List -->
+		<div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
+			<table class="table table-report -mt-2">
+				<thead>
+					<tr>
+						<th class="whitespace-nowrap">ID</th>
+						<th class="whitespace-nowrap">TRIP NAME</th>
+						<th class="text-center whitespace-nowrap">IMAGES</th>
+						<th class="text-center whitespace-nowrap">STATUS</th>
+						<th class="text-center whitespace-nowrap">ACTIONS</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- END: Data API -->
+				</tbody>
+			</table>
+		</div>
+		<!-- END: Data List -->
+		<!-- BEGIN: Pagination -->
+		<div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+			<nav class="w-full sm:w-auto sm:mr-auto">
+				<ul class="pagination">
+					<li class="page-item prev-page">
+						<a class="page-link">
+							<i class="w-4 h-4" data-lucide="chevron-left"></i>
+						</a>
+					</li>
+					<li class="page-item more-page-before" style="display:none;"> <a class="page-link">...</a> </li>
+					<li class="page-item more-page-after" style="display:none;"> <a class="page-link">...</a> </li>
+					<li class="page-item next-page">
+						<a class="page-link">
+							<i class="w-4 h-4" data-lucide="chevron-right"></i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+			<select class="pageSize-select w-20 form-select box mt-3 sm:mt-0">
+				<option value="10">10</option>
+				<option value="25">25</option>
+				<option value="35">35</option>
+				<option value="50">50</option>
+				<option value="1">1</option>
+			</select>
+		</div>
+		<!-- END: Pagination -->
+	</div>
+	<!-- BEGIN: Delete Confirmation Modal -->
+	<div id="delete-confirmation-modal" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body p-0">
+					<div class="p-5 text-center">
+						<i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+						<div class="text-3xl mt-5">Are you sure?</div>
+						<div class="text-slate-500 mt-2">
+							Do you really want to delete these records?
+							<br>
+							This process cannot be undone.
+						</div>
+					</div>
+					<div class="px-5 pb-8 text-center">
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-secondary w-24 mr-1">
+							Cancel 
+						</button>
+						<button type="button" class="btn btn-danger w-24 btn-remove">Delete</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END: Delete Confirmation Modal -->
+	<!-- BEGIN: Modal Details Content -->
+	<div id="modal-details" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<!-- BEGIN: Modal Header -->
+				<div class="modal-header">
+					<h2 class="font-medium text-base mr-auto">Details</h2> <button class="btn btn-outline-secondary hidden sm:flex">
+						<i data-lucide="file"
+						   class="w-4 h-4 mr-2"></i> Download Information
+					</button>
+					<div class="dropdown sm:hidden">
+						<a class="dropdown-toggle w-5 h-5 block"
+						   href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown">
+							<i data-lucide="more-horizontal" class="w-5 h-5 text-slate-500"></i>
+						</a>
+						<div class="dropdown-menu w-40">
+							<ul class="dropdown-content">
+								<li>
+									<a href="javascript:;" class="dropdown-item">
+										<i data-lucide="file"
+										   class="w-4 h-4 mr-2"></i> Download Information
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- END: Modal Header -->
+				<!-- BEGIN: Modal Body -->
+				<div class="modal-body grid grid-cols-12 gap-2 gap-y-3">
+					<div class="mx-6 col-span-12 sm:col-span-12">
+						<div class="multiple-items">
+							<!-- RENDER: Image -->
+						</div>
+					</div>
+					<div class="col-span-2 sm:col-span-2">
+						<label for="id" class="form-label">ID</label>
+						<input id="id" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-8 sm:col-span-10">
+						<label for="name" class="form-label">Trip Name</label>
+						<input id="name" type="text" class="form-control"
+							   disabled>
+					</div>
+					<div class="col-span-2 sm:col-span-2">
+						<label for="status" class="form-label">Status</label>
+						<input id="status" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="address" class="form-label">Address</label>
+						<input id="address" type="text" class="form-control"
+							   disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="prices" class="form-label">Prices</label>
+						<textarea id="prices" class="form-control" rows="3" disabled>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						</textarea>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="schedules" class="form-label">Schedules</label>
+						<textarea id="schedules" class="form-control" rows="3" disabled>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						</textarea>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="inclusions" class="form-label">Inclusions</label>
+						<textarea id="inclusions" class="form-control" rows="3" disabled>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						</textarea>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="exclusions" class="form-label">Exclusions</label>
+						<textarea id="exclusions" class="form-control" rows="3" disabled>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						</textarea>
+					</div>
+					<div class="col-span-3 sm:col-span-6">
+						<label for="createdAt" class="form-label">Created At</label>
+						<input id="createdAt" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-6">
+						<label for="createdBy" class="form-label">Created By</label>
+						<input id="createdBy" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-6">
+						<label for="updatedAt" class="form-label">Updated At</label>
+						<input id="updatedAt" type="text" class="form-control"
+							   disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-6">
+						<label for="updatedBy" class="form-label">Updated By</label>
+						<input id="updatedBy" type="text" class="form-control" disabled>
+					</div>
+				</div>
+				<!-- END: Modal Body -->
+				<!-- BEGIN: Modal Footer -->
+				<div class="modal-footer">
+					<button type="button" data-tw-dismiss="modal"
+							class="btn btn-outline-secondary w-20 mr-1">
+						Close
+					</button>
+				</div>
+				<!-- END: Modal Footer -->
+			</div>
+		</div>
+	</div>
+	<!-- END: Modal Details Content -->
+
+	<!-- BEGIN: Modal Notice Content -->
+	@await Component.InvokeAsync("NoticeModal", boxNotice)
+	<!-- END: Modal Notice Content -->
+
+		<!-- BEGIN: Modal Content -->
+	@await Component.InvokeAsync("WarningModal")
+	<!-- END: Modal Content -->
+</div>
+
+@section Scripts{
+	<script>
+		$('.side-tourTravel').addClass("side-menu--active");
+		$('.side-tourTravel-list').addClass("side-menu--active");
+		$('.side-tourTravel-wrapper').addClass("side-menu__sub-open");
+	</script>
+	<script src="~/js/tourTravel/tourTravel-index.js" type="module"></script>
+}

@@ -7,18 +7,46 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\article\article-index.js" />
+    <Content Remove="wwwroot\js\article\article-trash.js" />
+    <Content Remove="wwwroot\js\custommer\custommer-index.js" />
+    <Content Remove="wwwroot\js\custommer\custommer-trash.js" />
     <Content Remove="wwwroot\js\foodCategory\foodCategory-index.js" />
     <Content Remove="wwwroot\js\foodCategory\foodCategory-trash.js" />
     <Content Remove="wwwroot\js\food\food-index.js" />
     <Content Remove="wwwroot\js\food\food-trash.js" />
+    <Content Remove="wwwroot\js\newsCategory\newsCategory-index.js" />
+    <Content Remove="wwwroot\js\newsCategory\newsCategory-trash.js" />
+    <Content Remove="wwwroot\js\news\news-index.js" />
+    <Content Remove="wwwroot\js\news\news-trash.js" />
+    <Content Remove="wwwroot\js\page\page-index.js" />
+    <Content Remove="wwwroot\js\page\page-trash.js" />
     <Content Remove="wwwroot\js\room\room-index.js" />
     <Content Remove="wwwroot\js\room\room-trash.js" />
     <Content Remove="wwwroot\js\roomCategory\roomCategory-trash.js" />
+    <Content Remove="wwwroot\js\service\service-index.js" />
+    <Content Remove="wwwroot\js\service\service-trash.js" />
+    <Content Remove="wwwroot\js\tourTravel\tourTravel-index.js" />
+    <Content Remove="wwwroot\js\tourTravel\tourTravel-trash.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\article\article-index.js" />
+    <None Include="wwwroot\js\article\article-trash.js" />
+    <None Include="wwwroot\js\custommer\custommer-index.js" />
+    <None Include="wwwroot\js\custommer\custommer-trash.js" />
+    <None Include="wwwroot\js\news\news-index.js" />
+    <None Include="wwwroot\js\news\news-trash.js" />
+    <None Include="wwwroot\js\newsCategory\newsCategory-index.js" />
+    <None Include="wwwroot\js\newsCategory\newsCategory-trash.js" />
+    <None Include="wwwroot\js\page\page-index.js" />
+    <None Include="wwwroot\js\page\page-trash.js" />
+    <None Include="wwwroot\js\service\service-index.js" />
+    <None Include="wwwroot\js\service\service-trash.js" />
     <None Include="wwwroot\js\foodCategory\foodCategory-index.js" />
     <None Include="wwwroot\js\foodCategory\foodCategory-trash.js" />
+    <None Include="wwwroot\js\tourTravel\tourTravel-index.js" />
+    <None Include="wwwroot\js\tourTravel\tourTravel-trash.js" />
     <None Include="wwwroot\js\room\room-index.js" />
     <None Include="wwwroot\js\room\room-trash.js" />
     <None Include="wwwroot\js\food\food-index.js" />

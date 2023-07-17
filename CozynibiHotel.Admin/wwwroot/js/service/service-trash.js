@@ -3,7 +3,7 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/FoodCategory";
+    var BASE_URL = HOST + "/api/Service";
     var CATEGORY_IMG_SRC = GET_IMAGE_URL + "menu"
     var cateList = [];
     var RECORD_ID = 0;
@@ -62,6 +62,7 @@ $(document).ready(async function () {
             let cate = res[i];
             if (cate.isDeleted == false) continue;
             let imgHtml = "";
+            let iconHtml = "";
             console.log(cate)
 
             //IMAGE
@@ -70,11 +71,30 @@ $(document).ready(async function () {
             imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
 							<img alt="img" class="tooltip rounded-full"
 							src="${imgString}" title="img">
-						</div>`
+						</div>`;
 
+            let iconString = `${CATEGORY_IMG_SRC}/${cate.icon}`;
 
+            iconHtml += `<div class="w-10 h-10 image-fit zoom-in">
+							<img alt="img" class="tooltip rounded-full"
+							src="${iconString}" title="img">
+						</div>`;
 
-           
+            let status = "";
+            if (cate.isActive) {
+                status = `
+							<div class="flex items-center justify-center text-success">
+								${lucide.checkSquare} Active
+							</div>
+						`;
+            }
+            else {
+                status = `
+							<div class="flex items-center justify-center text-danger">
+								${lucide.checkSquare} Inactive
+							</div>
+						`;
+            }
             let html = `
 							<tr class="intro-x">
                                 <td class="w-10">
@@ -92,7 +112,14 @@ $(document).ready(async function () {
                 `
 									</div>
 								</td>
-								<td class="text-center">${cate.foodRate ? cate.foodRate : 0}/5</td>
+                                <td class="w-40">
+									<div class="flex justify-center">`
+                +
+                iconHtml
+                +
+                `
+									</div>
+								</td>
 								<td class="table-report__action w-56">
 							        <div class="flex justify-center items-center">
 								        <a class="flex items-center mr-3 text-danger btn-delete" data-id="${cate.id}" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal">
@@ -150,9 +177,9 @@ $(document).ready(async function () {
     });
 
     async function putRecordStatus(ID) {
-        const PUT_RECORD = HOST + "/api/FoodCategory/" + ID + "/" + false;
+        const PUT_RECORD = HOST + "/api/Service/" + ID + "/" + false;
         var formData = new FormData();
-        formData.append("foodCategoryId", ID);
+        formData.append("serviceId", ID);
         formData.append("isDelete", false);
         try {
             const res = await $.ajax({
@@ -195,7 +222,7 @@ $(document).ready(async function () {
     }
 
     async function deleteRecord(ID) {
-        const DELETE_RECORD = HOST + "/api/FoodCategory/" + ID;
+        const DELETE_RECORD = HOST + "/api/Service/" + ID;
         try {
             const res = await $.ajax({
                 url: DELETE_RECORD,

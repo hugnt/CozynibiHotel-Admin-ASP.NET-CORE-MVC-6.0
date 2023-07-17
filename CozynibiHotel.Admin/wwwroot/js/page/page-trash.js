@@ -3,8 +3,8 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/FoodCategory";
-    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "menu"
+    var BASE_URL = HOST + "/api/Page";
+    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "banner"
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
@@ -62,25 +62,30 @@ $(document).ready(async function () {
             let cate = res[i];
             if (cate.isDeleted == false) continue;
             let imgHtml = "";
-            console.log(cate)
+            for (let j = 0; j < cate.images.length; j++) {
+                let img = cate.images[j];
+                let imgString = `${CATEGORY_IMG_SRC}/${img}`;
+                if (j == 0) {
+                    imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
+									<img alt="img" class="tooltip rounded-full"
+									src="${imgString}" title="img">
+								</div>`
+                }
+                else {
+                    imgHtml += `<div class="w-10 h-10 image-fit zoom-in -ml-5">
+									<img alt="img" class="tooltip rounded-full"
+									src="${imgString}" title="img">
+								</div>`
+                }
 
-            //IMAGE
-            let imgString = `${CATEGORY_IMG_SRC}/${cate.image}`;
-
-            imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
-							<img alt="img" class="tooltip rounded-full"
-							src="${imgString}" title="img">
-						</div>`
-
-
-
-           
+            }
+            let status = "";
             let html = `
 							<tr class="intro-x">
                                 <td class="w-10">
 							        <input class="form-check-input check-item checkBox-${cate.id}" data-id="${cate.id}" type="checkbox">
 						        </td>
-								<td class="w-10">FC${cate.id}</td>
+								<td class="w-10">RC${cate.id}</td>
 								<td>
 									<a href="#" class="font-medium whitespace-nowrap" style="text-transform:capitalize">${cate.name}</a>
 								</td>
@@ -90,9 +95,9 @@ $(document).ready(async function () {
                 imgHtml
                 +
                 `
-									</div>
+							        </div>
 								</td>
-								<td class="text-center">${cate.foodRate ? cate.foodRate : 0}/5</td>
+								<td class="text-center">${cate.url ? cate.url : ""}</td>
 								<td class="table-report__action w-56">
 							        <div class="flex justify-center items-center">
 								        <a class="flex items-center mr-3 text-danger btn-delete" data-id="${cate.id}" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal">
@@ -110,12 +115,12 @@ $(document).ready(async function () {
 
         $(".check-all").change(function () {
             $(".check-item").prop("checked", $(this).is(':checked'));
-
+           
         });
 
         $(".btn-delete").click(function () {
             $(`.checkBox-${$(this).data("id")}`).prop("checked", true);
-
+            
         });
 
         $(".btn-restore").click(async function () {
@@ -125,7 +130,7 @@ $(document).ready(async function () {
     }
 
     $("#delete-confirmation-modal .btn-remove").click(async function () {
-
+        
         $(".check-item:checked").map(async function () {
             await deleteRecord($(this).data("id"));
         });
@@ -150,9 +155,9 @@ $(document).ready(async function () {
     });
 
     async function putRecordStatus(ID) {
-        const PUT_RECORD = HOST + "/api/FoodCategory/" + ID + "/" + false;
+        const PUT_RECORD = HOST + "/api/Page/" + ID + "/" + false;
         var formData = new FormData();
-        formData.append("foodCategoryId", ID);
+        formData.append("roomCategoryId", ID);
         formData.append("isDelete", false);
         try {
             const res = await $.ajax({
@@ -195,7 +200,7 @@ $(document).ready(async function () {
     }
 
     async function deleteRecord(ID) {
-        const DELETE_RECORD = HOST + "/api/FoodCategory/" + ID;
+        const DELETE_RECORD = HOST + "/api/Page/" + ID;
         try {
             const res = await $.ajax({
                 url: DELETE_RECORD,
@@ -381,10 +386,6 @@ $(document).ready(async function () {
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
                 console.log(res);
-            }
-            else {
-                $(".loading").css("display", "none");
-                $(".cantSearch").css("display", "block");
             }
         } catch (e) {
             console.log(e);

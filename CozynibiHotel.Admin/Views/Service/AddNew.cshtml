@@ -1,0 +1,270 @@
+﻿ @{
+	ViewData["Title"] = "Add Service";
+
+	var boxSuccess = new BoxModalViewModel()
+	{
+		Title = "Added successfully",
+		Text = "Continue to add a new one or go to the list",
+		LstButton = new List<Button>()
+		{
+			new Button("Go to list", "btn-primary", "window.location.href='/Admin/Service';"),
+			new Button("Add new", "btn-primary", "window.location.reload();"),
+		}
+		
+	};
+}
+
+
+<style>
+	#equipment-select-ts-control {
+		min-height: 2.4rem !important;
+	}
+
+</style>
+<!-- BEGIN: Content -->
+@await Component.InvokeAsync("Loading")
+<div class="content main-content" style="display:none;">
+	<div class="intro-y flex items-center mt-8">
+		<h2 class="text-lg font-medium mr-auto">
+			Add Service
+		</h2>
+	</div>
+	<div class="grid grid-cols-11 gap-x-6 mt-5 pb-20">
+		<div class="intro-y col-span-11 2xl:col-span-9 validate-form">
+			<!-- BEGIN: Upload Product -->
+			<div class="intro-y box p-5" id="section1">
+				<div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+					<div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
+						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Upload Service Images
+					</div>
+					<div class="mt-5">
+						<div class="flex items-center text-slate-500">
+							<span><i data-lucide="lightbulb" class="w-5 h-5 text-warning"></i></span>
+							<div class="ml-2">
+								<span class="mr-1">
+
+									Avoid selling counterfeit categories /
+									violating Intellectual Property Rights, so that your categories are not
+									deleted.
+
+								</span> <a href="https://themeforest.net/item/midone-jquery-tailwindcss-html-admin-template/26366820"
+								   class="text-primary font-medium" target="blank">Learn More</a>
+							</div>
+						</div>
+						<div class="form-inline items-start flex-col xl:flex-row mt-10">
+							<div class="form-label w-full xl:w-64 xl:!mr-10">
+								<div class="text-left">
+									<div class="flex items-center">
+										<div class="font-medium">Service Photos</div>
+										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
+											Required
+
+										</div>
+									</div>
+									<div class="leading-relaxed text-slate-500 text-xs mt-3">
+										<div>
+
+											The image format is .jpg .jpeg .png and a minimum size of 300 x
+											300 pixels (For optimal images use a minimum size of 700 x 700
+											pixels).
+
+										</div>
+										<div class="mt-2">
+
+											Select product photos or drag and drop up to 5
+											photos at once here. Include min. 3 attractive photos to make
+											the product more attractive to buyers.
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="w-full mt-3 xl:mt-0 flex-1 border-2 border-dashed dark:border-darkmode-400 rounded-md pt-4 pb-4">
+								<div class="grid grid-cols-10 gap-5 pl-4 pr-5 img-show">
+									<!-- RENDER: IMAGE  UPLOAD -->
+
+								</div>
+								<div class="px-4 pb-4 mt-5 flex items-center justify-center cursor-pointer relative">
+									<i data-lucide="image" class="w-4 h-4 mr-2"></i> <span class="text-primary mr-1">Upload files</span> or drag and drop
+									<input id="horizontal-form-1" type="file"
+										   class="w-full h-full top-0 left-0 absolute opacity-0 upload-img">
+								</div>
+							</div>
+						</div>
+						<div class="form-inline items-start flex-col xl:flex-row mt-10">
+							<div class="form-label w-full xl:w-64 xl:!mr-10">
+								<div class="text-left">
+									<div class="flex items-center">
+										<div class="font-medium">Service Icon</div>
+										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
+											Required
+
+										</div>
+									</div>
+									<div class="leading-relaxed text-slate-500 text-xs mt-3">
+										<div>
+
+											The icon format is .jpg .jpeg .png and a minimum size of 300 x
+											300 pixels (For optimal images use a minimum size of 700 x 700
+											pixels).
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="w-full mt-3 xl:mt-0 flex-1 border-2 border-dashed dark:border-darkmode-400 rounded-md pt-4 pb-4">
+								<div class="grid grid-cols-10 gap-5 pl-4 pr-5 icon-show">
+									<!-- RENDER: IMAGE  UPLOAD -->
+
+								</div>
+								<div class="px-4 pb-4 mt-5 flex items-center justify-center cursor-pointer relative">
+									<i data-lucide="image" class="w-4 h-4 mr-2"></i> <span class="text-primary mr-1">Upload files</span> or drag and drop
+									<input id="horizontal-form-1" type="file"
+										   class="w-full h-full top-0 left-0 absolute opacity-0 upload-icon">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END: Upload Product -->
+			<!-- BEGIN: Product Information -->
+			<div class="intro-y box p-5 mt-5"  id="section2">
+				<div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+					<div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
+						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Service Information
+					</div>
+					<div class="mt-5">
+						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
+							<div class="form-label xl:w-64 xl:!mr-10">
+								<div class="text-left">
+									<div class="flex items-center">
+										<div class="font-medium">Service Name</div>
+										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
+											Required
+										</div>
+									</div>
+									<div class="leading-relaxed text-slate-500 text-xs mt-3">
+										Include min.
+										5 characters to make it more attractive and easy for buyers to
+										find, consisting of category type, brand, and information such as
+										color, material, or type.
+									</div>
+								</div>
+							</div>
+							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
+								<input id="record-name" type="text" class="form-control"
+									   placeholder="Service name" minlength="5" required>
+								<div class="form-help text-right">Maximum character 30</div>
+							</div>
+						</div>
+		
+						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
+							<div class="form-label xl:w-64 xl:!mr-10">
+								<div class="text-left">
+									<div class="flex items-center">
+										<div class="font-medium">Service Description</div>
+									</div>
+									<div class="leading-relaxed text-slate-500 text-xs mt-3">
+										<div>
+											Make sure the category description provides a detailed
+											explanation of your category so that it is easy to understand and
+											find your category.
+										</div>
+										<div class="mt-2">
+											It is recommended not to enter info on mobile
+											numbers, e-mails, etc. into the category description to protect
+											your personal data.
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="w-full mt-3 xl:mt-0 flex-1">
+								<div id="editor">
+									<p></p>
+								</div>
+								<div class="form-help text-right">Maximum character 0/2000</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!-- END: Product Information -->
+			<div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
+				<button type="button" onclick = "window.location.href='/Admin/Service';"
+						class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">
+
+					Cancel
+
+				</button>
+				<button type="button" onclick ="window.location.reload()"
+						class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">
+
+					Reset
+
+				</button>
+				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-addnew">Save & Add New Service</button>
+			</div>
+		</div>
+		<div class="intro-y col-span-2 hidden 2xl:block">
+			<div class="pt-10 sticky top-0">
+				<ul class="text-slate-500 relative before:content-[''] before:w-[2px] before:bg-slate-200 before:dark:bg-darkmode-600 before:h-full before:absolute before:left-0 before:z-[-1]">
+					<li class="mb-4 border-l-2 pl-5 border-primary dark:border-primary text-primary font-medium section-preview">
+						<a href="#section1">Upload Service Images</a>
+					</li>
+					<li class="mb-4 border-l-2 pl-5 border-transparent dark:border-transparent section-preview">
+						<a href="#section2">Service Information</a>
+					</li>
+				</ul>
+				<div class="mt-10 bg-warning/20 dark:bg-darkmode-600 border border-warning dark:border-0 rounded-md relative p-5">
+					<i data-lucide="lightbulb"
+					   class="w-12 h-12 text-warning/80 absolute top-0 right-0 mt-5 mr-3"></i>
+					<h2 class="text-lg font-medium">
+						Tips
+					</h2>
+					<div class="mt-5 font-medium">Service</div>
+					<div class="leading-relaxed text-xs mt-2 text-slate-600 dark:text-slate-500">
+						<div>
+
+							The image format is .jpg .jpeg .png and a minimum size of 300 x 300 pixels (For
+							optimal images use a minimum size of 700 x 700 pixels).
+
+						</div>
+						<div class="mt-2">
+
+							Select photos or drag and drop up to 5 photos at once
+							here. Include min. 3 attractive photos to make them more attractive to
+							buyers.
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- BEGIN: Failed Notification Content -->
+	@await Component.InvokeAsync("FailedModal")
+	<!-- END: Failed Notification Content -->
+
+	<!-- BEGIN: Modal Content -->
+	@await Component.InvokeAsync("WarningModal")
+	<!-- END: Modal Content -->
+
+	<!-- BEGIN: Modal Success Content -->
+	@await Component.InvokeAsync("SuccessModal", boxSuccess)
+	<!-- END: Modal Success Content -->
+</div>
+
+<!-- END: Content -->
+@section Scripts{
+	<script>
+		$('.side-service').addClass("side-menu--active");
+		$('.side-service-add').addClass("side-menu--active");
+		$('.side-service-wrapper').addClass("side-menu__sub-open");
+	</script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
+	<script src="~/js/service/service-addNew.js" type="module"></script>
+
+}

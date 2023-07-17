@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Food";
+	ViewData["Title"] = "Custommer";
 
 	var boxNotice = new BoxModalViewModel()
 			{
@@ -49,10 +49,11 @@
 							<input class="form-check-input check-all" type="checkbox">
 						</th>
 						<th class="whitespace-nowrap">ID</th>
-						<th class="whitespace-nowrap">FOOD NAME</th>
-						<th class="text-center whitespace-nowrap">IMAGE</th>
-						<th class="text-center whitespace-nowrap">PRICE</th>
-						<th class="text-center whitespace-nowrap">RATE</th>
+						<th class="whitespace-nowrap">CUSTOMMER NAME</th>
+						<th class="text-center whitespace-nowrap">AVATAR</th>
+						<th class="text-center whitespace-nowrap">PHONE NUMBER</th>
+						<th class="text-center whitespace-nowrap">EMAIL</th>
+						<th class="text-center whitespace-nowrap">COUNTRY</th>
 						<th class="text-center whitespace-nowrap">ACTIONS</th>
 					</tr>
 				</thead>
@@ -127,11 +128,9 @@
 
 @section Scripts{
 <script>
-	$('.side-MENU').addClass("side-menu--active");
-	$('.side-food').addClass("side-menu--active");
-	$('.side-food-trash').addClass("side-menu--active");
-	$('.side-MENU-wrapper').addClass("side-menu__sub-open");
-	$('.side-food-wrapper').addClass("side-menu__sub-open");
+	$('.side-custommer').addClass("side-menu--active");
+	$('.side-custommer-trash').addClass("side-menu--active");
+	$('.side-custommer-wrapper').addClass("side-menu__sub-open");
 </script>
-<script src="~/js/food/food-trash.js" type="module"></script>
+<script src="~/js/custommer/custommer-trash.js" type="module"></script>
 }

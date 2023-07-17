@@ -3,8 +3,8 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/FoodCategory";
-    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "menu"
+    var BASE_URL = HOST + "/api/NewsCategory";
+    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "news"
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
@@ -92,7 +92,6 @@ $(document).ready(async function () {
                 `
 									</div>
 								</td>
-								<td class="text-center">${cate.foodRate ? cate.foodRate : 0}/5</td>
 								<td class="table-report__action w-56">
 							        <div class="flex justify-center items-center">
 								        <a class="flex items-center mr-3 text-danger btn-delete" data-id="${cate.id}" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal">
@@ -150,9 +149,9 @@ $(document).ready(async function () {
     });
 
     async function putRecordStatus(ID) {
-        const PUT_RECORD = HOST + "/api/FoodCategory/" + ID + "/" + false;
+        const PUT_RECORD = HOST + "/api/NewsCategory/" + ID + "/" + false;
         var formData = new FormData();
-        formData.append("foodCategoryId", ID);
+        formData.append("newsCategoryId", ID);
         formData.append("isDelete", false);
         try {
             const res = await $.ajax({
@@ -195,7 +194,7 @@ $(document).ready(async function () {
     }
 
     async function deleteRecord(ID) {
-        const DELETE_RECORD = HOST + "/api/FoodCategory/" + ID;
+        const DELETE_RECORD = HOST + "/api/NewsCategory/" + ID;
         try {
             const res = await $.ajax({
                 url: DELETE_RECORD,

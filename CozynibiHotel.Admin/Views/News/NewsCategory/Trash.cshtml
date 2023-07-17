@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Food";
+	ViewData["Title"] = "News Category";
 
 	var boxNotice = new BoxModalViewModel()
 			{
@@ -49,10 +49,8 @@
 							<input class="form-check-input check-all" type="checkbox">
 						</th>
 						<th class="whitespace-nowrap">ID</th>
-						<th class="whitespace-nowrap">FOOD NAME</th>
+						<th class="whitespace-nowrap">CATEGORY NAME</th>
 						<th class="text-center whitespace-nowrap">IMAGE</th>
-						<th class="text-center whitespace-nowrap">PRICE</th>
-						<th class="text-center whitespace-nowrap">RATE</th>
 						<th class="text-center whitespace-nowrap">ACTIONS</th>
 					</tr>
 				</thead>
@@ -127,11 +125,11 @@
 
 @section Scripts{
 <script>
-	$('.side-MENU').addClass("side-menu--active");
-	$('.side-food').addClass("side-menu--active");
-	$('.side-food-trash').addClass("side-menu--active");
-	$('.side-MENU-wrapper').addClass("side-menu__sub-open");
-	$('.side-food-wrapper').addClass("side-menu__sub-open");
+	$('.side-news').addClass("side-menu--active");
+	$('.side-newsCategory').addClass("side-menu--active");
+	$('.side-newsCategory-trash').addClass("side-menu--active");
+	$('.side-news-wrapper').addClass("side-menu__sub-open");
+	$('.side-newsCategory-wrapper').addClass("side-menu__sub-open");
 </script>
-<script src="~/js/food/food-trash.js" type="module"></script>
+<script src="~/js/newsCategory/newsCategory-trash.js" type="module"></script>
 }
