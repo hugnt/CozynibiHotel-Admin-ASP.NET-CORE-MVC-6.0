@@ -3,8 +3,7 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/Custommer";
-    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "custommer"
+    var BASE_URL = HOST + "/api/Booking";
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
@@ -60,40 +59,19 @@ $(document).ready(async function () {
         for (let i = 0; i < res.length; i++) {
             let cate = res[i];
             if (cate.isDeleted == false) continue;
-            let imgHtml = "";
-
-            var room = "";
-            if (cate.roomId) {
-                room = await getRoom(cate.roomId);
-            }
-
-            let imgString = `${CATEGORY_IMG_SRC}/${cate.image}`;
-
-            imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
-							<img alt="img" class="tooltip rounded-full"
-							src="${imgString}" title="img">
-						</div>`
+         
             let html = `
 							<tr class="intro-x">
                                 <td class="w-10">
 							        <input class="form-check-input check-item checkBox-${cate.id}" data-id="${cate.id}" type="checkbox">
 						        </td>
-								<td class="w-10">R${cate.id}</td>
+								<td class="w-10">B${cate.id}</td>
 								<td>
 									<a href="#" class="font-medium whitespace-nowrap" style="text-transform:capitalize">${cate.fullName}</a>
-                                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5" style="text-transform: capitalize">${room.name ? room.name : ""}</div>
 								</td>
-								<td class="w-40">
-									<div class="flex justify-center">`
-                +
-                imgHtml
-                +
-                `
-									</div>
-								</td>
-								<td class="text-center">${cate.phoneNumber ? cate.phoneNumber : ""}</td>
 								<td class="text-center">${cate.email ? cate.email : ""}</td>
-                                <td class="text-center">${cate.country ? cate.country : ""}</td>
+                                <td class="text-center">${cate.checkIn ? cate.checkIn : ""}</td>
+                                <td class="text-center">${cate.checkOut ? cate.checkOut : ""}</td>
 								<td class="table-report__action w-56">
 							        <div class="flex justify-center items-center">
 								        <a class="flex items-center mr-3 text-danger btn-delete" data-id="${cate.id}" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal">
@@ -150,9 +128,9 @@ $(document).ready(async function () {
     });
 
     async function putRecordStatus(ID) {
-        const PUT_RECORD = HOST + "/api/Custommer/" + ID + "/" + false;
+        const PUT_RECORD = HOST + "/api/Booking/" + ID + "/" + false;
         var formData = new FormData();
-        formData.append("custommerId", ID);
+        formData.append("bookingId", ID);
         formData.append("isDelete", false);
         try {
             const res = await $.ajax({
@@ -195,7 +173,7 @@ $(document).ready(async function () {
     }
 
     async function deleteRecord(ID) {
-        const DELETE_RECORD = HOST + "/api/Custommer/" + ID;
+        const DELETE_RECORD = HOST + "/api/Booking/" + ID;
         try {
             const res = await $.ajax({
                 url: DELETE_RECORD,

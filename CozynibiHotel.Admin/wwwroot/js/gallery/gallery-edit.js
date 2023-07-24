@@ -17,19 +17,13 @@ $(document).ready(async function () {
     var currentUrl = window.location.href;
     const RECORD_ID = currentUrl.split('/').pop();
 
-    const GET_RECORD = HOST + "/api/Custommer/" + RECORD_ID;
-    const PUT_RECORD = HOST + "/api/Custommer/" + RECORD_ID;
-    const GET_ROOMS = HOST + "/api/Room"
+    const GET_RECORD = HOST + "/api/Gallery/" + RECORD_ID;
+    const PUT_RECORD = HOST + "/api/Gallery/" + RECORD_ID;
+    const GET_CATEGORIES = HOST + "/api/Gallery/GalleryCategory"
 
     var newRecord = {
         Images: [],
-        FullName: "",
-        RoomId: 0,
-        PhoneNumber: "",
-        Email: "",
-        Address: "",
-        Country: "",
-        Comment: "",
+        CategoryId: 0,
         isActive: false,
         isDeleted: false,
         UpdatedBy: 0,
@@ -38,19 +32,6 @@ $(document).ready(async function () {
 
     var editRecord = {};
 
-
-
-    var editor;
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            placeholder: 'This is some sample content....'
-        })
-        .then(newEditor => {
-            editor = newEditor;
-        })
-        .catch(error => {
-            console.error(error);
-        });
 
 
     $(".section-preview").click(function () {
@@ -144,7 +125,7 @@ $(document).ready(async function () {
         }
 
         //images
-        var IMAGE_SRC = GET_IMAGE_URL + "custommer/";
+        var IMAGE_SRC = GET_IMAGE_URL + "gallery/";
         $(".img-show").html("");
         $(".img-show").append(`
                 <div class="img-file col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in">
@@ -162,30 +143,17 @@ $(document).ready(async function () {
 
         });
 
-        //name
-        $("#record-name").val(record.fullName);
-
-        $("#phoneNumber").val(record.phoneNumber);
-        $("#email").val(record.email);
-        $("#address").val(record.address);
-        $("#country").val(record.country);
-
-        //comment
-        if (record.comment) {
-            editor.setData(record.comment);
-        }
-   
 
     }
 
 
     //GET LIST CATEGORY
-    await getRooms();
+    await getCategories();
 
-    async function getRooms() {
+    async function getCategories() {
         try {
             const res = await $.ajax({
-                url: GET_ROOMS,
+                url: GET_CATEGORIES,
                 type: "GET",
                 headers: {
                     Authorization: `Bearer ${accessToken}`
@@ -198,7 +166,7 @@ $(document).ready(async function () {
             });
             if (res && res.length > 0) {
                 cateList = res;
-                renderListRoom(res);
+                renderListCategory(res);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
 
@@ -210,22 +178,21 @@ $(document).ready(async function () {
         }
     }
 
-    function renderListRoom(roomList) {
-        var cateHtml = `<option value="${0}" selected>Choose the room</option>`;
-        
-        for (var i = 0; i < roomList.length; i++) {
-            if (roomList[i].id === editRecord.roomId) {
+    function renderListCategory(cateList) {
+        var cateHtml = `<option value="${0}" selected>Choose the page</option>`;
+        for (var i = 0; i < cateList.length; i++) {
+            if (cateList[i].id === editRecord.categoryId) {
                 cateHtml += `
-                <option value="${roomList[i].id}" selected>${roomList[i].name}</option>
+                <option value="${cateList[i].id}" selected>${cateList[i].name}</option>
                 `;
             }
             else {
                 cateHtml += `
-                <option value="${roomList[i].id}">${roomList[i].name}</option>
+                <option value="${cateList[i].id}">${cateList[i].name}</option>
                 `;
             }
         }
-        $("#room").append(cateHtml);
+        $("#category").append(cateHtml);
 
     }
    
@@ -240,27 +207,12 @@ $(document).ready(async function () {
 
     async function getUpdatedRecord() {
         //images
-        newRecord.Images = [];
         newRecord.Images.push(editRecord.image);
-        //name
-        var name = $("#record-name").val();
-        var roomId = $("#room").val();
-        var phoneNumber = $("#phoneNumber").val();
-        var email = $("#email").val();
-        var address = $("#address").val();
-        var country = $("#country").val();
 
-        //description
-        var comment = editor.getData();
+        var categoryId = $("#category").val();
 
-        //Map
-        newRecord.FullName = name;
-        newRecord.RoomId = roomId;
-        newRecord.PhoneNumber = phoneNumber;
-        newRecord.Email = email;
-        newRecord.Address = address;
-        newRecord.Country = country;
-        newRecord.Comment = comment;
+
+        newRecord.CategoryId = categoryId;
         newRecord.isActive = $('#status-active').prop('checked');
 
         newRecord.CreatedBy = editRecord.createdBy;
@@ -295,21 +247,11 @@ $(document).ready(async function () {
     }
 
     function getValidation(newRecord) {
-        var validatObj = {
-            name: newRecord.FullName,
-        }
-        for (let prop in validatObj) {
-            if (validatObj[prop] == null || validatObj[prop] == '' || validatObj[prop] == undefined) {
-                return {
-                    status: false,
-                    message: `${prop} required `
-                };
-            }
-        }
-        if (validatObj.name.length < 4 || validatObj.name.length >= 50) {
+      
+        if ($(".img-file").length == 0) {
             return {
                 status: false,
-                message: "Checking the name field"
+                message: "Checking the images field"
             }
         }
         return {
@@ -320,16 +262,10 @@ $(document).ready(async function () {
 
     async function putUpdatedRecord(newRecord, imagesUpload) {
         var formData = new FormData();
-        formData.append("custommerId", RECORD_ID);
+        formData.append("galleryId", RECORD_ID);
         formData.append("Id", RECORD_ID);
-        formData.append("FullName", newRecord.FullName);
         formData.append("Image", newRecord.Images[0]);
-        if (newRecord.RoomId!=0) formData.append("RoomId", newRecord.RoomId);
-        formData.append("PhoneNumber", newRecord.PhoneNumber);
-        formData.append("Email", newRecord.Email);
-        formData.append("Address", newRecord.Address);
-        formData.append("Country", newRecord.Country);
-        formData.append("Comment", newRecord.Comment);
+        if (newRecord.CategoryId != 0) formData.append("CategoryId", newRecord.CategoryId);
         formData.append("IsActive", newRecord.isActive);
         formData.append("UpdatedBy", USER_ID);
         formData.append("CreatedBy", newRecord.CreatedBy);
@@ -358,7 +294,7 @@ $(document).ready(async function () {
 
             const myModal = tailwind.Modal.getInstance(document.querySelector("#success-modal-preview"));
             $("#success-modal-preview").on('blur', function () {
-                window.location.href = '/Admin/Custommer';
+                window.location.href = '/Admin/Menu/Gallery';
             });
             myModal.show();
         } catch (e) {

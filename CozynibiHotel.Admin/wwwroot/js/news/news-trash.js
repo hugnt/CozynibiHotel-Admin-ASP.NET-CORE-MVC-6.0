@@ -146,7 +146,7 @@ $(document).ready(async function () {
     async function putRecordStatus(ID) {
         const PUT_RECORD = HOST + "/api/News/" + ID + "/" + false;
         var formData = new FormData();
-        formData.append("rooId", ID);
+        formData.append("newsId", ID);
         formData.append("isDelete", false);
         try {
             const res = await $.ajax({

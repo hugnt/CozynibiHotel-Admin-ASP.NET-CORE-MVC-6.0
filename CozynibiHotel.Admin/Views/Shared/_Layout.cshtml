@@ -799,13 +799,15 @@
             <!-- END: Search -->
             <!-- BEGIN: Notifications -->
             <div class="intro-x dropdown mr-4 sm:mr-6">
-                <div class="dropdown-toggle notification notification--bullet cursor-pointer" role="button"
-                    aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="bell"
-                        class="notification__icon dark:text-slate-500"></i> </div>
+                <div class="dropdown-toggle notification cursor-pointer" role="button"
+                    aria-expanded="false" data-tw-toggle="dropdown"> 
+                    <i data-lucide="bell" class="notification__icon dark:text-slate-500"></i> </div>
                 <div class="notification-content pt-2 dropdown-menu">
-                    <div class="notification-content__box dropdown-content">
+                    <div class="notification-content__box dropdown-content" 
+                        style="overflow-y: auto;scroll-behavior: smooth;flex-wrap: wrap;height: 35rem;">
                         <div class="notification-content__title">Notifications</div>
-                        <div class="cursor-pointer relative flex items-center ">
+                        <div class="notification-news"></div>
+                        <div class="cursor-pointer relative flt__titleex items-center notice-item">
                             <div class="w-12 h-12 flex-none image-fit mr-1">
                                 <img alt="Midone - HTML Admin Template" class="rounded-full"
                                     src="~/dist/images/profile-1.jpg">
@@ -823,78 +825,7 @@
                                     layout. The point of using Lorem </div>
                             </div>
                         </div>
-                        <div class="cursor-pointer relative flex items-center mt-5">
-                            <div class="w-12 h-12 flex-none image-fit mr-1">
-                                <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                    src="~/dist/images/profile-11.jpg">
-                                <div
-                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
-                                </div>
-                            </div>
-                            <div class="ml-2 overflow-hidden">
-                                <div class="flex items-center">
-                                    <a href="javascript:;" class="font-medium truncate mr-5">Denzel Washington</a>
-                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">01:10 PM</div>
-                                </div>
-                                <div class="w-full truncate text-slate-500 mt-0.5">Contrary to popular belief, Lorem
-                                    Ipsum is not simply random text. It has roots in a piece of classical Latin
-                                    literature from 45 BC, making it over 20</div>
-                            </div>
-                        </div>
-                        <div class="cursor-pointer relative flex items-center mt-5">
-                            <div class="w-12 h-12 flex-none image-fit mr-1">
-                                <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                    src="~/dist/images/profile-3.jpg">
-                                <div
-                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
-                                </div>
-                            </div>
-                            <div class="ml-2 overflow-hidden">
-                                <div class="flex items-center">
-                                    <a href="javascript:;" class="font-medium truncate mr-5">Arnold Schwarzenegger</a>
-                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">05:09 AM</div>
-                                </div>
-                                <div class="w-full truncate text-slate-500 mt-0.5">There are many variations of passages
-                                    of Lorem Ipsum available, but the majority have suffered alteration in some form, by
-                                    injected humour, or randomi</div>
-                            </div>
-                        </div>
-                        <div class="cursor-pointer relative flex items-center mt-5">
-                            <div class="w-12 h-12 flex-none image-fit mr-1">
-                                <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                    src="~/dist/images/profile-11.jpg">
-                                <div
-                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
-                                </div>
-                            </div>
-                            <div class="ml-2 overflow-hidden">
-                                <div class="flex items-center">
-                                    <a href="javascript:;" class="font-medium truncate mr-5">Johnny Depp</a>
-                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">01:10 PM</div>
-                                </div>
-                                <div class="w-full truncate text-slate-500 mt-0.5">There are many variations of passages
-                                    of Lorem Ipsum available, but the majority have suffered alteration in some form, by
-                                    injected humour, or randomi</div>
-                            </div>
-                        </div>
-                        <div class="cursor-pointer relative flex items-center mt-5">
-                            <div class="w-12 h-12 flex-none image-fit mr-1">
-                                <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                    src="~/dist/images/profile-4.jpg">
-                                <div
-                                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
-                                </div>
-                            </div>
-                            <div class="ml-2 overflow-hidden">
-                                <div class="flex items-center">
-                                    <a href="javascript:;" class="font-medium truncate mr-5">Al Pacino</a>
-                                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">06:05 AM</div>
-                                </div>
-                                <div class="w-full truncate text-slate-500 mt-0.5">It is a long established fact that a
-                                    reader will be distracted by the readable content of a page when looking at its
-                                    layout. The point of using Lorem </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -1315,44 +1246,37 @@
                     </li>
                     <!-- Booking & contact  -->
                     <li>
-                        <a href="javascript:;" class="side-menu">
+                        <a href="javascript:;" class="side-menu side-contact">
                             <div class="side-menu__icon"> <i data-lucide="contact"></i> </div>
                             <div class="side-menu__title">
                                 Contact
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+                        <ul class="side-contact-wrapper">
                             <li>
-                                <a href="javascript:;" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
-                                    <div class="side-menu__title"> Previews
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;" class="side-menu">
+                                <a href="javascript:;" class="side-menu side-booking">
                                     <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
                                     <div class="side-menu__title"> Booking List
                                         <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                                     </div>
 
                                 </a>
-                                <ul class="">
+                                <ul class="side-booking-wrapper">
                                     <li>
-                                        <a href="#" class="side-menu">
+                                        <a href="/Admin/ContactAndBooking/Booking" class="side-menu side-booking-list">
                                             <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
                                             <div class="side-menu__title">List</div>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="side-menu">
+                                        <a href="/Admin/ContactAndBooking/Booking/AddNew" class="side-menu side-booking-add">
                                             <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
                                             <div class="side-menu__title">Add New</div>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="side-menu">
+                                        <a href="/Admin/ContactAndBooking/Booking/Trash" class="side-menu side-booking-trash">
                                             <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
                                             <div class="side-menu__title">Trash</div>
                                         </a>
@@ -1361,27 +1285,27 @@
 
                             </li>
                             <li>
-                                <a href="javascript:;" class="side-menu">
+                                <a href="javascript:;" class="side-menu side-contactList">
                                     <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
                                     <div class="side-menu__title"> Contact List
                                         <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                                     </div>
                                 </a>
-                                <ul class="">
+                                <ul class="side-contactList-wrapper">
                                     <li>
-                                        <a href="#" class="side-menu">
+                                        <a href="/Admin/ContactAndBooking/Contact" class="side-menu side-contactList-list">
                                             <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
                                             <div class="side-menu__title">List</div>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="side-menu">
+                                        <a href="/Admin/ContactAndBooking/Contact/AddNew" class="side-menu side-contactList-add">
                                             <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
                                             <div class="side-menu__title">Add New</div>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="side-menu">
+                                        <a href="/Admin/ContactAndBooking/Contact/Trash" class="side-menu side-contactList-trash">
                                             <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
                                             <div class="side-menu__title">Trash</div>
                                         </a>
@@ -1393,30 +1317,24 @@
                     <li class="side-nav__devider my-6"></li>
                     <!-- information  -->
                     <li>
-                        <a href="javascript:;" class="side-menu">
+                        <a href="javascript:;" class="side-menu side-information">
                             <div class="side-menu__icon"> <i data-lucide="file-text"></i> </div>
                             <div class="side-menu__title">
                                 Information
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+                        <ul class="side-information-wrapper">
                             <li>
-                                <a href="#" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="list"></i> </div>
-                                    <div class="side-menu__title">List</div>
+                                <a href="/Admin/Information" class="side-menu side-information-list">
+                                    <div class="side-menu__icon"> <i data-lucide="list">Overview</i> </div>
+                                    <div class="side-menu__title">Overview</div>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
-                                    <div class="side-menu__title">Add New</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="side-menu">
-                                    <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
-                                    <div class="side-menu__title">Trash</div>
+                                <a href="/Admin/Information/Edit" class="side-menu side-information-edit">
+                                    <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
+                                    <div class="side-menu__title">Edit</div>
                                 </a>
                             </li>
                         </ul>
@@ -1483,28 +1401,28 @@
                     </li>
                     <!-- gallery  -->
                     <li>
-                        <a href="javascript:;" class="side-menu">
+                        <a href="javascript:;" class="side-menu side-gallery">
                             <div class="side-menu__icon"> <i data-lucide="image"></i> </div>
                             <div class="side-menu__title">
                                 Gallery
                                 <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                             </div>
                         </a>
-                        <ul class="">
+                        <ul class="side-gallery-wrapper">
                             <li>
-                                <a href="#" class="side-menu">
+                                <a href="/Admin/Gallery" class="side-menu side-gallery-list">
                                     <div class="side-menu__icon"> <i data-lucide="grid"></i> </div>
                                     <div class="side-menu__title">List</div>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="side-menu">
+                                <a href="/Admin/Gallery/AddNew" class="side-menu side-gallery-add">
                                     <div class="side-menu__icon"> <i data-lucide="plus-square"></i> </div>
                                     <div class="side-menu__title">Add New</div>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="side-menu">
+                                <a href="/Admin/Gallery/Trash" class="side-menu side-gallery-trash">
                                     <div class="side-menu__icon"> <i data-lucide="trash-2"></i> </div>
                                     <div class="side-menu__title">Trash</div>
                                 </a>
@@ -1621,11 +1539,11 @@
         </div>
     </div>
     <!-- BEGIN: Dark Mode Switcher-->
-    <div data-url="side-menu-dark-dashboard-overview-2.html"
+    @*<div data-url="side-menu-dark-dashboard-overview-2.html"
         class="main-layout dark-mode-switcher cursor-pointer shadow-md fixed bottom-0 right-0 box border rounded-full w-40 h-12 flex items-center justify-center z-50 mb-10 mr-10">
         <div class="mr-4 text-slate-600 dark:text-slate-200">Dark Mode</div>
         <div class="dark-mode-switcher__toggle border"></div>
-    </div>
+    </div>*@
     <!-- END: Dark Mode Switcher-->
 
     <!-- BEGIN: JS Assets-->
@@ -1640,6 +1558,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.9.0/toastify.min.js" integrity="sha512-41ixkHMR43jJQooROKfIXRKpWuPrssMtSfY2nAmM8/iraS+CaKjkVEerk4/T7hKBBtmjy/QSP7Hx21xvhN/hwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.9/signalr.min.js" integrity="sha512-YEeL0weWuxEVWFRE6/2jHIlU0muJ4CxAI9i/hite2/Nu5DKCU8PhDWL/n/VHHRHAbROS8ehhFRLkTe/1Q7O1Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/js/web-socket.js" type="module"></script>
     <script src="~/js/layout.js" type="module"></script>
     @await RenderSectionAsync("Scripts", required: false)
    

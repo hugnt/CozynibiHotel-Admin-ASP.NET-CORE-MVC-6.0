@@ -3,12 +3,12 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/Custommer";
-    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "custommer"
+    var BASE_URL = HOST + "/api/Booking";
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
     var accessToken = $.cookie('AccessToken');
+
 
     //PAGINATION
     var pagination = {
@@ -20,9 +20,37 @@ $(document).ready(async function () {
         totalPages: 0,
 
     }
-    await getList();
+
+    //QR HANDLER
+    async function onScanSuccess(decodedText, decodedResult) {
+        console.log(`Code matched = ${decodedText}`);
+        console.log(typeof decodedText)
+        html5QrcodeScanner.pause();
+        await postValidateQR(decodedText);
+    }
+
+    function onScanFailure(error) {
+       /* console.warn(`Code scan error = ${error}`);*/
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        { fps: 10, qrbox: { width: 250, height: 250 } },false);
+    
+    $(".btn-scanQR").click(function () {
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    });
+
+   
+    const QRModal = document.getElementById('modal-qrScan')
+    QRModal.addEventListener('hidden.tw.modal', function (event) {
+        html5QrcodeScanner.clear();
+    });
+
 
     //DATA RENDERING
+    await getList();
+
     async function getList() {
         try {
             const res = await $.ajax({
@@ -40,7 +68,7 @@ $(document).ready(async function () {
             if (res && res.length > 0) {
                 cateList = [];
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].isDeleted == true) {
+                    if (res[i].isDeleted != true) {
                         cateList.push(res[i]);
                     }
                 }
@@ -59,101 +87,118 @@ $(document).ready(async function () {
         $('.table-report tbody').html('');
         for (let i = 0; i < res.length; i++) {
             let cate = res[i];
-            if (cate.isDeleted == false) continue;
-            let imgHtml = "";
-
-            var room = "";
-            if (cate.roomId) {
-                room = await getRoom(cate.roomId);
+            if (cate.isDeleted == true) continue;
+            
+            console.log(cate)
+            let htmlConfirmBtn = ``;
+            if (cate.isConfirm) {
+                htmlConfirmBtn = `<a class="flex items-center mr-3 text-success">
+									    ${lucide.checkSquare} Confirmed
+								    </a> `;
             }
-
-            let imgString = `${CATEGORY_IMG_SRC}/${cate.image}`;
-
-            imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
-							<img alt="img" class="tooltip rounded-full"
-							src="${imgString}" title="img">
-						</div>`
+            else {
+                htmlConfirmBtn = `<button data-cate-id="${cate.id}" type="button" data-tw-toggle="modal" data-tw-target="#modal-confirm" class="btn btn-success w-24 btn-confirm" style="color:#fff">Confirm</button>`
+            }
             let html = `
 							<tr class="intro-x">
-                                <td class="w-10">
-							        <input class="form-check-input check-item checkBox-${cate.id}" data-id="${cate.id}" type="checkbox">
-						        </td>
-								<td class="w-10">R${cate.id}</td>
+								<td class="w-10">B${cate.id}</td>
 								<td>
 									<a href="#" class="font-medium whitespace-nowrap" style="text-transform:capitalize">${cate.fullName}</a>
-                                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5" style="text-transform: capitalize">${room.name ? room.name : ""}</div>
 								</td>
-								<td class="w-40">
-									<div class="flex justify-center">`
-                +
-                imgHtml
-                +
-                `
+								<td class="text-center">${cate.email ? cate.email : ""}</td>
+                                <td class="text-center">${cate.checkIn ? cate.checkIn : ""}</td>
+                                <td class="text-center">${cate.checkOut ? cate.checkOut : ""}</td>
+								<td class="table-report__action w-56">
+									<div class="flex justify-center items-center">
+										<a class="flex items-center mr-3 btn-edit" style="cursor:pointer;" data-cate-id="${cate.id}" onclick="window.location.href='/Admin/ContactAndBooking/Booking/Edit/${cate.id}';">
+											${lucide.checkSquare} Edit
+										</a>
+										<a class="flex items-center text-danger mr-3 btn-delete" style="cursor:pointer"
+								   	data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" data-cate-id="${cate.id}">
+											${lucide.trash2} Delete
+										</a>
+										<a class="flex items-center text-primary btn-details" data-cate-id="${cate.id}"
+                                            style="cursor:pointer;" data-tw-toggle="modal" data-tw-target="#modal-details">
+											${lucide.eye} Details
+										</a>
 									</div>
 								</td>
-								<td class="text-center">${cate.phoneNumber ? cate.phoneNumber : ""}</td>
-								<td class="text-center">${cate.email ? cate.email : ""}</td>
-                                <td class="text-center">${cate.country ? cate.country : ""}</td>
-								<td class="table-report__action w-56">
-							        <div class="flex justify-center items-center">
-								        <a class="flex items-center mr-3 text-danger btn-delete" data-id="${cate.id}" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal">
-									        ${lucide.xCircle} Delete
-								        </a>
-								        <a class="flex items-center text-primary btn-restore" data-id="${cate.id}" href="javascript:;">
-									         ${lucide.rotateCcw} Restore
-								        </a>
-							        </div>
-						        </td>
+                                <td class="text-center">
+                                    ${htmlConfirmBtn}
+                                </td>   
 							</tr>
 						`;
             $('.table-report tbody').append(html);
+
         }
-
-        $(".check-all").change(function () {
-            $(".check-item").prop("checked", $(this).is(':checked'));
-
+        $(".btn-confirm").click(async function () {
+            let id = $(this).data("cateId");
+            let cate = cateList.find(x => x.id == id);
+            if (cate) {
+                $('#nameConfirm').val(cate.fullName);
+                $('#emailConfirm').val(cate.email);
+                $('#phoneNumberConfirm').val(cate.phoneNumber);
+                $('#checkInConfirm').val(cate.checkIn);
+                $('#checkOutConfirm').val(cate.checkOut);
+            }
+            $(".btn-confirm-sure").click(async function () {
+                await putConfirmBooking(id);
+            });
         });
+        $(".btn-details").click(async function () {
+            let id = $(this).data("cateId");
+            let cate = cateList.find(x => x.id == id);
+            console.log(cate)
+            if (cate) {
+                
+                //user 
+                const GET_USER1 = HOST + "/api/Account/" + cate.createdBy;
+                const GET_USER2 = HOST + "/api/Account/" + cate.updatedBy;
+                console.log(GET_USER1)
+                const CREATED_ONE = await getUser(GET_USER1);
+                const UPDATED_ONE = await getUser(GET_USER2);
+              
+         
+                //informations
+                $('#id').val("B" + cate.id);
+                $('#name').val(cate.fullName);
+                $('#isConfirm').val(cate.isConfirm ? "Confirmed" : "Waiting");
+                $('#checkInCode').val(cate.checkInCode);
+                $('#isSuccess').val(cate.isSuccess ? "YES" : "NO");
+                $('#phoneNumber').val(cate.phoneNumber);
+                $('#adults').val(cate.adults);
+                $('#children').val(cate.children);
+                $('#checkIn').val(cate.checkIn);
+                $('#checkOut').val(cate.checkOut);
+                $('#email').val(cate.email);
+                $('#address').val(cate.address);
+                $('#content').html(cate.content);
+                $('#createdAt').val(cate.createdAt);
+                $('#updatedAt').val(cate.updatedAt);
+                if (CREATED_ONE) {
+                    $('#createdBy').val(CREATED_ONE.fullName);
+                }
+                if (UPDATED_ONE) {
+                    $('#updatedBy').val(UPDATED_ONE.fullName);
+                }
+          
+
+            }
+        });
+
+       
 
         $(".btn-delete").click(function () {
-            $(`.checkBox-${$(this).data("id")}`).prop("checked", true);
-
+            RECORD_ID = $(this).data("cateId");
+            console.log(RECORD_ID)
         });
-
-        $(".btn-restore").click(async function () {
-            await putRecordStatus($(this).data("id"))
-        });
-
     }
-    $("#delete-confirmation-modal .btn-remove").click(async function () {
-        
-        $(".check-item:checked").map(async function () {
-            await deleteRecord($(this).data("id"));
-        });
-    });
 
-    $(".btn-multi-restore").click(function () {
-        $(".check-item:checked").map(async function () {
-            await putRecordStatus($(this).data("id"));
-        });
-    });
-
-    $(".btn-multi-delete").click(function () {
-        if ($(".check-item:checked").length == 0) {
-            console.log("NO CONTENT")
-            const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
-            myModalDel.hide();
-        }
-        else {
-            const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
-            myModalDel.show();
-        }
-    });
-
-    async function putRecordStatus(ID) {
-        const PUT_RECORD = HOST + "/api/Custommer/" + ID + "/" + false;
+    $("#delete-confirmation-modal .btn-remove ").click(async function () {
+        const PUT_RECORD = HOST + "/api/Booking/" + RECORD_ID +"/" +true;
         var formData = new FormData();
-        formData.append("custommerId", ID);
-        formData.append("isDelete", false);
+        formData.append("bookingId", RECORD_ID);
+        formData.append("isDelete", true);
         try {
             const res = await $.ajax({
                 url: PUT_RECORD,
@@ -172,8 +217,12 @@ $(document).ready(async function () {
 
             $(".loading").css("display", "none");
             $(".main-content").css("display", "block");
+            const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
+            myModalDel.hide();
+
+            await getList();
             Toastify({
-                node: $("#restore-success-modal").clone().removeClass("hidden")[0],
+                node: $("#notice-notification-content").clone().removeClass("hidden")[0],
                 duration: 3000,
                 newWindow: true,
                 close: true,
@@ -182,7 +231,43 @@ $(document).ready(async function () {
                 stopOnFocus: true
             }).showToast();
 
-            await getList();
+            
+
+        } catch (e) {
+            const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
+            myModalDel.hide();
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+            myModal.show();
+            console.log(e);
+
+        }
+    });
+
+    //CONFIRM AND CHECKING QR
+    async function putConfirmBooking(ID) {
+        const PUT_RECORD = HOST + "/api/Booking/ConfirmBooking/" + ID;
+        try {
+            const res = await $.ajax({
+                url: PUT_RECORD,
+                type: "PUT",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#success-modal-preview"));
+            $("#success-modal-preview").on('blur', function () {
+                window.location.href = '/Admin/ContactAndBooking/Booking';
+            });
+            myModal.show();
 
         } catch (e) {
             $(".loading").css("display", "none");
@@ -194,29 +279,69 @@ $(document).ready(async function () {
         }
     }
 
-    async function deleteRecord(ID) {
-        const DELETE_RECORD = HOST + "/api/Custommer/" + ID;
+    async function postValidateQR(QRcode) {
+        const POST_QR = HOST + "/api/Booking/ValidateQRBooking";
+        var formData = new FormData();
+        formData.append("qrToken", QRcode);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
         try {
             const res = await $.ajax({
-                url: DELETE_RECORD,
-                type: "DELETE",
+                url: POST_QR,
+                type: "POST",
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
-                contentType: false,
                 processData: false,
+                mimeType: "multipart/form-data",
+                contentType: false,
+                data: formData,
                 beforeSend: function () {
                     $(".main-content").css("display", "none");
                     $(".loading").css("display", "block");
                 }
             });
+            if (res) {
+                const infor = JSON.parse(res);
+                console.log(res);
+                $(".loading").css("display", "none");
+                $(".main-content").css("display", "block");
 
+                Toastify({
+                    node: $("#qr-success-modal").clone().removeClass("hidden")[0],
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true
+                }).showToast();
+
+                //informations
+                $('#idQR').val("B" + infor.id);
+                $('#nameQR').val(infor.fullName);
+                $('#isConfirmQR').val(infor.isConfirm ? "Confirmed" : "Waiting");
+                $('#checkInCodeQR').val(infor.checkInCode);
+                $('#isSuccessQR').val(infor.isSuccess ? "YES" : "NO");
+                $('#phoneNumberQR').val(infor.phoneNumber);
+                $('#adultsQR').val(infor.adults);
+                $('#childrenQR').val(infor.children);
+                $('#checkInQR').val(infor.checkIn);
+                $('#checkOutQR').val(infor.checkOut);
+                $('#emailQR').val(infor.email);
+                $('#addressQR').val(infor.address);
+                $('#contentQR').html(infor.content);
+                const myModalQRSScan = tailwind.Modal.getInstance(QRModal);
+                myModalQRSScan.hide();
+                const myModalQR = tailwind.Modal.getInstance(document.querySelector("#modal-details-QR"));
+                myModalQR.show();
+            }
+        } catch (e) {
             $(".loading").css("display", "none");
             $(".main-content").css("display", "block");
-            const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
-            myModalDel.hide();
             Toastify({
-                node: $("#delete-success-modal").clone().removeClass("hidden")[0],
+                node: $("#qr-fail-modal").clone().removeClass("hidden")[0],
                 duration: 3000,
                 newWindow: true,
                 close: true,
@@ -224,16 +349,7 @@ $(document).ready(async function () {
                 position: "right",
                 stopOnFocus: true
             }).showToast();
-
-            await getList();
-
-        } catch (e) {
-            const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
-            myModalDel.hide();
-            $(".loading").css("display", "none");
-            $(".main-content").css("display", "block");
-            const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
-            myModal.show();
+            html5QrcodeScanner.resume();
             console.log(e);
 
         }
@@ -355,6 +471,24 @@ $(document).ready(async function () {
 
 
     //TOOL 
+    function sortBy(field) {
+        cateList.sort(function (a, b) {
+            const A = a[field];
+            const B = b[field];
+            if (A < B) {
+                return -1;
+            }
+            if (A > B) {
+                return 1; 
+            }
+            return 0;
+        });
+    }
+    
+    $(".sortby-select").change(async function () {
+        sortBy($(this).val());
+        await updatePagination(pagination);
+    });
 
     async function searchFor(field, keyWords) {
         try {
@@ -373,8 +507,8 @@ $(document).ready(async function () {
             if (res && res.length > 0) {
                 cateList = [];
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].isDeleted == true) {
-                        cateList.push(res[i]);
+                    if (res[i].isDeleted != true) {
+                        cateList.push(res[i])
                     }
                 }
                 console.log(cateList)
@@ -382,6 +516,10 @@ $(document).ready(async function () {
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
                 console.log(res);
+            }
+            else {
+                $(".loading").css("display", "none");
+                $(".cantSearch").css("display", "block");
             }
         } catch (e) {
             console.log(e);
@@ -393,8 +531,8 @@ $(document).ready(async function () {
     $(".search-btn").click(async function () {
         var field = $(".filter-select").val();
         var keyWords = $(".search-box-table").val();
-        if (keyWords == null || keyWords == "") keyWords = "*";
-        if (field == null || field == "") field = "name";
+        if (keyWords == null || keyWords=="") keyWords = "*";
+        if (field == null || field == "") field = "fullName";
         await searchFor(field, keyWords);
     });
 
@@ -419,11 +557,10 @@ $(document).ready(async function () {
     }
 
     //USER
-
-    async function getRoom(roomId) {
+    async function getUser(GET_USER) {
         try {
             const res = await $.ajax({
-                url: HOST + "/api/Room/" + roomId,
+                url: GET_USER,
                 type: "GET",
                 headers: {
                     Authorization: `Bearer ${accessToken}`
@@ -437,6 +574,7 @@ $(document).ready(async function () {
             return null;
         }
     }
+
 
 
 });

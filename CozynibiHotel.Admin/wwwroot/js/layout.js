@@ -109,7 +109,81 @@ $(document).ready(async function () {
             $(".user-avatar").prop("src", GET_IMAGE_URL + "user/user.png");
         });
 
-   
+    const GET_NOTIFICATION_CONTACT = HOST + "/api/Contact";
+    const GET_NOTIFICATION_BOOKING = HOST + "/api/Booking";
+    var noticeList = [];
+
+    await getAllNotification();
+
+    async function getAllNotification() {
+        noticeList = [];
+        $(".notification-content__box .notice-item").remove();
+        await getNotification(GET_NOTIFICATION_BOOKING, "calling.png", "Booking");
+        await getNotification(GET_NOTIFICATION_CONTACT, "user/user4.png", "Contact");
+        
+    }
+  
+    async function getNotification(URL, IMG, TYPE) {
+        try {
+            const res = await $.ajax({
+                url: URL,
+                type: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            if (res && res.length != 0) {
+                for (var i = 0; i < res.length; i++) {
+                    if (TYPE =="Contact"&&res[i].isActive == true) {
+                        noticeList.push(res[i]);
+                    }
+                    else if (TYPE == "Booking" && res[i].isConfirm != true) {
+                        noticeList.push(res[i]);
+                    }
+                }
+            }
+            renderNotification(noticeList, IMG, TYPE);
+            return null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function renderNotification(contact, IMG, TYPE) {
+        if (contact.length != 0) $(".notification").addClass("notification--bullet");
+        var htmlNotification = ``;
+        let imageContact = GET_IMAGE_URL + IMG;
+        for (var i = 0; i < contact.length; i++) {
+            htmlNotification += `
+			<div class="cursor-pointer relative flex items-center mt-5 notice-item notice-item-contact noctice-${TYPE}">
+                <div class="w-12 h-12 flex-none image-fit mr-1">
+                    <img alt="" class="rounded-full"
+                        src="${imageContact}">
+                    <div
+                        class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white">
+                    </div>
+                </div>
+                <div class="ml-2 overflow-hidden">
+                    <div class="flex items-center">
+                        <a href="javascript:;" class="font-medium truncate mr-5">New ${TYPE}</a>
+                        <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">${contact[i].createdAt}</div>
+                    </div>
+                    <div class="w-full truncate text-slate-500 mt-0.5">
+                        Custommer: ${contact[i].fullName}, ${contact[i].phoneNumber}, ${contact[i].email}
+                    </div>
+                </div>
+            </div>
+		`;
+        }
+
+        
+ 
+        $(".notification-content__box").append(htmlNotification);
+        $(`.noctice-${TYPE}`).click(function () {
+            window.location.href = "/Admin/ContactAndBooking/" + TYPE;
+        });
+
+    }
 
    
 

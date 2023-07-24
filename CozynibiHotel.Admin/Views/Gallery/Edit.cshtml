@@ -1,5 +1,5 @@
 ﻿ @{
-	ViewData["Title"] = "Edit Custommer";
+	ViewData["Title"] = "Edit Gallery";
 
 	var boxSuccess = new BoxModalViewModel()
 			{
@@ -7,7 +7,7 @@
 				Text = "Continue to add a new one or go to the list",
 				LstButton = new List<Button>()
 		{
-			new Button("Go to list", "btn-primary", "window.location.href='/Admin/Custommer';"),
+			new Button("Go to list", "btn-primary", "window.location.href='/Admin/Gallery';"),
 			new Button("Resfesh", "btn-primary", "window.location.reload();"),
 		}
 
@@ -26,7 +26,7 @@
 <div class="content main-content" style="display:none;">
 	<div class="intro-y flex items-center mt-8">
 		<h2 class="text-lg font-medium mr-auto">
-			Edit Custommer
+			Edit Gallery
 		</h2>
 	</div>
 	<div class="grid grid-cols-11 gap-x-6 mt-5 pb-20">
@@ -50,7 +50,7 @@
 			<div class="intro-y box p-5 mt-5" id="section1">
 				<div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
 					<div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
-						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Upload Custommer Avartar
+						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Upload Gallery Images
 					</div>
 					<div class="mt-5">
 						<div class="flex items-center text-slate-500">
@@ -70,7 +70,7 @@
 							<div class="form-label w-full xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Custommer Photos</div>
+										<div class="font-medium">Gallery Photos</div>
 										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
 											Required
 
@@ -114,133 +114,29 @@
 			<div class="intro-y box p-5 mt-5" id="section2">
 				<div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
 					<div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
-						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Custommer Information
+						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Gallery Information
 					</div>
 					<div class="mt-5">
 						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Custommer Full Name</div>
-										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
-											Required
-										</div>
-									</div>
-									<div class="leading-relaxed text-slate-500 text-xs mt-3">
-										Include min.
-										5 characters to make it more attractive and easy for buyers to
-										find, consisting of category type, brand, and information such as
-										color, material, or type.
-									</div>
-								</div>
-							</div>
-							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
-								<input id="record-name" type="text" class="form-control"
-									   placeholder="Custommer name" minlength="5" required>
-								<div class="form-help text-right">Maximum character 50</div>
-							</div>
-						</div>
-						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
-							<div class="form-label xl:w-64 xl:!mr-10">
-								<div class="text-left">
-									<div class="flex items-center">
-										<div class="font-medium">Phone Number</div>
-									</div>
-								</div>
-							</div>
-							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
-								<input id="phoneNumber" type="text" class="form-control"
-									   placeholder="Phone Number">
-							</div>
-						</div>
-						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
-							<div class="form-label xl:w-64 xl:!mr-10">
-								<div class="text-left">
-									<div class="flex items-center">
-										<div class="font-medium">Email</div>
-									</div>
-								</div>
-							</div>
-							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
-								<input id="email" type="email" class="form-control"
-									   placeholder="Email">
-							</div>
-						</div>
-						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
-							<div class="form-label xl:w-64 xl:!mr-10">
-								<div class="text-left">
-									<div class="flex items-center">
-										<div class="font-medium">Address</div>
-									</div>
-								</div>
-							</div>
-							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
-								<input id="address" type="text" class="form-control"
-									   placeholder="Address">
-							</div>
-						</div>
-						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
-							<div class="form-label xl:w-64 xl:!mr-10">
-								<div class="text-left">
-									<div class="flex items-center">
-										<div class="font-medium">Country</div>
-									</div>
-								</div>
-							</div>
-							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
-								<input id="country" type="text" class="form-control"
-									   placeholder="Country">
-							</div>
-						</div>
-						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
-							<div class="form-label xl:w-64 xl:!mr-10">
-								<div class="text-left">
-									<div class="flex items-center">
-										<div class="font-medium">Room</div>
+										<div class="font-medium">Category</div>
 									</div>
 								</div>
 							</div>
 							<div class="w-full mt-3 xl:mt-0 flex-1">
-								<select id="room" class="form-select">
+								<select id="category" class="form-select">
 								<!-- RENDER: CATEGORIES -->
 								</select>
 							</div>
 						</div>
-						
-						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
-							<div class="form-label xl:w-64 xl:!mr-10">
-								<div class="text-left">
-									<div class="flex items-center">
-										<div class="font-medium">Custommer Comment</div>
-									</div>
-									<div class="leading-relaxed text-slate-500 text-xs mt-3">
-										<div>
-											Make sure the custommer description provides a detailed
-											explanation of your custommer so that it is easy to understand and
-											find your category.
-										</div>
-										<div class="mt-2">
-											It is recommended not to enter info on mobile
-											numbers, e-mails, etc. into the category description to protect
-											your personal data.
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="w-full mt-3 xl:mt-0 flex-1">
-								<div id="editor">
-									<p></p>
-								</div>
-								<div class="form-help text-right">Maximum character 0/2000</div>
-							</div>
-						</div>
-
 					</div>
 				</div>
 			</div>
 			<!-- END: Product Information -->
 			<div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
-				<button type="button" onclick = "window.location.href='/Admin/Custommer';"
+				<button type="button" onclick = "window.location.href='/Admin/Gallery';"
 						class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">
 
 					Cancel
@@ -252,17 +148,17 @@
 					Reset
 
 				</button>
-				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-update">Save & Update Custommer</button>
+				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-update">Save & Update Gallery</button>
 			</div>
 		</div>
 		<div class="intro-y col-span-2 hidden 2xl:block">
 			<div class="pt-10 sticky top-0">
 				<ul class="text-slate-500 relative before:content-[''] before:w-[2px] before:bg-slate-200 before:dark:bg-darkmode-600 before:h-full before:absolute before:left-0 before:z-[-1]">
 					<li class="mb-4 border-l-2 pl-5 border-primary dark:border-primary text-primary font-medium section-preview">
-						<a href="#section1">Upload Custommer Images</a>
+						<a href="#section1">Upload Gallery Images</a>
 					</li>
 					<li class="mb-4 border-l-2 pl-5 border-transparent dark:border-transparent section-preview">
-						<a href="#section2">Custommer Information</a>
+						<a href="#section2">Gallery Information</a>
 					</li>
 				</ul>
 				<div class="mt-10 bg-warning/20 dark:bg-darkmode-600 border border-warning dark:border-0 rounded-md relative p-5">
@@ -271,7 +167,7 @@
 					<h2 class="text-lg font-medium">
 						Tips
 					</h2>
-					<div class="mt-5 font-medium">Custommer</div>
+					<div class="mt-5 font-medium">Gallery</div>
 					<div class="leading-relaxed text-xs mt-2 text-slate-600 dark:text-slate-500">
 						<div>
 
@@ -306,10 +202,9 @@
 <!-- END: Content -->
 @section Scripts{
 <script>
-	$('.side-custommer').addClass("side-menu--active");
-	$('.side-custommer-wrapper').addClass("side-menu__sub-open");
+	$('.side-gallery').addClass("side-menu--active");
+	$('.side-gallery-wrapper').addClass("side-menu__sub-open")
 </script>
-<script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
-<script src="~/js/custommer/custommer-edit.js" type="module"></script>
+<script src="~/js/gallery/gallery-edit.js" type="module"></script>
 
 }

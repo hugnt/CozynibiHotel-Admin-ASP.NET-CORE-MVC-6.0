@@ -3,12 +3,13 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/Custommer";
-    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "custommer"
+    var BASE_URL = HOST + "/api/Gallery";
+    var IMG_SRC = GET_IMAGE_URL + "gallery"
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
     var accessToken = $.cookie('AccessToken');
+
 
     //PAGINATION
     var pagination = {
@@ -20,8 +21,9 @@ $(document).ready(async function () {
         totalPages: 0,
 
     }
-    await getList();
 
+    await getList();
+    
     //DATA RENDERING
     async function getList() {
         try {
@@ -40,7 +42,7 @@ $(document).ready(async function () {
             if (res && res.length > 0) {
                 cateList = [];
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].isDeleted == true) {
+                    if (res[i].isDeleted != true) {
                         cateList.push(res[i]);
                     }
                 }
@@ -56,104 +58,84 @@ $(document).ready(async function () {
     }
 
     async function renderListData(res) {
-        $('.table-report tbody').html('');
+        $('.data-list-item').remove();
         for (let i = 0; i < res.length; i++) {
             let cate = res[i];
-            if (cate.isDeleted == false) continue;
-            let imgHtml = "";
+            if (cate.isDeleted == true) continue;
 
-            var room = "";
-            if (cate.roomId) {
-                room = await getRoom(cate.roomId);
+            var category = "";
+            if (cate.categoryId) {
+                category = await getCate(cate.categoryId);
             }
 
-            let imgString = `${CATEGORY_IMG_SRC}/${cate.image}`;
+            console.log(cate)
 
-            imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
-							<img alt="img" class="tooltip rounded-full"
-							src="${imgString}" title="img">
-						</div>`
-            let html = `
-							<tr class="intro-x">
-                                <td class="w-10">
-							        <input class="form-check-input check-item checkBox-${cate.id}" data-id="${cate.id}" type="checkbox">
-						        </td>
-								<td class="w-10">R${cate.id}</td>
-								<td>
-									<a href="#" class="font-medium whitespace-nowrap" style="text-transform:capitalize">${cate.fullName}</a>
-                                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5" style="text-transform: capitalize">${room.name ? room.name : ""}</div>
-								</td>
-								<td class="w-40">
-									<div class="flex justify-center">`
-                +
-                imgHtml
-                +
-                `
-									</div>
-								</td>
-								<td class="text-center">${cate.phoneNumber ? cate.phoneNumber : ""}</td>
-								<td class="text-center">${cate.email ? cate.email : ""}</td>
-                                <td class="text-center">${cate.country ? cate.country : ""}</td>
-								<td class="table-report__action w-56">
-							        <div class="flex justify-center items-center">
-								        <a class="flex items-center mr-3 text-danger btn-delete" data-id="${cate.id}" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal">
-									        ${lucide.xCircle} Delete
-								        </a>
-								        <a class="flex items-center text-primary btn-restore" data-id="${cate.id}" href="javascript:;">
-									         ${lucide.rotateCcw} Restore
-								        </a>
-							        </div>
-						        </td>
-							</tr>
+            //IMAGE
+            let imgString = `${IMG_SRC}/${cate.image}`;
+
+            let status = "";
+            if (cate.isActive) {
+                status = `
+							<div class="flex items-center mt-2 text-success">
+								${lucide.checkSquare} Active
+							</div>
 						`;
-            $('.table-report tbody').append(html);
+            }
+            else {
+                status = `
+                            <div class="flex items-center mt-2 text-danger">
+								${lucide.checkSquare} Inactive
+							</div>
+						`;
+            }
+            let html = `
+                <div class="intro-y col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 data-list-item">
+                    <div class="box">
+                        <div class="p-5">
+                            <div class="h-40 2xl:h-56 image-fit rounded-md overflow-hidden before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10 before:bg-gradient-to-t before:from-black before:to-black/10">
+                                <img alt="" class="rounded-md" src="${imgString}">
+                            </div>
+                            <div class="text-slate-600 dark:text-slate-500 mt-5">
+                                <div class="flex items-center"  style="overflow:hidden;"> ${lucide.link} Name: ${cate.image} </div>
+                                <div class="flex items-center mt-2"> ${lucide.layers} Category: ${category ? category.name : ""} </div>
+                                ${status}
+                            </div>
+                        </div>
+                        <div class="flex justify-center lg:justify-end items-center p-5 border-t border-slate-200/60 dark:border-darkmode-400">
+                            <a style="cursor:pointer;" class="btn-details flex items-center text-primary mr-auto" data-tw-toggle="modal" data-tw-target="#modal-details" data-cate-id="${cate.id}"> ${lucide.eye} Preview </a>
+                            <a style="cursor:pointer;" class="btn-edit flex items-center mr-3" onclick="window.location.href='/Admin/Gallery/Edit/${cate.id}';" data-cate-id="${cate.id}"> ${lucide.checkSquare} Edit </a>
+                            <a style="cursor:pointer;" class="btn-delete flex items-center text-danger" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" data-cate-id="${cate.id}"> ${lucide.trash2} Delete </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('.data-list-begin').after(html);
+
         }
 
-        $(".check-all").change(function () {
-            $(".check-item").prop("checked", $(this).is(':checked'));
-
+        $(".btn-details").click(async function () {
+            let id = $(this).data("cateId");
+            let cate = cateList.find(x => x.id == id);
+            console.log(cate)
+            if (cate) {
+                let img = cate.image;
+                let imgString = `${IMG_SRC}/${img}`;
+                $(".details-img").prop("src", imgString);
+                
+            }
         });
 
         $(".btn-delete").click(function () {
-            $(`.checkBox-${$(this).data("id")}`).prop("checked", true);
-
+            RECORD_ID = $(this).data("cateId");
+            console.log(RECORD_ID)
         });
-
-        $(".btn-restore").click(async function () {
-            await putRecordStatus($(this).data("id"))
-        });
-
     }
-    $("#delete-confirmation-modal .btn-remove").click(async function () {
-        
-        $(".check-item:checked").map(async function () {
-            await deleteRecord($(this).data("id"));
-        });
-    });
 
-    $(".btn-multi-restore").click(function () {
-        $(".check-item:checked").map(async function () {
-            await putRecordStatus($(this).data("id"));
-        });
-    });
-
-    $(".btn-multi-delete").click(function () {
-        if ($(".check-item:checked").length == 0) {
-            console.log("NO CONTENT")
-            const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
-            myModalDel.hide();
-        }
-        else {
-            const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
-            myModalDel.show();
-        }
-    });
-
-    async function putRecordStatus(ID) {
-        const PUT_RECORD = HOST + "/api/Custommer/" + ID + "/" + false;
+    $("#delete-confirmation-modal .btn-remove ").click(async function () {
+        const PUT_RECORD = HOST + "/api/Gallery/" + RECORD_ID +"/" +true;
         var formData = new FormData();
-        formData.append("custommerId", ID);
-        formData.append("isDelete", false);
+        formData.append("galleryId", RECORD_ID);
+        formData.append("isDelete", true);
         try {
             const res = await $.ajax({
                 url: PUT_RECORD,
@@ -172,51 +154,12 @@ $(document).ready(async function () {
 
             $(".loading").css("display", "none");
             $(".main-content").css("display", "block");
-            Toastify({
-                node: $("#restore-success-modal").clone().removeClass("hidden")[0],
-                duration: 3000,
-                newWindow: true,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true
-            }).showToast();
-
-            await getList();
-
-        } catch (e) {
-            $(".loading").css("display", "none");
-            $(".main-content").css("display", "block");
-            const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
-            myModal.show();
-            console.log(e);
-
-        }
-    }
-
-    async function deleteRecord(ID) {
-        const DELETE_RECORD = HOST + "/api/Custommer/" + ID;
-        try {
-            const res = await $.ajax({
-                url: DELETE_RECORD,
-                type: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-                contentType: false,
-                processData: false,
-                beforeSend: function () {
-                    $(".main-content").css("display", "none");
-                    $(".loading").css("display", "block");
-                }
-            });
-
-            $(".loading").css("display", "none");
-            $(".main-content").css("display", "block");
             const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
             myModalDel.hide();
+
+            await getList();
             Toastify({
-                node: $("#delete-success-modal").clone().removeClass("hidden")[0],
+                node: $("#notice-notification-content").clone().removeClass("hidden")[0],
                 duration: 3000,
                 newWindow: true,
                 close: true,
@@ -225,7 +168,7 @@ $(document).ready(async function () {
                 stopOnFocus: true
             }).showToast();
 
-            await getList();
+            
 
         } catch (e) {
             const myModalDel = tailwind.Modal.getInstance(document.querySelector("#delete-confirmation-modal"));
@@ -237,7 +180,9 @@ $(document).ready(async function () {
             console.log(e);
 
         }
-    }
+    });
+
+
 
     //PAGINATION HANDLING
 
@@ -355,6 +300,24 @@ $(document).ready(async function () {
 
 
     //TOOL 
+    function sortBy(field) {
+        cateList.sort(function (a, b) {
+            const A = a[field];
+            const B = b[field];
+            if (A < B) {
+                return -1;
+            }
+            if (A > B) {
+                return 1; 
+            }
+            return 0;
+        });
+    }
+    
+    $(".sortby-select").change(async function () {
+        sortBy($(this).val());
+        await updatePagination(pagination);
+    });
 
     async function searchFor(field, keyWords) {
         try {
@@ -373,8 +336,8 @@ $(document).ready(async function () {
             if (res && res.length > 0) {
                 cateList = [];
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].isDeleted == true) {
-                        cateList.push(res[i]);
+                    if (res[i].isDeleted != true) {
+                        cateList.push(res[i])
                     }
                 }
                 console.log(cateList)
@@ -382,6 +345,10 @@ $(document).ready(async function () {
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
                 console.log(res);
+            }
+            else {
+                $(".loading").css("display", "none");
+                $(".cantSearch").css("display", "block");
             }
         } catch (e) {
             console.log(e);
@@ -393,8 +360,8 @@ $(document).ready(async function () {
     $(".search-btn").click(async function () {
         var field = $(".filter-select").val();
         var keyWords = $(".search-box-table").val();
-        if (keyWords == null || keyWords == "") keyWords = "*";
-        if (field == null || field == "") field = "name";
+        if (keyWords == null || keyWords=="") keyWords = "*";
+        if (field == null || field == "") field = "image";
         await searchFor(field, keyWords);
     });
 
@@ -418,12 +385,11 @@ $(document).ready(async function () {
         $(".filter-select").find(".default").prop("selected", true);
     }
 
-    //USER
 
-    async function getRoom(roomId) {
+    async function getCate(cateId) {
         try {
             const res = await $.ajax({
-                url: HOST + "/api/Room/" + roomId,
+                url: HOST + "/api/Gallery/GalleryCategory/" + cateId,
                 type: "GET",
                 headers: {
                     Authorization: `Bearer ${accessToken}`

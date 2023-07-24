@@ -2,16 +2,16 @@
 	ViewData["Title"] = "Room Category";
 
 	var boxNotice = new BoxModalViewModel()
-	{
-		Id = "notice-notification-content",
-		Title = "Record moved to trash!",
-		Text = "Remove the item successfully",
-		Icon = "trash-2",
-		IconColor = "text-success"
-	};
+			{
+				Id = "notice-notification-content",
+				Title = "Record moved to trash!",
+				Text = "Remove the item successfully",
+				Icon = "trash-2",
+				IconColor = "text-success"
+			};
 }
 <style>
-	#description{
+	#description {
 		--tw-bg-opacity: 1;
 		background-color: rgb(var(--color-slate-100) / var(--tw-bg-opacity));
 		-webkit-appearance: none;
@@ -28,7 +28,7 @@
 		font-size: 1rem;
 		line-height: 1.5rem;
 		--tw-shadow: 0 0 #0000;
-		min-height:3rem;
+		min-height: 3rem;
 	}
 </style>
 
@@ -168,7 +168,7 @@
 					<div class="px-5 pb-8 text-center">
 						<button type="button" data-tw-dismiss="modal"
 								class="btn btn-outline-secondary w-24 mr-1">
-							Cancel 
+							Cancel
 						</button>
 						<button type="button" class="btn btn-danger w-24 btn-remove">Delete</button>
 					</div>
@@ -248,7 +248,8 @@
 					</div>
 					<div class="col-span-12 sm:col-span-12">
 						<label for="description" class="form-label">Description</label>
-						<div id="description" class="form-control" rows="3" disabled>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						<div id="description" class="form-control" rows="3" disabled>
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
 						</div>
 					</div>
 					<div class="col-span-3 sm:col-span-6">
@@ -282,23 +283,22 @@
 		</div>
 	</div>
 	<!-- END: Modal Details Content -->
-
 	<!-- BEGIN: Modal Notice Content -->
 	@await Component.InvokeAsync("NoticeModal", boxNotice)
 	<!-- END: Modal Notice Content -->
-
-		<!-- BEGIN: Modal Content -->
+	<!-- BEGIN: Modal Content -->
 	@await Component.InvokeAsync("WarningModal")
 	<!-- END: Modal Content -->
 </div>
 
 @section Scripts{
-	<script>
-		$('.side-accommodation').addClass("side-menu--active");
-		$('.side-roomCategory').addClass("side-menu--active");
-		$('.side-roomCategory-list').addClass("side-menu--active");
-		$('.side-accommodation-wrapper').addClass("side-menu__sub-open");
-		$('.side-roomCategory-wrapper').addClass("side-menu__sub-open");
-	</script>
-	<script src="~/js/roomCategory/roomCategory-index.js" type="module"></script>
+
+<script>
+	$('.side-accommodation').addClass("side-menu--active");
+	$('.side-roomCategory').addClass("side-menu--active");
+	$('.side-roomCategory-list').addClass("side-menu--active");
+	$('.side-accommodation-wrapper').addClass("side-menu__sub-open");
+	$('.side-roomCategory-wrapper').addClass("side-menu__sub-open");
+</script>
+<script src="~/js/roomCategory/roomCategory-index.js" type="module"></script>
 }

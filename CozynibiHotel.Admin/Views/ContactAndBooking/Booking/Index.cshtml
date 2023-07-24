@@ -1,0 +1,500 @@
+﻿@{
+	ViewData["Title"] = "Booking List";
+
+	var boxNotice = new BoxModalViewModel()
+			{
+				Id = "notice-notification-content",
+				Title = "Record moved to trash!",
+				Text = "Remove the item successfully",
+				Icon = "trash-2",
+				IconColor = "text-success"
+			};
+
+	var boxSuccess = new BoxModalViewModel()
+	{
+		Title = "Confirm successfully",
+		Text = "Checkin code and information were sent for custommer",
+		LstButton = new List<Button>()
+		{
+			new Button("Finish", "btn-primary", "window.location.href='/Admin/ContactAndBooking/Booking';")
+		}
+
+	};
+
+	var boxQRSucceess = new BoxModalViewModel()
+	{
+		Id = "qr-success-modal",
+		Title = "Information is correct!",
+		Text = "Details information will be showed now",
+		Icon = "check-circle",
+		IconColor = "text-success"
+	};
+
+	var boxQRFail = new BoxModalViewModel()
+	{
+		Id = "qr-fail-modal",
+		Title = "Information is Incorrect!",
+		Text = "Please check or scan again",
+		Icon = "x-circle",
+		IconColor = "text-danger"
+	};
+}
+<style>
+	#content,#contentQR{
+		--tw-bg-opacity: 1;
+		background-color: rgb(var(--color-slate-100) / var(--tw-bg-opacity));
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		/* background-color: #fff; */
+		/* border-color: #6b7280; */
+		border-width: 1px;
+		/* border-radius: 0px; */
+		padding-top: 0.5rem;
+		padding-right: 0.75rem;
+		padding-bottom: 0.5rem;
+		padding-left: 0.75rem;
+		font-size: 1rem;
+		line-height: 1.5rem;
+		--tw-shadow: 0 0 #0000;
+		min-height: 3rem;
+	}
+
+	#modal-qrScan #reader__scan_region img  {
+		width:  100px;
+		margin:  auto;
+	}
+</style>
+
+@await Component.InvokeAsync("Loading")
+@await Component.InvokeAsync("CanNotSearch")
+<div class="content main-content" style="display:none;">
+	<h2 class="intro-y text-lg font-medium mt-10">
+		Booking List
+	</h2>
+	<div class="grid grid-cols-12 gap-6 mt-5">
+		<div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+			<button class="btn btn-primary shadow-md mr-2" onclick="window.location.href = '/Admin/ContactAndBooking/Booking/AddNew'">Add New Booking</button>
+			<button class="btn btn-primary shadow-md mr-2 btn-scanQR"
+						data-tw-toggle="modal" data-tw-target="#modal-qrScan">
+				<i class="w-4 h-4 mr-2" data-lucide="camera"></i>
+				Scan Custommer QR
+			</button>
+			<div class="dropdown">
+				<button class="dropdown-toggle btn px-2 box" aria-expanded="false"
+						data-tw-toggle="dropdown">
+					<span class="w-5 h-5 flex items-center justify-center">
+						<i class="w-4 h-4"
+						   data-lucide="plus"></i>
+					</span>
+				</button>
+				<div class="dropdown-menu w-40">
+					<ul class="dropdown-content">
+						<li>
+							<a href="#" class="dropdown-item">
+								<i data-lucide="printer"
+								   class="w-4 h-4 mr-2"></i> Print
+							</a>
+						</li>
+						<li>
+							<a href="#" class="dropdown-item">
+								<i data-lucide="file-text"
+								   class="w-4 h-4 mr-2"></i> Export to Excel
+							</a>
+						</li>
+						<li>
+							<a href="#" class="dropdown-item">
+								<i data-lucide="file-text"
+								   class="w-4 h-4 mr-2"></i> Export to PDF
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="showing-page-title hidden md:block mx-auto text-slate-500">Showing 1 to 10 of 150 entries</div>
+			<div class="w-full xl:w-auto flex items-center mt-3 xl:mt-0">
+				<div class="w-56 relative text-slate-500">
+					<input type="text" class="form-control w-56 box pr-10 search-box-table" placeholder="Search...">
+					<i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0 search-btn" data-lucide="search"></i>
+				</div>
+				<select class="filter-select w-56 xl:w-auto form-select box ml-2">
+					<option value="name" disabled selected class="default">Filter by</option>
+					<option value="name">All</option>
+					<option value="isActive">Status</option>
+					<option value="fullName">Name</option>
+					<option value="id">Id</option>
+					<option value="adults">Adults</option>
+					<option value="children">Children</option>
+				</select>
+				<select class="sortby-select w-56 xl:w-auto form-select box ml-2">
+					<option disabled selected class="default">Sort by</option>
+					<option value="isActive">Status</option>
+					<option value="fullName">Name</option>
+					<option value="id">Id</option>
+					<option value="adults">Adults</option>
+					<option value="children">Children</option>
+					<option value="checkIn">Check In Time</option>
+					<option value="checkOut">Check Out Time</option>
+				</select>
+			</div>
+		</div>
+		<!-- BEGIN: Data List -->
+		<div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
+			<table class="table table-report -mt-2">
+				<thead>
+					<tr>
+						<th class="whitespace-nowrap">ID</th>
+						<th class="whitespace-nowrap">CUSTOMMER NAME</th>
+						<th class="text-center whitespace-nowrap">EMAIL</th>
+						<th class="text-center whitespace-nowrap">CHECKIN AT</th>
+						<th class="text-center whitespace-nowrap">CHECKOUT AT</th>
+						<th class="text-center whitespace-nowrap">ACTIONS</th>
+						<th class="text-center whitespace-nowrap">CONFIRM</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- END: Data API -->
+				</tbody>
+			</table>
+		</div>
+		<!-- END: Data List -->
+		<!-- BEGIN: Pagination -->
+		<div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+			<nav class="w-full sm:w-auto sm:mr-auto">
+				<ul class="pagination">
+					<li class="page-item prev-page">
+						<a class="page-link">
+							<i class="w-4 h-4" data-lucide="chevron-left"></i>
+						</a>
+					</li>
+					<li class="page-item more-page-before" style="display:none;"> <a class="page-link">...</a> </li>
+					<li class="page-item more-page-after" style="display:none;"> <a class="page-link">...</a> </li>
+					<li class="page-item next-page">
+						<a class="page-link">
+							<i class="w-4 h-4" data-lucide="chevron-right"></i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+			<select class="pageSize-select w-20 form-select box mt-3 sm:mt-0">
+				<option value="10">10</option>
+				<option value="25">25</option>
+				<option value="35">35</option>
+				<option value="50">50</option>
+				<option value="1">1</option>
+			</select>
+		</div>
+		<!-- END: Pagination -->
+	</div>
+	<!-- BEGIN: Delete Confirmation Modal -->
+	<div id="delete-confirmation-modal" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body p-0">
+					<div class="p-5 text-center">
+						<i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+						<div class="text-3xl mt-5">Are you sure?</div>
+						<div class="text-slate-500 mt-2">
+							Do you really want to delete these records?
+							<br>
+							This process cannot be undone.
+						</div>
+					</div>
+					<div class="px-5 pb-8 text-center">
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-secondary w-24 mr-1">
+							Cancel
+						</button>
+						<button type="button" class="btn btn-danger w-24 btn-remove">Delete</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END: Delete Confirmation Modal -->
+	<!-- BEGIN: Modal Details Content -->
+	<div id="modal-details" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<!-- BEGIN: Modal Header -->
+				<div class="modal-header">
+					<h2 class="font-medium text-base mr-auto">Details</h2> <button class="btn btn-outline-secondary hidden sm:flex">
+						<i data-lucide="file"
+						   class="w-4 h-4 mr-2"></i> Download Information
+					</button>
+					<div class="dropdown sm:hidden">
+						<a class="dropdown-toggle w-5 h-5 block"
+						   href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown">
+							<i data-lucide="more-horizontal" class="w-5 h-5 text-slate-500"></i>
+						</a>
+						<div class="dropdown-menu w-40">
+							<ul class="dropdown-content">
+								<li>
+									<a href="javascript:;" class="dropdown-item">
+										<i data-lucide="file"
+										   class="w-4 h-4 mr-2"></i> Download Information
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- END: Modal Header -->
+				<!-- BEGIN: Modal Body -->
+				<div class="modal-body grid grid-cols-12 gap-2 gap-y-3">
+					<div class="col-span-2 sm:col-span-2">
+						<label for="id" class="form-label">ID</label>
+						<input id="id" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-10 sm:col-span-10">
+						<label for="name" class="form-label">Full Name</label>
+						<input id="name" type="text" class="form-control"
+							   disabled>
+					</div>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="isConfirm" class="form-label">CONFIRM BOOKING</label>
+						<input id="isConfirm" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="isSuccess" class="form-label">TAKE ROOM</label>
+						<input id="isSuccess" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="checkInCode" class="form-label">Check In Code</label>
+						<input id="checkInCode" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="email" class="form-label">Email</label>
+						<input id="email" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="phoneNumber" class="form-label">Phone Number</label>
+						<input id="phoneNumber" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label for="adults" class="form-label">Adults</label>
+						<input id="adults" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label for="children" class="form-label">Childrens</label>
+						<input id="children" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label for="checkIn" class="form-label">Check In</label>
+						<input id="checkIn" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label for="checkOut" class="form-label">Check Out</label>
+						<input id="checkOut" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="address" class="form-label">Address</label>
+						<input id="address" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="content" class="form-label">Content</label>
+						<div id="content" class="form-control" rows="3" disabled>
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						</div>
+					</div>
+					<div class="col-span-3 sm:col-span-6">
+						<label for="createdAt" class="form-label">Created At</label>
+						<input id="createdAt" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-6">
+						<label for="createdBy" class="form-label">Created By</label>
+						<input id="createdBy" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-6">
+						<label for="updatedAt" class="form-label">Updated At</label>
+						<input id="updatedAt" type="text" class="form-control"
+							   disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-6">
+						<label for="updatedBy" class="form-label">Updated By</label>
+						<input id="updatedBy" type="text" class="form-control" disabled>
+					</div>
+				</div>
+				<!-- END: Modal Body -->
+				<!-- BEGIN: Modal Footer -->
+				<div class="modal-footer">
+					<button type="button" data-tw-dismiss="modal"
+							class="btn btn-outline-secondary w-20 mr-1 btn-close">
+						Close
+					</button>
+				</div>
+				<!-- END: Modal Footer -->
+			</div>
+		</div>
+	</div>
+
+	<div id="modal-details-QR" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<!-- BEGIN: Modal Header -->
+				<div class="modal-header">
+					<h2 class="font-medium text-base mr-auto">Custommer booking information</h2> 
+				</div>
+				<!-- END: Modal Header -->
+				<!-- BEGIN: Modal Body -->
+				<div class="modal-body grid grid-cols-12 gap-2 gap-y-3">
+					<div class="col-span-2 sm:col-span-2">
+						<label for="idQR" class="form-label">ID</label>
+						<input id="idQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-10 sm:col-span-10">
+						<label for="nameQR" class="form-label">Full Name</label>
+						<input id="nameQR" type="text" class="form-control"
+							   disabled>
+					</div>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="isConfirmQR" class="form-label">CONFIRM BOOKING</label>
+						<input id="isConfirmQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="isSuccessQR" class="form-label">TAKE ROOM</label>
+						<input id="isSuccessQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="checkInCodeQR" class="form-label">Check In Code</label>
+						<input id="checkInCodeQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="emailQR" class="form-label">Email</label>
+						<input id="emailQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="phoneNumberQR" class="form-label">Phone Number</label>
+						<input id="phoneNumberQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label for="adultsQR" class="form-label">Adults</label>
+						<input id="adultsQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label for="childrenQR" class="form-label">Childrens</label>
+						<input id="childrenQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label for="checkInQR" class="form-label">Check In</label>
+						<input id="checkInQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label for="checkOutQR" class="form-label">Check Out</label>
+						<input id="checkOutQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="addressQR" class="form-label">Address</label>
+						<input id="addressQR" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="contentQR" class="form-label">Content</label>
+						<div id="contentQR" class="form-control" rows="3" disabled>
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						</div>
+					</div>
+				</div>
+				<!-- END: Modal Body -->
+				<!-- BEGIN: Modal Footer -->
+				<div class="modal-footer">
+					<button type="button" data-tw-dismiss="modal" style="color:#fff"
+							class="btn btn-success w-40 mr-1 btn-addNewCustommer">
+						Take room
+					</button>
+					<button type="button" data-tw-dismiss="modal"
+							class="btn btn-outline-secondary w-20 mr-1 btn-close-boxQR">
+						Close
+					</button>
+				</div>
+				<!-- END: Modal Footer -->
+			</div>
+		</div>
+	</div>
+	<!-- END: Modal Details Content -->
+	<div id="modal-confirm" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body p-0">
+					<div class="p-5 text-center">
+						<div class="text-3xl mt-5 flex" style="justify-content:center;align-items:center">
+							<i data-lucide="check-circle" class="w-10 h-10 text-success mr-2"></i>
+							<span>Confirm booking</span>
+						</div>
+						<div class="text-slate-500 mt-2">Email with check in code will be send for custommer</div>
+					</div>
+					<div class="px-5 pb-8 grid grid-cols-12 gap-2 gap-y-3">
+						<div class="col-span-12 sm:col-span-12">
+							<label for="nameConfirm" class="form-label">Full Name</label>
+							<input id="nameConfirm" type="text" class="form-control"
+								   disabled>
+						</div>
+						<div class="col-span-6 sm:col-span-6">
+							<label for="emailConfirm" class="form-label">Email</label>
+							<input id="emailConfirm" type="text" class="form-control" disabled>
+						</div>
+						<div class="col-span-6 sm:col-span-6">
+							<label for="phoneNumberConfirm" class="form-label">Phone Number</label>
+							<input id="phoneNumberConfirm" type="text" class="form-control" disabled>
+						</div>
+						<div class="col-span-6 sm:col-span-6">
+							<label for="checkInConfirm" class="form-label">Check In</label>
+							<input id="checkInConfirm" type="datetime-local" class="form-control" disabled>
+						</div>
+						<div class="col-span-6 sm:col-span-6">
+							<label for="checkOutConfirm" class="form-label">Check Out</label>
+							<input id="checkOutConfirm" type="datetime-local" class="form-control" disabled>
+						</div>
+					</div>
+					<div class="px-5 pb-8 text-center">
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-success btn-confirm-sure w-80 mr-1">
+							Confirm and send email
+						</button>
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-secondary w-20 mr-1">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- BEGIN: Modal Details Content -->
+
+	<div id="modal-qrScan" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div id="reader" style="text-align:center"></div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- END: Modal Details Content -->
+	<!-- BEGIN: Modal Notice Content -->
+	@await Component.InvokeAsync("NoticeModal", boxNotice)
+	@await Component.InvokeAsync("NoticeModal", boxQRSucceess)
+	@await Component.InvokeAsync("NoticeModal", boxQRFail)
+	<!-- END: Modal Notice Content -->
+	<!-- BEGIN: Modal Content -->
+	@await Component.InvokeAsync("WarningModal")
+	<!-- END: Modal Content -->
+
+	<!-- BEGIN: Modal Success Content -->
+	@await Component.InvokeAsync("SuccessModal", boxSuccess)
+	<!-- END: Modal Success Content -->
+</div>
+
+@section Scripts{
+<script>
+	$('.side-contact').addClass("side-menu--active");
+	$('.side-booking').addClass("side-menu--active");
+	$('.side-booking-list').addClass("side-menu--active");
+	$('.side-booking-wrapper').addClass("side-menu__sub-open");
+	$('.side-contact-wrapper').addClass("side-menu__sub-open");
+</script>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script src="~/js/booking/booking-index.js" type="module"></script>
+
+
+}

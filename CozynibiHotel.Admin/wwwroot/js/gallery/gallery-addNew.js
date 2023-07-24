@@ -8,34 +8,15 @@ $(document).ready(async function () {
     var accessToken = $.cookie('AccessToken');
     var decoded = jwt_decode(accessToken);
     const USER_ID = decoded.Id;
-    const GET_ROOMS = HOST +"/api/Room"
+    const GET_CATEGORIES = HOST +"/api/Gallery/GalleryCategory"
     var cateList = [];
 
     var imgList = [];
-    var POST_RECORD = HOST + "/api/Custommer";
+    var POST_RECORD = HOST + "/api/Gallery";
     var newRecord = {
         Images: [],
-        FullName: "",
-        RoomId: 0,
-        PhoneNumber: "",
-        Email: "",
-        Address: "",
-        Country:"",
-        Comment: "",
+        CategoryId: 0,
     }
-
-    var editor;
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            placeholder: 'This is some sample content....'
-        })
-        .then(newEditor => {
-            editor = newEditor;
-        })
-        .catch(error => {
-            console.error(error);
-        });
-
 
     $(".section-preview").click(function () {
         $(".section-preview").addClass("border-transparent dark:border-transparent");
@@ -94,26 +75,10 @@ $(document).ready(async function () {
         for (var i = 0; i < imgList.length; i++) {
             newRecord.Images.push(imgList[i].name);
         }
-        //name
-        var name = $("#record-name").val();
-        var roomId = $("#room").val();
-        var phoneNumber = $("#phoneNumber").val();
-        var email = $("#email").val();
-        var address = $("#address").val();
-        var country = $("#country").val();
-        
-        //description
-        var comment = editor.getData();
+        var categoryId = $("#category").val();
 
-        //Map
-        newRecord.FullName = name;
-        newRecord.RoomId = roomId;
-        newRecord.PhoneNumber = phoneNumber;
-        newRecord.Email = email;
-        newRecord.Address = address;
-        newRecord.Country = country;
-        newRecord.Comment = comment;
         
+        newRecord.CategoryId = categoryId;
 
         console.log(newRecord);
 
@@ -145,7 +110,7 @@ $(document).ready(async function () {
 
     function getValidation(newRecord) {
         var validatObj = {
-            name: newRecord.FullName,
+            images: newRecord.Images
         }
         for (let prop in validatObj) {
             if (validatObj[prop] == null || validatObj[prop] == '' || validatObj[prop] == undefined) {
@@ -155,10 +120,10 @@ $(document).ready(async function () {
                 };
             }
         }
-        if (validatObj.name.length < 4 || validatObj.name.length >= 50) {
+        if (validatObj.images.length == 0) {
             return {
                 status: false,
-                message: "Checking the name field"
+                message: "Checking the images field"
             }
         }
         return {
@@ -169,14 +134,8 @@ $(document).ready(async function () {
 
     async function postNewRecord(newRecord, imagesUpload) {
         var formData = new FormData();
-        formData.append("FullName", newRecord.FullName);
         formData.append("Image", newRecord.Images[0]);
-        if (newRecord.RoomId != 0) formData.append("RoomId", newRecord.RoomId);
-        formData.append("PhoneNumber", newRecord.PhoneNumber);
-        formData.append("Email", newRecord.Email);
-        formData.append("Address", newRecord.Address);
-        formData.append("Country", newRecord.Country);
-        formData.append("Comment", newRecord.Comment);
+        if (newRecord.CategoryId!=0) formData.append("CategoryId", newRecord.CategoryId);
         formData.append("CreatedBy", USER_ID);
        
         formData.append("images", imagesUpload[0]);
@@ -206,7 +165,7 @@ $(document).ready(async function () {
 
                 const myModal = tailwind.Modal.getInstance(document.querySelector("#success-modal-preview"));
                 $("#success-modal-preview").on('blur', function () {
-                    window.location.href = '/Admin/Custommer';
+                    window.location.href = '/Admin/Gallery';
                 });
                 myModal.show();
             }
@@ -222,12 +181,12 @@ $(document).ready(async function () {
 
 
     //GET LIST CATEGORY
-    await getRooms();
+    await getCategories();
 
-    async function getRooms() {
+    async function getCategories() {
         try {
             const res = await $.ajax({
-                url: GET_ROOMS,
+                url: GET_CATEGORIES,
                 type: "GET",
                 headers: {
                     Authorization: `Bearer ${accessToken}`
@@ -240,7 +199,7 @@ $(document).ready(async function () {
             });
             if (res && res.length > 0) {
                 cateList = res;
-                renderListRoom(res);
+                renderListCategory(res);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
 
@@ -252,14 +211,14 @@ $(document).ready(async function () {
         }
     }
 
-    function renderListRoom(roomList) {
-        var cateHtml = `<option value="${0}" selected>Choose the room</option>`;
-        for (var i = 0; i < roomList.length; i++) {
+    function renderListCategory(catepList) {
+        var cateHtml = `<option value="${0}" selected>Choose the category</option>`;
+        for (var i = 0; i < catepList.length; i++) {
             cateHtml += `
-                <option value="${roomList[i].id}">${roomList[i].name}</option>
+                <option value="${catepList[i].id}">${catepList[i].name}</option>
             `;
         }
-        $("#room").append(cateHtml);
+        $("#category").append(cateHtml);
 
     }
 

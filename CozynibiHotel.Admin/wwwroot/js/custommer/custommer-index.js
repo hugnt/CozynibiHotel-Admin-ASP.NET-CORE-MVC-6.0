@@ -441,7 +441,7 @@ $(document).ready(async function () {
         var field = $(".filter-select").val();
         var keyWords = $(".search-box-table").val();
         if (keyWords == null || keyWords=="") keyWords = "*";
-        if (field == null || field == "") field = "name";
+        if (field == null || field == "") field = "fullName";
         await searchFor(field, keyWords);
     });
 

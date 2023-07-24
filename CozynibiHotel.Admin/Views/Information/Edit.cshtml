@@ -1,0 +1,178 @@
+﻿ @{
+	ViewData["Title"] = "Edit Information";
+
+	var boxSuccess = new BoxModalViewModel()
+			{
+				Title = "Updated successfully",
+				Text = "Continue to add a new one or go to the list",
+				LstButton = new List<Button>()
+		{
+			new Button("Finish", "btn-primary", "window.location.href='/Admin/Information';"),
+			new Button("Resfesh", "btn-primary", "window.location.reload();"),
+		}
+
+			};
+}
+
+
+<style>
+	#equipment-select-ts-control {
+		min-height: 2.4rem !important;
+	}
+
+</style>
+<!-- BEGIN: Content -->
+@await Component.InvokeAsync("Loading")
+<div class="content main-content" style="display:none;">
+	<div class="intro-y flex items-center mt-8">
+		<h2 class="text-lg font-medium mr-auto">
+			Edit Information
+		</h2>
+	</div>
+	<!-- BEGIN: Profile Info -->
+	<div class="intro-y tab-content mt-5">
+		<div id="dashboard" class="tab-pane active" role="tabpanel" aria-labelledby="dashboard-tab">
+			<!-- BEGIN: Contact & address -->
+			<div class="intro-y box">
+				<div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+					<h2 class="font-medium text-base mr-auto">
+						Contact & Address
+					</h2>
+				</div>
+				<div class="p-5">
+					<div class="grid grid-cols-12 gap-2 gap-y-3">
+						<div class="col-span-12 sm:col-span-12">
+							<label for="phoneNumber" class="form-label"> Phone Number</label>
+							<input id="phoneNumber" type="text" class="form-control" value="09223322">
+						</div>
+						<div class="mt-3 col-span-12 sm:col-span-12">
+							<label for="email" class="form-label">Email</label>
+							<input id="email" type="text" class="form-control" value="RussellCrowe @@gmail.com">
+						</div>
+						<div class="mt-3 col-span-12 sm:col-span-12">
+							<label for="website" class="form-label">Website</label>
+							<input id="website" type="text" class="form-control" value="ConizibiHotel.com">
+						</div>
+						<div class="mt-3 col-span-12 sm:col-span-12">
+							<label for="address" class="form-label">Address</label>
+							<textarea id="address" class="form-control">10 Anson Road, International Plaza, #10-11, 079903 Singapore, Singapore</textarea>
+						</div>
+						<div class="mt-3 col-span-12 sm:col-span-12">
+							<label for="googleMap" class="form-label flex"><i data-lucide="link" class="w-4 h-4 mr-2"></i>Google Map Link</label>
+							<input id="googleMap" type="text" class="form-control" value="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d20767.523870929625!2d105.80116097212839!3d21.008135515573954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x3135ab7aba3cad95%3A0x7abbb4b806e8073d!2zVmnhu4duIEPDtG5nIE5naOG7hyBWw6AgxJDDoG8gVOG6oW8gRGV2bWFzdGVyLCBQaOG7kSBWxakgTmfhu41jIFBoYW4sIEzDoW5nIEjhuqEsIMSQ4buRbmcgxJBhLCBIw6AgTuG7mWk!3m2!1d21.013478199999998!2d105.8113758!5e0!3m2!1svi!2s!4v1672223894146!5m2!1svi!2s">
+						</div>
+						<div class="mt-3 col-span-12 sm:col-span-12">
+							<iframe title='gg-map'
+									src=""
+									style="border: 0;width:100%; height: 10rem"
+									allowFullScreen=""
+									loading="lazy"
+									referrerPolicy="no-referrer-when-downgrade"
+									class='gg-map'>
+							</iframe>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- END: Contact & address -->
+			<!-- BEGIN: Social Media -->
+			<div class="intro-y box mt-5">
+				<div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+					<h2 class="font-medium text-base mr-auto">
+						Social Media
+					</h2>
+				</div>
+				<div class="p-5">
+					<div class="grid grid-cols-12 gap-2 gap-y-3">
+						<div class="col-span-4 sm:col-span-4">
+							<label for="inforFacebook" class="form-label flex"> Facebook</label>
+							<input id="inforFacebook" type="text" class="form-control" placeholder="Facebook Name">
+						</div>
+						<div class="col-span-8 sm:col-span-8">
+							<label for="facebookLink" class="form-label flex">&nbsp;</label>
+							<div class="input-group" id="facebookLink">
+								<div class="input-group-text"><i data-lucide="link" class="w-4 h-4"></i></div>
+								<input id="infor-facebookLink" type="text" class="form-control" placeholder="Facebook Link" />
+							</div>
+						</div>
+						<div class="col-span-4 sm:col-span-4">
+							<label for="inforInstar" class="form-label flex"> Instagram</label>
+							<input id="inforInstar" type="text" class="form-control" placeholder="Instagram Name">
+						</div>
+						<div class="col-span-8 sm:col-span-8">
+							<label for="instarLink" class="form-label flex">&nbsp;</label>
+							<div class="input-group" id="instarLink">
+								<div class="input-group-text"><i data-lucide="link" class="w-4 h-4"></i></div>
+								<input id="infor-instarLink" type="text" class="form-control" placeholder="Instagram Link" />
+							</div>
+						</div>
+						<div class="col-span-4 sm:col-span-4">
+							<label for="inforTwitter" class="form-label flex"> Twitter</label>
+							<input id="inforTwitter" type="text" class="form-control" placeholder="Twitter Name">
+						</div>
+						<div class="col-span-8 sm:col-span-8">
+							<label for="twitterLink" class="form-label flex">&nbsp;</label>
+							<div class="input-group" id="twitterLink">
+								<div class="input-group-text"><i data-lucide="link" class="w-4 h-4"></i></div>
+								<input id="infor-twitterLink"  type="text" class="form-control" placeholder="Twitter Link" />
+							</div>
+						</div>
+
+						<div class="col-span-4 sm:col-span-4">
+							<label for="inforYoutube" class="form-label flex"> Youtube</label>
+							<input id="inforYoutube" type="text" class="form-control" placeholder="Youtube Chanel">
+						</div>
+						<div class="col-span-8 sm:col-span-8">
+							<label for="youtubeLink" class="form-label flex">&nbsp;</label>
+							<div class="input-group" id="twitterLink">
+								<div class="input-group-text"><i data-lucide="link" class="w-4 h-4"></i></div>
+								<input id="infor-youtubeLink" type="text" class="form-control" placeholder="Youtube Link" />
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- END: Social Media -->
+		</div>
+		<div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
+			<button type="button" onclick="window.location.href='/Admin/Information';"
+					class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">
+
+				Cancel
+
+			</button>
+			<button type="button" onclick="window.location.reload()"
+					class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">
+
+				Reset
+
+			</button>
+			<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-update">Save & Update Information</button>
+		</div>
+	</div>
+	<!-- END: Profile Info -->
+	<!-- BEGIN: Failed Notification Content -->
+	@await Component.InvokeAsync("FailedModal")
+	<!-- END: Failed Notification Content -->
+	<!-- BEGIN: Modal Content -->
+	@await Component.InvokeAsync("WarningModal")
+	<!-- END: Modal Content -->
+	<!-- BEGIN: Modal Success Content -->
+	@await Component.InvokeAsync("SuccessModal", boxSuccess)
+	<!-- END: Modal Success Content -->
+</div>
+
+<!-- END: Content -->
+@section Scripts{
+<script>
+	$('.side-information').addClass("side-menu--active");
+	$('.side-information-edit').addClass("side-menu--active");
+	$('.side-information-wrapper').addClass("side-menu__sub-open");
+	
+</script>
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
+<script src="~/js/information/information-edit.js" type="module"></script>
+
+}

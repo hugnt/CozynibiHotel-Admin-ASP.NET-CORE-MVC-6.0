@@ -9,12 +9,19 @@
   <ItemGroup>
     <Content Remove="wwwroot\js\article\article-index.js" />
     <Content Remove="wwwroot\js\article\article-trash.js" />
+    <Content Remove="wwwroot\js\booking\booking-index.js" />
+    <Content Remove="wwwroot\js\booking\booking-trash.js" />
+    <Content Remove="wwwroot\js\contact\contact-index.js" />
+    <Content Remove="wwwroot\js\contact\contact-trash.js" />
     <Content Remove="wwwroot\js\custommer\custommer-index.js" />
     <Content Remove="wwwroot\js\custommer\custommer-trash.js" />
     <Content Remove="wwwroot\js\foodCategory\foodCategory-index.js" />
     <Content Remove="wwwroot\js\foodCategory\foodCategory-trash.js" />
     <Content Remove="wwwroot\js\food\food-index.js" />
     <Content Remove="wwwroot\js\food\food-trash.js" />
+    <Content Remove="wwwroot\js\gallery\gallery-index.js" />
+    <Content Remove="wwwroot\js\gallery\gallery-trash.js" />
+    <Content Remove="wwwroot\js\information\information-index.js" />
     <Content Remove="wwwroot\js\newsCategory\newsCategory-index.js" />
     <Content Remove="wwwroot\js\newsCategory\newsCategory-trash.js" />
     <Content Remove="wwwroot\js\news\news-index.js" />
@@ -33,8 +40,15 @@
   <ItemGroup>
     <None Include="wwwroot\js\article\article-index.js" />
     <None Include="wwwroot\js\article\article-trash.js" />
+    <None Include="wwwroot\js\booking\booking-index.js" />
+    <None Include="wwwroot\js\booking\booking-trash.js" />
+    <None Include="wwwroot\js\contact\contact-index.js" />
+    <None Include="wwwroot\js\contact\contact-trash.js" />
+    <None Include="wwwroot\js\information\information-index.js" />
     <None Include="wwwroot\js\custommer\custommer-index.js" />
     <None Include="wwwroot\js\custommer\custommer-trash.js" />
+    <None Include="wwwroot\js\gallery\gallery-index.js" />
+    <None Include="wwwroot\js\gallery\gallery-trash.js" />
     <None Include="wwwroot\js\news\news-index.js" />
     <None Include="wwwroot\js\news\news-trash.js" />
     <None Include="wwwroot\js\newsCategory\newsCategory-index.js" />

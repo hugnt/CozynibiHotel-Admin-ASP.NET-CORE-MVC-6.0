@@ -11,32 +11,32 @@ namespace CozynibiHotel.Admin.Controllers.Menu
 {
 
     [CustomAuthorize]
-    [Route("Admin/Menu/FoodCategory")]
-    public class ContactController : Controller
+    [Route("Admin/Gallery")]
+    public class GalleryController : Controller
     {
         [Route("")]
         [Route("Index")]
         public IActionResult Index()
         {
-            return View("~/Views/Menu/FoodCategory/Index.cshtml");
+            return View();
         }
 
         [Route("AddNew")]
         public IActionResult AddNew()
         {
-            return View("~/Views/Menu/FoodCategory/AddNew.cshtml");
+            return View();
         }
 
         [Route("Edit/{id}")]
         public IActionResult Edit(int id)
         {
-            return View("~/Views/Menu/FoodCategory/Edit.cshtml");
+            return View();
         }
 
         [Route("Trash")]
         public IActionResult Trash()
         {
-            return View("~/Views/Menu/FoodCategory/Trash.cshtml");
+            return View();
         }
     }
 }
