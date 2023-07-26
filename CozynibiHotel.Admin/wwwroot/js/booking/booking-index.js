@@ -1,14 +1,19 @@
 ﻿import { lucide } from '../icons.js'
 import { HOST, GET_IMAGE_URL } from '../env.js'
+import jwt_decode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm'
 
 
 $(document).ready(async function () {
     var BASE_URL = HOST + "/api/Booking";
     var cateList = [];
     var RECORD_ID = 0;
+    const GET_ROOMS = HOST + "/api/Room"
+    const POST_CUSTOMMER = HOST + "/api/Custommer"
+    var roomList = [];
     //GET TOKEN
     var accessToken = $.cookie('AccessToken');
-
+    var decoded = jwt_decode(accessToken);
+    const USER_ID = decoded.Id;
 
     //PAGINATION
     var pagination = {
@@ -246,6 +251,29 @@ $(document).ready(async function () {
     });
 
     //CONFIRM AND CHECKING QR
+
+    function postAddNewCustommer(infor) {
+        $('#nameTakeRoom').val(infor.fullName);
+        $('#checkInCodeTakeRoom').val(infor.checkInCode);
+        $('#checkInTakeRoom').val(infor.checkIn);
+        $('#checkOutTakeRoom').val(infor.checkOut);
+        const myModalTakeRoom = tailwind.Modal.getInstance(document.querySelector("#modal-takeRoom"));
+        myModalTakeRoom.show();
+        $(".btn-addCustommer").click(async function () {
+            const myModalQR = tailwind.Modal.getInstance(document.querySelector("#modal-details-QR"));
+            myModalQR.hide();
+            myModalTakeRoom.hide();
+            infor.roomId = $("#room").val();
+            var postCustommer = await postNewRecord(infor);
+            if (postCustommer) {
+                await putRecordSuccess(infor.id, true);
+            }
+        });
+
+
+
+    }
+
     async function putConfirmBooking(ID) {
         const PUT_RECORD = HOST + "/api/Booking/ConfirmBooking/" + ID;
         try {
@@ -336,6 +364,15 @@ $(document).ready(async function () {
                 myModalQRSScan.hide();
                 const myModalQR = tailwind.Modal.getInstance(document.querySelector("#modal-details-QR"));
                 myModalQR.show();
+                if (infor.isSuccess == true) {
+                    $(".btn-takeRoom").prop("disabled", true);
+                }
+                else {
+                    $(".btn-takeRoom").prop("disabled", false);
+                }
+                $(".btn-takeRoom").click(function () {
+                    if (infor.isSuccess != true) postAddNewCustommer(infor);
+                });
             }
         } catch (e) {
             $(".loading").css("display", "none");
@@ -354,6 +391,99 @@ $(document).ready(async function () {
 
         }
     }
+
+    async function postNewRecord(newRecord) {
+        var formData = new FormData();
+        formData.append("FullName", newRecord.fullName);
+        if (newRecord.roomId != 0) formData.append("RoomId", newRecord.roomId);
+        formData.append("PhoneNumber", newRecord.phoneNumber);
+        formData.append("Email", newRecord.email);
+        formData.append("CheckInCode", newRecord.checkInCode);
+        formData.append("Address", newRecord.address);
+        formData.append("CreatedBy", USER_ID);
+
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+        try {
+            const res = await $.ajax({
+                url: POST_CUSTOMMER,
+                type: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+            if (res && res.length > 0) {
+                console.log(res);
+                $(".loading").css("display", "none");
+                $(".main-content").css("display", "block");
+                Toastify({
+                    node: $("#takeRoom-success-modal").clone().removeClass("hidden")[0],
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true
+                }).showToast();
+
+                return true;
+            }
+        } catch (e) {
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModalWarning = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+            myModalWarning.show();
+            console.log(e);
+            return false;
+
+        }
+    }
+
+    async function putRecordSuccess(ID, status) {
+        const PUT_RECORD = HOST + "/api/Booking/" + ID + "/TakeRoom/" + status;
+        var formData = new FormData();
+        formData.append("bookingId", ID);
+        formData.append("isSuccess", status);
+        try {
+            const res = await $.ajax({
+                url: PUT_RECORD,
+                type: "PUT",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+
+            await getList();
+
+        } catch (e) {
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+            myModal.show();
+            console.log(e);
+
+        }
+    }
+
 
     //PAGINATION HANDLING
 
@@ -575,6 +705,49 @@ $(document).ready(async function () {
         }
     }
 
+    await getRooms();
 
+    async function getRooms() {
+        try {
+            const res = await $.ajax({
+                url: GET_ROOMS,
+                type: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                contentType: "application/json",
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+            if (res && res.length > 0) {
+                roomList = [];
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].isActive != true) {
+                        roomList.push(res[i]);
+                    }
+                }
+                renderListRoom(roomList);
+                $(".loading").css("display", "none");
+                $(".main-content").css("display", "block");
 
+            }
+        } catch (e) {
+            console.log(e);
+            $(".main-layout").css("display", "none");
+            $(".notfound").css("display", "block");
+        }
+    }
+
+    function renderListRoom(roomList) {
+        var cateHtml = `<option value="${0}" selected>Choose the room</option>`;
+        for (var i = 0; i < roomList.length; i++) {
+            cateHtml += `
+                <option value="${roomList[i].id}">${roomList[i].name}</option>
+            `;
+        }
+        $("#room").append(cateHtml);
+
+    }
 });

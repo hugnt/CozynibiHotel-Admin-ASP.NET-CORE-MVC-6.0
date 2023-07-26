@@ -20,6 +20,15 @@
 		}
 
 	};
+	var boxTakeRoomSucceess = new BoxModalViewModel()
+	{
+		Id = "takeRoom-success-modal",
+		Title = "Take room successfully!",
+		Text = "Go to Custommer List to see details and edit",
+		Icon = "check-circle",
+		IconColor = "text-success"
+	};
+
 
 	var boxQRSucceess = new BoxModalViewModel()
 	{
@@ -397,8 +406,8 @@
 				<!-- END: Modal Body -->
 				<!-- BEGIN: Modal Footer -->
 				<div class="modal-footer">
-					<button type="button" data-tw-dismiss="modal" style="color:#fff"
-							class="btn btn-success w-40 mr-1 btn-addNewCustommer">
+					<button type="button" style="color:#fff"
+							class="btn btn-success w-40 mr-1 btn-takeRoom">
 						Take room
 					</button>
 					<button type="button" data-tw-dismiss="modal"
@@ -459,6 +468,57 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="modal-takeRoom" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body p-0">
+					<div class="p-5 text-center">
+						<div class="text-3xl mt-5 flex" style="justify-content:center;align-items:center">
+							<i data-lucide="bed-double" class="w-10 h-10 text-success mr-2"></i>
+							<span>Confirm take room</span>
+						</div>
+						<div class="text-slate-500 mt-2">Select a room to take a room, then this information will ve moved on custommer list</div>
+					</div>
+					<div class="px-5 pb-8 grid grid-cols-12 gap-2 gap-y-3">
+						<div class="col-span-12 sm:col-span-12">
+							<label for="nameTakeRoom" class="form-label">Full Name</label>
+							<input id="nameTakeRoom" type="text" class="form-control"
+								   disabled>
+						</div>
+						<div class="col-span-12 sm:col-span-12">
+							<label for="checkInCodeTakeRoom" class="form-label">Checkin Code</label>
+							<input id="checkInCodeTakeRoom" type="text" class="form-control" disabled>
+						</div>
+						<div class="col-span-6 sm:col-span-6">
+							<label for="checkInTakeRoom" class="form-label">Check In</label>
+							<input id="checkInTakeRoom" type="datetime-local" class="form-control" disabled>
+						</div>
+						<div class="col-span-6 sm:col-span-6">
+							<label for="checkOutTakeRoom" class="form-label">Check Out</label>
+							<input id="checkOutTakeRoom" type="datetime-local" class="form-control" disabled>
+						</div>
+						<div class="col-span-12 sm:col-span-12">
+							<label for="room" class="form-label">Room</label>
+							<select class="room-select w-full form-select box" id="room" style="border-color:rgb(226, 232, 240)">
+								
+							</select>
+						</div>
+					</div>
+					<div class="px-5 pb-8 text-center">
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-success btn-addCustommer w-80 mr-1">
+							Confirm take room
+						</button>
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-secondary w-20 mr-1">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!-- BEGIN: Modal Details Content -->
 
 	<div id="modal-qrScan" class="modal" tabindex="-1" aria-hidden="true">
@@ -475,6 +535,7 @@
 	@await Component.InvokeAsync("NoticeModal", boxNotice)
 	@await Component.InvokeAsync("NoticeModal", boxQRSucceess)
 	@await Component.InvokeAsync("NoticeModal", boxQRFail)
+	@await Component.InvokeAsync("NoticeModal", boxTakeRoomSucceess)
 	<!-- END: Modal Notice Content -->
 	<!-- BEGIN: Modal Content -->
 	@await Component.InvokeAsync("WarningModal")

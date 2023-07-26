@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Custommer List";
+	ViewData["Title"] = "FoodOrder List";
 
 	var boxNotice = new BoxModalViewModel()
 	{
@@ -11,7 +11,7 @@
 	};
 }
 <style>
-	#comment{
+	#note{
 		--tw-bg-opacity: 1;
 		background-color: rgb(var(--color-slate-100) / var(--tw-bg-opacity));
 		-webkit-appearance: none;
@@ -36,11 +36,11 @@
 @await Component.InvokeAsync("CanNotSearch")
 <div class="content main-content" style="display:none;">
 	<h2 class="intro-y text-lg font-medium mt-10">
-		Custommer List
+		FoodOrder List
 	</h2>
 	<div class="grid grid-cols-12 gap-6 mt-5">
 		<div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-			<button class="btn btn-primary shadow-md mr-2" onclick="window.location.href = '/Admin/Custommer/AddNew'">Add New Custommer</button>
+			<button class="btn btn-primary shadow-md mr-2" onclick="window.location.href = '/Admin/Menu/FoodOrder/AddNew'">Add New FoodOrder</button>
 			<div class="dropdown">
 				<button class="dropdown-toggle btn px-2 box" aria-expanded="false"
 						data-tw-toggle="dropdown">
@@ -83,15 +83,15 @@
 					<option value="name">All</option>
 					<option value="isActive">Status</option>
 					<option value="fullName">Name</option>
-					<option value="category">Room</option>
 					<option value="id">Id</option>
+					<option value="checkInCode">CheckInCode</option>
 				</select>
 				<select class="sortby-select w-56 xl:w-auto form-select box ml-2">
 					<option disabled selected class="default">Sort by</option>
 					<option value="isActive">Status</option>
 					<option value="fullName">Name</option>
-					<option value="category">Room</option>
 					<option value="id">Id</option>
+					<option value="checkInCode">CheckInCode</option>
 				</select>
 			</div>
 		</div>
@@ -101,13 +101,12 @@
 				<thead>
 					<tr>
 						<th class="whitespace-nowrap">ID</th>
-						<th class="whitespace-nowrap">CUSTOMMER NAME</th>
-						<th class="text-center whitespace-nowrap">AVATAR</th>
+						<th class="whitespace-nowrap">ORDER CUSTOMMER</th>
 						<th class="text-center whitespace-nowrap">PHONE NUMBER</th>
-						<th class="text-center whitespace-nowrap">EMAIL</th>
-						<th class="text-center whitespace-nowrap">COUNTRY</th>
-						<th class="text-center whitespace-nowrap">STATUS</th>
+						<th class="text-center whitespace-nowrap">PLACE</th>
+						<th class="text-center whitespace-nowrap">EATING TIME</th>
 						<th class="text-center whitespace-nowrap">ACTIONS</th>
+						<th class="text-center whitespace-nowrap">CONFIRM</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -200,77 +199,71 @@
 				<!-- END: Modal Header -->
 				<!-- BEGIN: Modal Body -->
 				<div class="modal-body grid grid-cols-12 gap-2 gap-y-3">
-					<div class="mx-6 col-span-12 sm:col-span-12">
-						<div class="multiple-items">
-							<!-- RENDER: Image -->
-						</div>
-					</div>
 					<div class="col-span-2 sm:col-span-2">
 						<label for="id" class="form-label">ID</label>
 						<input id="id" type="text" class="form-control" disabled>
 					</div>
 					<div class="col-span-8 sm:col-span-8">
-						<label for="name" class="form-label">Full Name</label>
+						<label for="name" class="form-label">Ordered By</label>
 						<input id="name" type="text" class="form-control"
 							   disabled>
-					</div>
-					<div class="col-span-2 sm:col-span-8">
-						<label for="room" class="form-label">Room</label>
-						<input id="room" type="text" class="form-control"
-							   disabled>
-					</div>
-					<div class="col-span-12 sm:col-span-12">
-						<label for="checkInCode" class="form-label">Checkin Code</label>
-						<input id="checkInCode" type="text" class="form-control" disabled>
 					</div>
 					<div class="col-span-2 sm:col-span-2">
 						<label for="status" class="form-label">Status</label>
 						<input id="status" type="text" class="form-control" disabled>
 					</div>
-					<div class="col-span-2 sm:col-span-2">
-						<label for="country" class="form-label">Country</label>
-						<input id="country" type="text" class="form-control" disabled>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="checkInCode" class="form-label">CheckInCode</label>
+						<input id="checkInCode" type="text" class="form-control" disabled>
 					</div>
-					<div class="col-span-4 sm:col-span-4">
-						<label for="email" class="form-label">Email</label>
-						<input id="email" type="text" class="form-control" disabled>
-					</div>
-					<div class="col-span-4 sm:col-span-4">
+					<div class="col-span-6 sm:col-span-6">
 						<label for="phoneNumber" class="form-label">Phone Number</label>
 						<input id="phoneNumber" type="text" class="form-control" disabled>
 					</div>
-					<div class="col-span-12 sm:col-span-12">
-						<label for="address" class="form-label">Address</label>
-						<input id="address" type="text" class="form-control" disabled>
+					<div class="col-span-6 sm:col-span-6">
+						<label for="eatingAt" class="form-label">Eating at</label>
+						<input id="eatingAt" type="text" class="form-control" disabled>
 					</div>
 					<div class="col-span-12 sm:col-span-12">
-						<label for="comment" class="form-label">Comment</label>
-						<div id="comment" class="form-control" rows="3" disabled>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						<label for="place" class="form-label">Place</label>
+						<input id="place" type="text" class="form-control" disabled>
+					</div>
+					<div class="col-span-12 sm:col-span-12">
+						<label for="note" class="form-label">Note</label>
+						<div id="note" class="form-control" rows="3" disabled>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
 						</div>
 					</div>
-					<div class="col-span-3 sm:col-span-6">
-						<label for="createdAt" class="form-label">Created At</label>
-						<input id="createdAt" type="text" class="form-control" disabled>
-					</div>
-					<div class="col-span-3 sm:col-span-6">
-						<label for="createdBy" class="form-label">Created By</label>
-						<input id="createdBy" type="text" class="form-control" disabled>
-					</div>
-					<div class="col-span-3 sm:col-span-6">
-						<label for="updatedAt" class="form-label">Updated At</label>
-						<input id="updatedAt" type="text" class="form-control"
-							   disabled>
-					</div>
-					<div class="col-span-3 sm:col-span-6">
-						<label for="updatedBy" class="form-label">Updated By</label>
-						<input id="updatedBy" type="text" class="form-control" disabled>
+					<div class="col-span-12 sm:col-span-12">
+						<div class="grid grid-cols-12 gap-2">
+							<div class="col-span-6 sm:col-span-6">
+								<label class="form-label">Food Name</label>
+							</div>
+							<div class="col-span-3 sm:col-span-3">
+								<label class="form-label">Price</label>
+							</div>
+							<div class="col-span-3 sm:col-span-3">
+								<label class="form-label">Number</label>
+							</div>
+							<div class="col-span-12 sm:col-span-12 gap-2 foodList grid grid-cols-12">
+								<div class="col-span-6 sm:col-span-6">
+									<input type="text" class="form-control" disabled>
+								</div>
+								<div class="col-span-3 sm:col-span-3">
+									<input type="text" class="form-control" disabled>
+								</div>
+								<div class="col-span-3 sm:col-span-3">
+									<input type="text" class="form-control" disabled>
+								</div>
+							</div>
+							
+						</div>
 					</div>
 				</div>
 				<!-- END: Modal Body -->
 				<!-- BEGIN: Modal Footer -->
 				<div class="modal-footer">
 					<button type="button" data-tw-dismiss="modal"
-							class="btn btn-outline-secondary w-20 mr-1">
+							class="btn btn-outline-secondary w-20 mr-1 btn-close">
 						Close
 					</button>
 				</div>
@@ -291,9 +284,11 @@
 
 @section Scripts{
 	<script>
-		$('.side-custommer').addClass("side-menu--active");
-		$('.side-custommer-list').addClass("side-menu--active");
-		$('.side-custommer-wrapper').addClass("side-menu__sub-open");
+		$('.side-MENU').addClass("side-menu--active");
+		$('.side-foodOrder').addClass("side-menu--active");
+		$('.side-foodOrder-list').addClass("side-menu--active");
+		$('.side-MENU-wrapper').addClass("side-menu__sub-open");
+		$('.side-foodOrder-wrapper').addClass("side-menu__sub-open");
 	</script>
-	<script src="~/js/custommer/custommer-index.js" type="module"></script>
+	<script src="~/js/foodOrder/foodOrder-index.js" type="module"></script>
 }

@@ -17,6 +17,8 @@
     <Content Remove="wwwroot\js\custommer\custommer-trash.js" />
     <Content Remove="wwwroot\js\foodCategory\foodCategory-index.js" />
     <Content Remove="wwwroot\js\foodCategory\foodCategory-trash.js" />
+    <Content Remove="wwwroot\js\foodOrder\foodOrder-index.js" />
+    <Content Remove="wwwroot\js\foodOrder\foodOrder-trash.js" />
     <Content Remove="wwwroot\js\food\food-index.js" />
     <Content Remove="wwwroot\js\food\food-trash.js" />
     <Content Remove="wwwroot\js\gallery\gallery-index.js" />
@@ -42,6 +44,8 @@
     <None Include="wwwroot\js\article\article-trash.js" />
     <None Include="wwwroot\js\booking\booking-index.js" />
     <None Include="wwwroot\js\booking\booking-trash.js" />
+    <None Include="wwwroot\js\foodOrder\foodOrder-index.js" />
+    <None Include="wwwroot\js\foodOrder\foodOrder-trash.js" />
     <None Include="wwwroot\js\contact\contact-index.js" />
     <None Include="wwwroot\js\contact\contact-trash.js" />
     <None Include="wwwroot\js\information\information-index.js" />

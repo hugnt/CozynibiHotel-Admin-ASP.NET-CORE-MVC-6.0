@@ -3,8 +3,7 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/Custommer";
-    var CATEGORY_IMG_SRC = GET_IMAGE_URL + "custommer"
+    var BASE_URL = HOST + "/api/FoodOrder";
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
@@ -53,6 +52,7 @@ $(document).ready(async function () {
         } catch (e) {
             $(".main-layout").css("display", "none");
             $(".notfound").css("display", "block");
+            console.log(e);
         }
 
     }
@@ -62,60 +62,29 @@ $(document).ready(async function () {
         for (let i = 0; i < res.length; i++) {
             let cate = res[i];
             if (cate.isDeleted == true) continue;
-            var room = "";
-            if (cate.roomId) {
-                room = await getRoom(cate.roomId);
-            }
             
-            let imgHtml = "";
             console.log(cate)
-
-            //IMAGE
-            let imgString = `${CATEGORY_IMG_SRC}/${cate.image}`;
-
-            imgHtml += `<div class="w-10 h-10 image-fit zoom-in">
-							<img alt="img" class="tooltip rounded-full"
-							src="${imgString}" title="img">
-						</div>`
-            let status = "";
-            if (cate.isActive) {
-                status = `
-							<div class="flex items-center justify-center text-success">
-								${lucide.checkSquare} Active
-							</div>
-						`;
+            var htmlConfirmBtn = ``;
+            if (cate.status) {
+                htmlConfirmBtn = `<a class="flex items-center mr-3 text-success">
+									    ${lucide.checkSquare} Done
+								    </a> `;
             }
             else {
-                status = `
-							<div class="flex items-center justify-center text-danger">
-								${lucide.checkSquare} Inactive
-							</div>
-						`;
+                htmlConfirmBtn = `<button data-cate-id="${cate.id}" type="button" data-tw-toggle="modal" data-tw-target="#modal-confirm" class="btn btn-success w-24 btn-confirm" style="color:#fff">Confirm</button>`
             }
             let html = `
 							<tr class="intro-x">
-								<td class="w-10">F${cate.id}</td>
+								<td class="w-10">FOD${cate.id}</td>
 								<td>
 									<a href="#" class="font-medium whitespace-nowrap" style="text-transform:capitalize">${cate.fullName}</a>
-                                    <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5" style="text-transform: capitalize">${room.name ? room.name : ""}</div>
-								</td>
-								<td class="w-40">
-									<div class="flex justify-center">`
-                +
-                imgHtml
-                +
-                `
-									</div>
 								</td>
 		                        <td class="text-center">${cate.phoneNumber ? cate.phoneNumber : ""}</td>
-								<td class="text-center">${cate.email ? cate.email : ""}</td>
-                                <td class="text-center">${cate.country ? cate.country : ""}</td>
-								<td class="w-40">
-									${status}							
-								</td>
+								<td class="text-center">${cate.place ? cate.place : ""}</td>
+                                <td class="text-center">${cate.eatingAt ? cate.eatingAt : ""}</td>
 								<td class="table-report__action w-56">
 									<div class="flex justify-center items-center">
-										<a class="flex items-center mr-3 btn-edit" style="cursor:pointer;" data-cate-id="${cate.id}" onclick="window.location.href='/Admin/Custommer/Edit/${cate.id}';">
+										<a class="flex items-center mr-3 btn-edit" style="cursor:pointer;" data-cate-id="${cate.id}" onclick="window.location.href='/Admin/Menu/FoodOrder/Edit/${cate.id}';">
 											${lucide.checkSquare} Edit
 										</a>
 										<a class="flex items-center text-danger mr-3 btn-delete" style="cursor:pointer"
@@ -128,6 +97,9 @@ $(document).ready(async function () {
 										</a>
 									</div>
 								</td>
+                                 <td class="text-center">
+                                    ${htmlConfirmBtn}
+                                </td>
 							</tr>
 						`;
             $('.table-report tbody').append(html);
@@ -138,73 +110,40 @@ $(document).ready(async function () {
             let id = $(this).data("cateId");
             let cate = cateList.find(x => x.id == id);
             console.log(cate)
-            if (cate) {
-                //Room
-                var room = "";
-                if (cate.roomId) {
-                    room = await getRoom(cate.roomId);
-                }
-                //user 
-                const GET_USER1 = HOST + "/api/Account/" + cate.createdBy;
-                const GET_USER2 = HOST + "/api/Account/" + cate.updatedBy;
-                console.log(GET_USER1)
-                const CREATED_ONE = await getUser(GET_USER1);
-                const UPDATED_ONE = await getUser(GET_USER2);
-                //images
-                $(".multiple-items").html("");
-                let imgHtml = "";
-                
-                let img = cate.image;
-                let imgString = `${CATEGORY_IMG_SRC}/${img}`;
-                imgHtml += `
-				<div class="h-32 px-2">
-					<div class="h-full bg-slate-100 dark:bg-darkmode-400 rounded-md">
-						<img src="${imgString}"/>
-					</div>
-				</div>`;
-             
-                $(".multiple-items").append(imgHtml);
-                if ($(".multiple-items").length) {
-                    $(".multiple-items").each(function () {
-                        tns({
-                            container: this,
-                            slideBy: "page",
-                            mouseDrag: true,
-                            autoplay: false,
-                            controls: true,
-                            items: 1,
-                            nav: false,
-                            speed: 500,
-                            responsive:
-                            {
-                                600: {
-                                    items: 3,
-                                },
-                                480: {
-                                    items: 2,
-                                },
-                            },
-                        });
-                    });
-                }
+            if (cate) {         
                 //informations
-                $('#id').val("C" + cate.id);
+                $('#id').val("FOD" + cate.id);
                 $('#name').val(cate.fullName);
-                $('#room').val(room.name ? room.name : "");
-                $('#status').val(cate.isActive ? "Active" : "Inactive");
+                $('#status').val(cate.isActive ? "DONE" : "NEW");
                 $('#phoneNumber').val(cate.phoneNumber);
-                $('#country').val(cate.country );
-                $('#email').val(cate.email);
-                $('#address').val(cate.address);
+                $('#eatingAt').val(cate.eatingAt);
                 $('#checkInCode').val(cate.checkInCode);
-                $('#comment').html(cate.comment);
-                $('#createdAt').val(cate.createdAt);
-                $('#createdBy').val(CREATED_ONE.fullName);
-                $('#updatedAt').val(cate.updatedAt);
-                $('#updatedBy').val(UPDATED_ONE.fullName);
-
+                $('#place').val(cate.place);
+                $('#note').html(cate.note);
+                var foodList = cate.foodList;
+                $(".foodList").html("");
+                var htmlFoodList = ``;
+                for (var i = 0; i < foodList.length; i++) {
+                    var food = await getFood(foodList[i].foodId);
+                    var number = foodList[i].number;
+                    htmlFoodList += `
+                        <div class="col-span-6 sm:col-span-6">
+							<input type="text" class="form-control" value="${food.name}" disabled>
+						</div>
+						<div class="col-span-3 sm:col-span-3">
+							<input type="text" class="form-control" value="${food.price} $" disabled>
+						</div>
+						<div class="col-span-3 sm:col-span-3">
+							<input type="text" class="form-control" value="${number}" disabled>
+						</div>
+                    `;
+                }
+                $(".foodList").append(htmlFoodList);
+                
             }
         });
+
+       
 
         $(".btn-delete").click(function () {
             RECORD_ID = $(this).data("cateId");
@@ -213,9 +152,9 @@ $(document).ready(async function () {
     }
 
     $("#delete-confirmation-modal .btn-remove ").click(async function () {
-        const PUT_RECORD = HOST + "/api/Custommer/" + RECORD_ID +"/" +true;
+        const PUT_RECORD = HOST + "/api/FoodOrder/" + RECORD_ID +"/" +true;
         var formData = new FormData();
-        formData.append("custommerId", RECORD_ID);
+        formData.append("foodOrderId", RECORD_ID);
         formData.append("isDelete", true);
         try {
             const res = await $.ajax({
@@ -263,7 +202,42 @@ $(document).ready(async function () {
         }
     });
 
+    //UPDATE STATUS
+    async function putRecordStatus(ID, status) {
+        const PUT_RECORD = HOST + "/api/FoodOrder/" + ID + "/Status/" + status;
+        var formData = new FormData();
+        formData.append("foodOrderId", ID);
+        formData.append("status", status);
+        try {
+            const res = await $.ajax({
+                url: PUT_RECORD,
+                type: "PUT",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
 
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+
+            await getList();
+
+        } catch (e) {
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+            myModal.show();
+            console.log(e);
+
+        }
+    }
 
     //PAGINATION HANDLING
 
@@ -485,10 +459,10 @@ $(document).ready(async function () {
         }
     }
 
-    async function getRoom(roomId) {
+    async function getFood(foodId) {
         try {
             const res = await $.ajax({
-                url: HOST + "/api/Room/" + roomId,
+                url: HOST + "/api/Food/" + foodId,
                 type: "GET",
                 headers: {
                     Authorization: `Bearer ${accessToken}`
@@ -502,6 +476,7 @@ $(document).ready(async function () {
             return null;
         }
     }
+
 
 
 });

@@ -17,6 +17,9 @@ $(document).ready(async function () {
 
     const GET_RECORD = HOST + "/api/Booking/" + RECORD_ID;
     const PUT_RECORD = HOST + "/api/Booking/" + RECORD_ID;
+    const POST_CUSTOMMER = HOST + "/api/Custommer";
+    const GET_ROOMS = HOST + "/api/Room";
+    var roomList = [];
     const modalConfirm = tailwind.Modal.getOrCreateInstance(document.querySelector("#modal-confirm"));
 
     var newRecord = {
@@ -72,21 +75,198 @@ $(document).ready(async function () {
             $('#checkOutConfirm').val(editRecord.checkOut);
             modalConfirm.show();
             $("#status-confirm").prop('checked', false);
-            $(".btn-confirm-sure").click(function () {
-                $("#status-confirm").prop('checked', true);
-                $(".btn-getNewCode").prop("disabled", false);
+            $(".btn-confirm-sure").click(async function () {
+                var confirmBooking = await putConfirmBooking(editRecord.id);
+                if (confirmBooking) {
+                    $("#status-confirm").prop('checked', true);
+                    $(".btn-getNewCode").prop("disabled", false);
+                    $('#status-takeRoom').prop('disabled', false);
+                }
             });
         }
         else {
             $(".btn-getNewCode").prop("disabled", true);
+            $('#status-takeRoom').prop('checked', false);
+            $('#status-takeRoom').prop('disabled', true);
             
+        }
+    });
+    const TakeRoomModal = document.getElementById('modal-takeRoom')
+    TakeRoomModal.addEventListener('hidden.tw.modal', function (event) {
+        $("#status-takeRoom").prop('checked', false);
+    });
+
+    $("#status-takeRoom").change(function () {
+        if ($(this).prop('checked')) {
+            $('#nameTakeRoom').val(editRecord.fullName);
+            $('#checkInCodeTakeRoom').val(editRecord.checkInCode);
+            $('#checkInTakeRoom').val(editRecord.checkIn);
+            $('#checkOutTakeRoom').val(editRecord.checkOut);
+            const myModalTakeRoom = tailwind.Modal.getInstance(document.querySelector("#modal-takeRoom"));
+            myModalTakeRoom.show();
+            $(".btn-addCustommer").click(async function () {
+                myModalTakeRoom.hide();
+                editRecord.roomId = $("#room").val();
+                var postCustommer = await postNewRecord(editRecord);
+                if (postCustommer) {
+                    await putRecordSuccess(editRecord.id, true);
+                    $('#status-takeRoom').prop('checked', true);
+                }
+            });
+        }
+        else {
+
         }
     });
 
     $(".btn-getNewCode").click(function () {
+        $('#nameConfirm').val(editRecord.fullName);
+        $('#emailConfirm').val(editRecord.email);
+        $('#phoneNumberConfirm').val(editRecord.phoneNumber);
+        $('#checkInConfirm').val(editRecord.checkIn);
+        $('#checkOutConfirm').val(editRecord.checkOut);
         modalConfirm.show();
+        $(".btn-confirm-sure").click(async function () {
+            var confirmBooking = await putConfirmBooking(editRecord.id);
+            if (confirmBooking) {
+                $("#status-confirm").prop('checked', true);
+                $(".btn-getNewCode").prop("disabled", false);
+                $('#status-takeRoom').prop('disabled', false);
+            }
+        });
     });
 
+    async function putConfirmBooking(ID) {
+        const PUT_CONFIRM = HOST + "/api/Booking/ConfirmBooking/" + ID;
+        try {
+            const res = await $.ajax({
+                url: PUT_CONFIRM,
+                type: "PUT",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            Toastify({
+                node: $("#confirm-success-modal").clone().removeClass("hidden")[0],
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true
+            }).showToast();
+            await getDetails();
+            return true;
+
+        } catch (e) {
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+            myModal.show();
+            console.log(e);
+            return false;
+
+        }
+    }
+
+    async function postNewRecord(newRecord) {
+        var formData = new FormData();
+        formData.append("FullName", newRecord.fullName);
+        if (newRecord.roomId != 0) formData.append("RoomId", newRecord.roomId);
+        formData.append("PhoneNumber", newRecord.phoneNumber);
+        formData.append("Email", newRecord.email);
+        formData.append("Address", newRecord.address);
+        formData.append("CheckInCode", newRecord.checkInCode);
+        formData.append("CreatedBy", USER_ID);
+
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+        try {
+            const res = await $.ajax({
+                url: POST_CUSTOMMER,
+                type: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+            if (res && res.length > 0) {
+                console.log(res);
+                $(".loading").css("display", "none");
+                $(".main-content").css("display", "block");
+                Toastify({
+                    node: $("#takeRoom-success-modal").clone().removeClass("hidden")[0],
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true
+                }).showToast();
+
+                return true;
+            }
+        } catch (e) {
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModalWarning = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+            myModalWarning.show();
+            console.log(e);
+            return false;
+
+        }
+    }
+
+    async function putRecordSuccess(ID, status) {
+        const PUT_RECORD = HOST + "/api/Booking/" + ID + "/TakeRoom/" + status;
+        var formData = new FormData();
+        formData.append("bookingId", ID);
+        formData.append("isSuccess", status);
+        try {
+            const res = await $.ajax({
+                url: PUT_RECORD,
+                type: "PUT",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+
+            await getDetails();
+
+        } catch (e) {
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+            myModal.show();
+            console.log(e);
+
+        }
+    }
 
     //GET THE CHOSEN RECORD
     await getDetails();
@@ -125,9 +305,11 @@ $(document).ready(async function () {
         //status 
         if (record.isConfirm == true) {
             $('#status-confirm').prop('checked', true);
+            $(".btn-getNewCode").prop("disabled", false);
         }
         else {
             $('#status-confirm').prop('checked', false);
+            $('#status-takeRoom').prop('disabled', true);
         }
         if (record.isSuccess == true) {
             $('#status-takeRoom').prop('checked', true);
@@ -304,5 +486,51 @@ $(document).ready(async function () {
         }
     }
 
+    //remder room
+    await getRooms();
+
+    async function getRooms() {
+        try {
+            const res = await $.ajax({
+                url: GET_ROOMS,
+                type: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                contentType: "application/json",
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+            if (res && res.length > 0) {
+                roomList = [];
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].isActive != true) {
+                        roomList.push(res[i]);
+                    }
+                }
+                renderListRoom(roomList);
+                $(".loading").css("display", "none");
+                $(".main-content").css("display", "block");
+
+            }
+        } catch (e) {
+            console.log(e);
+            $(".main-layout").css("display", "none");
+            $(".notfound").css("display", "block");
+        }
+    }
+
+    function renderListRoom(roomList) {
+        var cateHtml = `<option value="${0}" selected>Choose the room</option>`;
+        for (var i = 0; i < roomList.length; i++) {
+            cateHtml += `
+                <option value="${roomList[i].id}">${roomList[i].name}</option>
+            `;
+        }
+        $("#room").append(cateHtml);
+
+    }
 
 });

@@ -12,7 +12,7 @@ namespace CozynibiHotel.Admin.Controllers.Menu
 
     [CustomAuthorize]
     [Route("Admin/Menu/FoodCategory")]
-    public class ContactController : Controller
+    public class FoodCategoryController : Controller
     {
         [Route("")]
         [Route("Index")]
