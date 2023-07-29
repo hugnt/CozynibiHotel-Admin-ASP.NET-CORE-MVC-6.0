@@ -3,7 +3,7 @@ import { HOST, GET_IMAGE_URL } from '../env.js'
 
 
 $(document).ready(async function () {
-    var BASE_URL = HOST + "/api/Contact";
+    var BASE_URL = HOST + "/api/FoodOrder";
     var cateList = [];
     var RECORD_ID = 0;
     //GET TOKEN
@@ -65,12 +65,13 @@ $(document).ready(async function () {
                                 <td class="w-10">
 							        <input class="form-check-input check-item checkBox-${cate.id}" data-id="${cate.id}" type="checkbox">
 						        </td>
-								<td class="w-10">CT${cate.id}</td>
+								<td class="w-10">FOD${cate.id}</td>
 								<td>
 									<a href="#" class="font-medium whitespace-nowrap" style="text-transform:capitalize">${cate.fullName}</a>
 								</td>
 								<td class="text-center">${cate.phoneNumber ? cate.phoneNumber : ""}</td>
-								<td class="text-center">${cate.email ? cate.email : ""}</td>
+								<td class="text-center">${cate.place ? cate.place : ""}</td>
+                                <td class="text-center">${cate.eatingAt ? cate.eatingAt : ""}</td>
 								<td class="table-report__action w-56">
 							        <div class="flex justify-center items-center">
 								        <a class="flex items-center mr-3 text-danger btn-delete" data-id="${cate.id}" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal">
@@ -127,9 +128,9 @@ $(document).ready(async function () {
     });
 
     async function putRecordStatus(ID) {
-        const PUT_RECORD = HOST + "/api/Contact/" + ID + "/" + false;
+        const PUT_RECORD = HOST + "/api/FoodOrder/" + ID + "/" + false;
         var formData = new FormData();
-        formData.append("contactId", ID);
+        formData.append("foodOrderId", ID);
         formData.append("isDelete", false);
         try {
             const res = await $.ajax({
@@ -172,7 +173,7 @@ $(document).ready(async function () {
     }
 
     async function deleteRecord(ID) {
-        const DELETE_RECORD = HOST + "/api/Contact/" + ID;
+        const DELETE_RECORD = HOST + "/api/FoodOrder/" + ID;
         try {
             const res = await $.ajax({
                 url: DELETE_RECORD,

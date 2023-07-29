@@ -109,17 +109,20 @@ $(document).ready(async function () {
             $(".user-avatar").prop("src", GET_IMAGE_URL + "user/user.png");
         });
 
+    //NOTIFICATIONS
     const GET_NOTIFICATION_CONTACT = HOST + "/api/Contact";
     const GET_NOTIFICATION_BOOKING = HOST + "/api/Booking";
+    const GET_NOTIFICATION_FOODORDER = HOST + "/api/FoodOrder";
     var noticeList = [];
 
     await getAllNotification();
 
     async function getAllNotification() {
-        noticeList = [];
+        
         $(".notification-content__box .notice-item").remove();
-        await getNotification(GET_NOTIFICATION_BOOKING, "calling.png", "Booking");
+        await getNotification(GET_NOTIFICATION_BOOKING, "bell.png", "Booking");
         await getNotification(GET_NOTIFICATION_CONTACT, "user/user4.png", "Contact");
+        await getNotification(GET_NOTIFICATION_FOODORDER, "foodOrder.png", "FoodOrder");
         
     }
   
@@ -133,6 +136,7 @@ $(document).ready(async function () {
                 }
             });
             if (res && res.length != 0) {
+                noticeList = [];
                 for (var i = 0; i < res.length; i++) {
                     if (TYPE =="Contact"&&res[i].isActive == true) {
                         noticeList.push(res[i]);
@@ -140,22 +144,25 @@ $(document).ready(async function () {
                     else if (TYPE == "Booking" && res[i].isConfirm != true) {
                         noticeList.push(res[i]);
                     }
+                    else if (TYPE == "FoodOrder" && res[i].isActive != true) {
+                        noticeList.push(res[i]);
+                    }
                 }
             }
             renderNotification(noticeList, IMG, TYPE);
-            return null;
+            
         } catch (e) {
-            return null;
+            console.log(e);
         }
     }
 
-    function renderNotification(contact, IMG, TYPE) {
-        if (contact.length != 0) $(".notification").addClass("notification--bullet");
+    function renderNotification(notice, IMG, TYPE) {
+        if (notice.length != 0) $(".notification").addClass("notification--bullet");
         var htmlNotification = ``;
         let imageContact = GET_IMAGE_URL + IMG;
-        for (var i = 0; i < contact.length; i++) {
+        for (var i = 0; i < notice.length; i++) {
             htmlNotification += `
-			<div class="cursor-pointer relative flex items-center mt-5 notice-item notice-item-contact noctice-${TYPE}">
+			<div class="cursor-pointer relative flex items-center mt-5 notice-item notice-item-notice noctice-${TYPE}">
                 <div class="w-12 h-12 flex-none image-fit mr-1">
                     <img alt="" class="rounded-full"
                         src="${imageContact}">
@@ -166,10 +173,10 @@ $(document).ready(async function () {
                 <div class="ml-2 overflow-hidden">
                     <div class="flex items-center">
                         <a href="javascript:;" class="font-medium truncate mr-5">New ${TYPE}</a>
-                        <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">${contact[i].createdAt}</div>
+                        <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">${notice[i].createdAt}</div>
                     </div>
                     <div class="w-full truncate text-slate-500 mt-0.5">
-                        Custommer: ${contact[i].fullName}, ${contact[i].phoneNumber}, ${contact[i].email}
+                        Custommer: ${notice[i].fullName}, ${notice[i].phoneNumber}, ${TYPE =="FoodOrder"?notice[i].place:notice[i].email}
                     </div>
                 </div>
             </div>
@@ -180,7 +187,13 @@ $(document).ready(async function () {
  
         $(".notification-content__box").append(htmlNotification);
         $(`.noctice-${TYPE}`).click(function () {
-            window.location.href = "/Admin/ContactAndBooking/" + TYPE;
+            if (TYPE == "FoodOrder") {
+                window.location.href = "/Admin/Menu/" + TYPE;
+            }
+            else{
+                window.location.href = "/Admin/ContactAndBooking/" + TYPE;
+            }
+            
         });
 
     }

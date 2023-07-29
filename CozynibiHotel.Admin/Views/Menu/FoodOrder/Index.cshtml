@@ -2,16 +2,33 @@
 	ViewData["Title"] = "FoodOrder List";
 
 	var boxNotice = new BoxModalViewModel()
+			{
+				Id = "notice-notification-content",
+				Title = "Record moved to trash!",
+				Text = "Remove the item successfully",
+				Icon = "trash-2",
+				IconColor = "text-success"
+			};
+	var boxPrintSucceess = new BoxModalViewModel()
 	{
-		Id = "notice-notification-content", 
-		Title = "Record moved to trash!",
-		Text = "Remove the item successfully",
-		Icon = "trash-2",
+		Id = "print-success-modal",
+		Title = "Export bill successfully!",
+		Text = "The bill was exported as pdf file",
+		Icon = "check-circle",
+		IconColor = "text-success"
+	};
+
+	var boxConfirmSucceess = new BoxModalViewModel()
+	{
+		Id = "confirm-success-modal",
+		Title = "Confirm successfully!",
+		Text = "The message was sent to custommer",
+		Icon = "check-circle",
 		IconColor = "text-success"
 	};
 }
 <style>
-	#note{
+	#note {
 		--tw-bg-opacity: 1;
 		background-color: rgb(var(--color-slate-100) / var(--tw-bg-opacity));
 		-webkit-appearance: none;
@@ -28,7 +45,138 @@
 		font-size: 1rem;
 		line-height: 1.5rem;
 		--tw-shadow: 0 0 #0000;
-		min-height:3rem;
+		min-height: 3rem;
+	}
+
+	::selection {background: #f31544; color: #FFF;}
+	::moz-selection {background: #f31544; color: #FFF;}
+	#invoiceholder h1{
+	  font-size: 1.5em;
+	  color: #222;
+	  margin-top:0;
+	  padding-top:0;
+	  border:none;
+	}
+	#invoiceholder h2{
+		font-size: .9em;
+		margin-top:0;
+	  padding-top:0;
+	  border:none;
+	}
+	#invoiceholder h3{
+	  font-size: 1.2em;
+	  font-weight: 300;
+	  line-height: 2em;
+	  border:none;
+	}
+	#invoiceholder p{
+	  font-size: .7em;
+	  color: #666;
+	  border:none;
+	  line-height: 1.2em;
+	  margin-top:0;
+	  padding-top:0;
+	}
+
+	#invoiceholder{
+	  width:100%;
+	  height: 100%;
+	}
+	#headerimage{
+	  z-index:-1;
+	  position:relative;
+	  -webkit-box-shadow:inset 0 2px 4px rgba(0,0,0,.15), inset 0 -2px 4px rgba(0,0,0,.15);
+		-moz-box-shadow:inset 0 2px 4px rgba(0,0,0,.15), inset 0 -2px 4px rgba(0,0,0,.15);
+		box-shadow:inset 0 2px 4px rgba(0,0,0,.15), inset 0 -2px 4px rgba(0,0,0,.15);
+	  overflow:hidden;
+	}
+	#invoice{
+	  position: relative;
+	  margin: 0 auto;
+
+	  background: #FFF;
+	}
+
+	[id*='invoice-']{ /* Targets all id with 'col-' */
+	  border-bottom: 1px solid #EEE;
+	  padding: 30px;
+	}
+
+	#invoice-top{min-height: 120px;}
+	#invoice-mid{min-height: 120px;}
+	#invoice-bot{ min-height: 250px;}
+
+	#invoiceholder .info{
+	  display: block;
+	  float:left;
+	  margin-left: 20px;
+	  border:none;
+	}
+	#invoiceholder .title{
+	  float: right;
+	  border:none;
+	}
+	#invoiceholder .title p{text-align: right;border:none;}
+	#invoiceholder #project{margin-left: 52%;border:none;}
+	#invoiceholder table{
+	  width: 100%;
+	  border-collapse: collapse;
+	}
+	#invoiceholder td{
+	  padding: 5px 0 5px 15px;
+	  border: 1px solid #EEE
+	}
+	#invoiceholder .tabletitle{
+	  padding: 5px;
+	  background: #EEE;
+	}
+	#invoiceholder .service{border: 1px solid #EEE;}
+	#invoiceholder .item{width: 50%;}
+	#invoiceholder .itemtext{font-size: .9em;}
+
+	#invoiceholder #legalcopy{
+	  margin-top: 30px;
+	}
+
+	#invoiceholder .effect2
+	{
+	  position: relative;
+	}
+	#invoiceholder .effect2:before, .effect2:after
+	{
+	  z-index: -1;
+	  position: absolute;
+	  content: "";
+	  bottom: 15px;
+	  left: 10px;
+	  width: 50%;
+	  top: 80%;
+	  max-width:300px;
+	  background: #777;
+	  -webkit-box-shadow: 0 15px 10px #777;
+	  -moz-box-shadow: 0 15px 10px #777;
+	  box-shadow: 0 15px 10px #777;
+	  -webkit-transform: rotate(-3deg);
+	  -moz-transform: rotate(-3deg);
+	  -o-transform: rotate(-3deg);
+	  -ms-transform: rotate(-3deg);
+	  transform: rotate(-3deg);
+	}
+	#invoiceholder .effect2:after
+	{
+	  -webkit-transform: rotate(3deg);
+	  -moz-transform: rotate(3deg);
+	  -o-transform: rotate(3deg);
+	  -ms-transform: rotate(3deg);
+	  transform: rotate(3deg);
+	  right: 10px;
+	  left: auto;
+	}
+
+
+
+	#invoiceholder .legal{
+	  width:70%;
 	}
 </style>
 
@@ -160,7 +308,7 @@
 					<div class="px-5 pb-8 text-center">
 						<button type="button" data-tw-dismiss="modal"
 								class="btn btn-outline-secondary w-24 mr-1">
-							Cancel 
+							Cancel
 						</button>
 						<button type="button" class="btn btn-danger w-24 btn-remove">Delete</button>
 					</div>
@@ -230,7 +378,8 @@
 					</div>
 					<div class="col-span-12 sm:col-span-12">
 						<label for="note" class="form-label">Note</label>
-						<div id="note" class="form-control" rows="3" disabled>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
+						<div id="note" class="form-control" rows="3" disabled>
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis error fugiat laboriosam nostrum rerum, laborum porro beatae maxime doloremque officiis repellat nisi voluptas? Cumque fugit doloribus suscipit enim molestiae blanditiis.
 						</div>
 					</div>
 					<div class="col-span-12 sm:col-span-12">
@@ -255,7 +404,7 @@
 									<input type="text" class="form-control" disabled>
 								</div>
 							</div>
-							
+
 						</div>
 					</div>
 				</div>
@@ -271,24 +420,159 @@
 			</div>
 		</div>
 	</div>
-	<!-- END: Modal Details Content -->
 
+	<div id="modal-print" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-body p-0">
+					<div id="invoiceholder">
+						<div id="headerimage">
+						</div>
+						<div id="invoice" class="effect2">
+							<div id="invoice-top">
+								<div class="logo" style="float: left;height: 60px;width: 60px;overflow:hidden;border-radius: 50px;">
+									<img alt="img" src="~/images/layout-logo.png"/>
+								</div>
+								<div class="info">
+									<h2>Conizibi Hotel</h2>
+									<p>
+										thanh.hung.st302@gmail.com </br>
+										0946928815
+									</p>
+								</div><!--End Info-->
+								<div class="title invoiceInfor">
+									<h1>Invoice #1069</h1>
+									<p>
+										Issued: May 27, 2015</br>
+										Payment Due: June 27, 2015
+									</p>
+								</div><!--End Title-->
+							</div><!--End InvoiceTop-->
+							<div id="invoice-mid">
+								<div class="clientlogo" style="float: left;height: 60px;width: 60px;overflow:hidden;border-radius: 50px;">
+									<img alt="img" src="~/images/client.jpg"/>
+								</div>
+								<div class="info">
+									<h2 class="clientName"></h2>
+									<p class="clientContact">
+										
+									</p>
+								</div>
+
+								<div id="project">
+									<h2>Order Description</h2>
+									<p>	
+										Please eating food and order inside the hotel
+									</p>
+								</div>
+
+							</div><!--End Invoice Mid-->
+
+							<div id="invoice-bot">
+
+								<div id="table">
+									<table>
+										<tr class="tabletitle headTitle">
+											<td class="item"><h2>Food Name</h2></td>
+											<td class="Hours"><h2 >Number</h2></td>
+											<td class="Rate"><h2 >Price /food</h2></td>
+											<td class="subtotal"><h2>Sub-total</h2></td>
+										</tr>
+
+										<tr class="service">
+											<td class="tableitem"><p class="itemtext">Communication</p></td>
+											<td class="tableitem"><p class="itemtext">5</p></td>
+											<td class="tableitem"><p class="itemtext">$75</p></td>
+											<td class="tableitem"><p class="itemtext">$375.00</p></td>
+										</tr>
+
+									</table>
+								</div><!--End Table-->
+
+								<div id="legalcopy" style="border:none;">
+									<p class="legal" style="border:none;">
+										<strong style="border:none;">Thank you for your ordering!</strong>  Payment is expected in this day only; please process this invoice within that time. If the meal has any problem please give us the feedback
+									</p>
+								</div>
+
+							</div><!--End InvoiceBot-->
+						</div><!--End Invoice-->
+					</div><!-- End Invoice Holder-->
+					<div class="px-5 pb-8 text-center mt-5">
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-success btn-confirm-sure w-80 mr-1">
+							Confirm and export bill
+						</button>
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-secondary w-20 mr-1">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="modal-confirm" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body p-0">
+					<div class="p-5 text-center">
+						<div class="text-3xl mt-5 flex" style="justify-content:center;align-items:center">
+							<i data-lucide="message-square" class="w-10 h-10 text-success mr-2"></i>
+							<span>Confirm order</span>
+						</div>
+						<div class="text-slate-500 mt-2">Leave a message to confirm with the custommer</div>
+					</div>
+					<div class="px-5 pb-8 grid grid-cols-12 gap-2 gap-y-3">
+						<div class="col-span-12 sm:col-span-12">
+							<label for="nameConfirm" class="form-label">Full Name</label>
+							<input id="nameConfirm" type="text" class="form-control"
+								   disabled>
+						</div>
+						<div class="col-span-12 sm:col-span-12">
+							<label for="phoneNumberConfirm" class="form-label">Phone Number</label>
+							<input id="phoneNumberConfirm" type="text" class="form-control" disabled>
+						</div>
+						<div class="col-span-12 sm:col-span-12">
+							<label for="contentMessage" class="form-label">Content</label>
+							<textarea id="contentMessage" class="form-control" cols="3"></textarea>
+						</div>
+					</div>
+					<div class="px-5 pb-8 text-center">
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-success btn-sendSMS w-80 mr-1">
+							Confirm send SMS
+						</button>
+						<button type="button" data-tw-dismiss="modal"
+								class="btn btn-outline-secondary w-20 mr-1">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END: Modal Details Content -->
 	<!-- BEGIN: Modal Notice Content -->
 	@await Component.InvokeAsync("NoticeModal", boxNotice)
+	@await Component.InvokeAsync("NoticeModal", boxPrintSucceess)
+	@await Component.InvokeAsync("NoticeModal", boxConfirmSucceess)
 	<!-- END: Modal Notice Content -->
-
-		<!-- BEGIN: Modal Content -->
+	<!-- BEGIN: Modal Content -->
 	@await Component.InvokeAsync("WarningModal")
 	<!-- END: Modal Content -->
 </div>
 
 @section Scripts{
-	<script>
-		$('.side-MENU').addClass("side-menu--active");
-		$('.side-foodOrder').addClass("side-menu--active");
-		$('.side-foodOrder-list').addClass("side-menu--active");
-		$('.side-MENU-wrapper').addClass("side-menu__sub-open");
-		$('.side-foodOrder-wrapper').addClass("side-menu__sub-open");
-	</script>
-	<script src="~/js/foodOrder/foodOrder-index.js" type="module"></script>
+<script>
+	$('.side-MENU').addClass("side-menu--active");
+	$('.side-foodOrder').addClass("side-menu--active");
+	$('.side-foodOrder-list').addClass("side-menu--active");
+	$('.side-MENU-wrapper').addClass("side-menu__sub-open");
+	$('.side-foodOrder-wrapper').addClass("side-menu__sub-open");
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/html2canvas@1.0.0-rc.1/dist/html2canvas.js"></script>
+<script src="~/js/foodOrder/foodOrder-index.js" type="module"></script>
 }

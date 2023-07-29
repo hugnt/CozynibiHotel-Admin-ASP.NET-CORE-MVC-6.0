@@ -1,7 +1,6 @@
 ﻿import { lucide } from '../icons.js'
 import { HOST, GET_IMAGE_URL } from '../env.js'
-
-
+const { jsPDF } = window.jspdf
 $(document).ready(async function () {
     var BASE_URL = HOST + "/api/FoodOrder";
     var cateList = [];
@@ -45,6 +44,11 @@ $(document).ready(async function () {
                         cateList.push(res[i]);
                     }
                 }
+                $(".btn-print").off("click");
+                $(".btn-confirm-sure").off("click");
+                $(".btn-confirm").off("click");
+                $(".btn-sendSMS").off("click");
+
                 await updatePagination(pagination);
                 $(".loading").css("display", "none");
                 $(".main-content").css("display", "block");
@@ -65,7 +69,7 @@ $(document).ready(async function () {
             
             console.log(cate)
             var htmlConfirmBtn = ``;
-            if (cate.status) {
+            if (cate.isActive) {
                 htmlConfirmBtn = `<a class="flex items-center mr-3 text-success">
 									    ${lucide.checkSquare} Done
 								    </a> `;
@@ -95,9 +99,13 @@ $(document).ready(async function () {
                                             style="cursor:pointer;" data-tw-toggle="modal" data-tw-target="#modal-details">
 											${lucide.eye} Details
 										</a>
+                                        <a class="flex items-center text-warning ml-3 btn-print" style="cursor:pointer"
+								   	    data-tw-toggle="modal" data-tw-target="#modal-print" data-cate-id="${cate.id}">
+											    ${lucide.print} Print
+										   </a>
 									</div>
 								</td>
-                                 <td class="text-center">
+                                 <td class="text-center" style="display:flex;justify-content: center;">
                                     ${htmlConfirmBtn}
                                 </td>
 							</tr>
@@ -105,6 +113,105 @@ $(document).ready(async function () {
             $('.table-report tbody').append(html);
 
         }
+
+        $(".btn-print").click(async function () {
+            let id = $(this).data("cateId");
+            let cate = cateList.find(x => x.id == id);
+            const myModalPrint = tailwind.Modal.getInstance(document.querySelector("#modal-print"));
+            if (cate) {
+                let today = new Date(); 
+                let dd = String(today.getDate()).padStart(2, '0'); 
+                let mm = String(today.getMonth() + 1).padStart(2, '0');
+                let yyyy = today.getFullYear(); 
+
+                today = dd + '/' + mm + '/' + yyyy;
+                $("#invoiceholder .invoiceInfor").html(`
+                     <h1>Invoice #FOD${cate.id}</h1>
+					<p>
+						Issued: ${today}</br>
+						Payment Due: ${today}
+					</p>
+                `);
+                $("#invoiceholder .clientContact").html(`
+                       Checkin code: ${cate.checkInCode?cate.checkInCode: ""}</br>
+					   ${cate.phoneNumber ? cate.phoneNumber : ""}
+                `);
+                $(".clientName").text(cate.fullName);
+                var htmlFoodList = ``;
+                $("#invoiceholder .service").remove();
+                $("#invoiceholder .footTitle").remove();
+                var totalPrice = 0;
+                var foodList = cate.foodList;
+                for (var i = 0; i < foodList.length; i++) {
+                    var food = await getFood(foodList[i].foodId);
+                    var number = foodList[i].number;
+                    totalPrice += food.price * number;
+                    var subPrice = food.price * number;
+                    htmlFoodList += `
+                        <tr class="service">
+							<td class="tableitem"><p class="itemtext">${food.name}</p></td>
+							<td class="tableitem"><p class="itemtext">${number}</p></td>
+							<td class="tableitem"><p class="itemtext">$${food.price}</p></td>
+							<td class="tableitem"><p class="itemtext">$${subPrice}</p></td>
+						</tr>
+                    `;
+                }
+                htmlFoodList += `
+                        <tr class="tabletitle footTitle">
+							<td></td>
+							<td></td>
+							<td class="Rate"><h2>Total</h2></td>
+							<td class="payment"><h2>$${totalPrice}</h2></td>
+						</tr>
+                `;
+                $("#invoiceholder .headTitle").after(htmlFoodList);
+                myModalPrint.show();
+            }
+            $(".btn-confirm-sure").click(async function () {
+                
+                $(".main-content").css("display", "none");
+                $(".loading").css("display", "block");
+
+                const pdfjs = document.querySelector('#invoiceholder');
+                const wP = pdfjs.offsetWidth;
+                const wH = pdfjs.offsetHeight;
+                //html2canvas(pdfjs).then((canvas) => {
+                //    let base64image = canvas.toDataURL('image/png');
+                //    let pdf = new jsPDF('l', 'px', [wP, wH]);
+                //    pdf.addImage(base64image, 'PNG', 0, 0, wP, wH);
+                //    //pdf.save("Ok.pdf")
+                //});
+                try {
+                    var doc = new jsPDF('l', 'px', [wP + 10, wH + 10]);
+                    doc.html(pdfjs, {
+                        callback: function (doc) {
+                            doc.autoPrint();
+                            doc.output('dataurlnewwindow');
+                        }
+                    });
+                    $(".loading").css("display", "none");
+                    $(".main-content").css("display", "block");
+                    Toastify({
+                        node: $("#print-success-modal").clone().removeClass("hidden")[0],
+                        duration: 3000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true
+                    }).showToast();
+
+                    
+                  
+                } catch (e) {
+                    const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+                    myModal.show();
+                    console.log(e);
+                }
+                
+                
+            });
+        });
 
         $(".btn-details").click(async function () {
             let id = $(this).data("cateId");
@@ -123,9 +230,11 @@ $(document).ready(async function () {
                 var foodList = cate.foodList;
                 $(".foodList").html("");
                 var htmlFoodList = ``;
+                var totalPrice = 0;
                 for (var i = 0; i < foodList.length; i++) {
                     var food = await getFood(foodList[i].foodId);
                     var number = foodList[i].number;
+                    totalPrice += food.price * number;
                     htmlFoodList += `
                         <div class="col-span-6 sm:col-span-6">
 							<input type="text" class="form-control" value="${food.name}" disabled>
@@ -138,12 +247,43 @@ $(document).ready(async function () {
 						</div>
                     `;
                 }
+                htmlFoodList += `
+                    <div class="col-span-6 sm:col-span-6">
+						<label class="form-label">&nbsp;</label>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<label class="">&nbsp;</label>
+					</div>
+					<div class="col-span-3 sm:col-span-3">
+						<input type="text" class="form-control" value="Total Price: ${totalPrice}$" disabled>
+					</div>
+                `;
                 $(".foodList").append(htmlFoodList);
                 
             }
         });
 
-       
+        $(".btn-confirm").click(async function () {
+            let id = $(this).data("cateId");
+            let cate = cateList.find(x => x.id == id);
+            const myModalConfirm = tailwind.Modal.getInstance(document.querySelector("#modal-confirm"));
+            
+            if (cate) {
+                $("#nameConfirm").val(cate.fullName);
+                $("#phoneNumberConfirm").val(cate.phoneNumber);
+                myModalConfirm.show();
+                
+                $(".btn-sendSMS").click(async function () {
+                    var phoneNumber = "+84" + cate.phoneNumber.slice(1);
+                    var contentMessage = $("#contentMessage").val();
+                    console.log(phoneNumber+ " - " + contentMessage);
+                    var content = `Dear ${cate.fullName}, ${contentMessage}`;
+                    await putRecordStatus(cate.id, true);
+                    await postSendSMS(phoneNumber, content);
+                })
+                
+            };
+        });
 
         $(".btn-delete").click(function () {
             RECORD_ID = $(this).data("cateId");
@@ -223,10 +363,10 @@ $(document).ready(async function () {
                     $(".loading").css("display", "block");
                 }
             });
-
+            
             $(".loading").css("display", "none");
             $(".main-content").css("display", "block");
-
+            
             await getList();
 
         } catch (e) {
@@ -239,6 +379,48 @@ $(document).ready(async function () {
         }
     }
 
+    async function postSendSMS(phoneNumber, content) {
+        var SMS = {
+            phoneNumber: phoneNumber,
+            content: content
+        };
+        try {
+            const res = await $.ajax({
+                url: HOST + "/api/SMS",
+                type: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                contentType: "application/json",
+                data: JSON.stringify(SMS),
+                beforeSend: function () {
+                    $(".main-content").css("display", "none");
+                    $(".loading").css("display", "block");
+                }
+            });
+            console.log(res);
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            Toastify({
+                node: $("#confirm-success-modal").clone().removeClass("hidden")[0],
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true
+            }).showToast();
+
+            
+        } catch (e) {
+            $(".loading").css("display", "none");
+            $(".main-content").css("display", "block");
+            const myModal = tailwind.Modal.getInstance(document.querySelector("#warning-modal-preview"));
+            myModal.show();
+            console.log(e);
+
+        }
+    }
     //PAGINATION HANDLING
 
     async function updatePagination(pagination) {

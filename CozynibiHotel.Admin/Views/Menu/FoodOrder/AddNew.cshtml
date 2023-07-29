@@ -1,5 +1,5 @@
 ﻿ @{
-	ViewData["Title"] = "Add Contact";
+	ViewData["Title"] = "Add FoodOrder";
 
 	var boxSuccess = new BoxModalViewModel()
 			{
@@ -7,7 +7,7 @@
 				Text = "Continue to add a new one or go to the list",
 				LstButton = new List<Button>()
 		{
-			new Button("Go to list", "btn-primary", "window.location.href='/Admin/ContactAndBooking/Contact';"),
+			new Button("Go to list", "btn-primary", "window.location.href='/Admin/Menu/FoodOrder';"),
 			new Button("Add new", "btn-primary", "window.location.reload();"),
 		}
 
@@ -26,7 +26,7 @@
 <div class="content main-content" style="display:none;">
 	<div class="intro-y flex items-center mt-8">
 		<h2 class="text-lg font-medium mr-auto">
-			Add Contact
+			Add FoodOrder
 		</h2>
 	</div>
 	<div class="grid grid-cols-11 gap-x-6 mt-5 pb-20">
@@ -35,14 +35,14 @@
 			<div class="intro-y box p-5 mt-5" id="section2">
 				<div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
 					<div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
-						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> Contact Information
+						<i data-lucide="chevron-down" class="w-4 h-4 mr-2"></i> FoodOrder Information
 					</div>
 					<div class="mt-5">
 						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Contact Full Name</div>
+										<div class="font-medium">Custommer Full Name</div>
 										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
 											Required
 										</div>
@@ -57,7 +57,7 @@
 							</div>
 							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
 								<input id="record-name" type="text" class="form-control"
-									   placeholder="Contact name" minlength="5" required>
+									   placeholder="FoodOrder name" minlength="5" required>
 								<div class="form-help text-right">Maximum character 50</div>
 							</div>
 						</div>
@@ -78,52 +78,123 @@
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Email</div>
+										<div class="font-medium">Checkin code</div>
 									</div>
 								</div>
 							</div>
 							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
-								<input id="email" type="email" class="form-control"
-									   placeholder="Email">
+								<input id="checkInCode" type="text" class="form-control"
+									   placeholder="Checkin code">
 							</div>
 						</div>
 						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Address</div>
+										<div class="font-medium">Place</div>
 									</div>
 								</div>
 							</div>
 							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
-								<input id="address" type="text" class="form-control"
-									   placeholder="Address">
+								<input id="place" type="text" class="form-control"
+									   placeholder="Place">
 							</div>
 						</div>
 						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Title</div>
+										<div class="font-medium">Eating Time</div>
 									</div>
 								</div>
 							</div>
 							<div class="w-full mt-3 xl:mt-0 flex-1 input-form">
-								<input id="title" type="text" class="form-control"
-									   placeholder="Title">
+								<input id="eatingAt" type="time" class="form-control"
+									   placeholder="Time">
 							</div>
 						</div>
-						
 						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
 							<div class="form-label xl:w-64 xl:!mr-10">
 								<div class="text-left">
 									<div class="flex items-center">
-										<div class="font-medium">Contact Comment</div>
+										<div class="font-medium">Foods List</div>
+										<div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">
+											Required
+										</div>
+									</div>
+									<div class="leading-relaxed text-slate-500 text-xs mt-3">
+										Select the food in the food category then type the number of food then the price for each food will automatic appear
+									</div>
+								</div>
+							</div>
+							<div class="w-full mt-3 xl:mt-0 flex-1 addFood-wrapper">
+								<div class="text-right">
+									<button class="btn btn-sm btn-primary w-24 btn-addFood">+ Add Food </button>
+								</div>
+								<div class="sm:grid grid-cols-3 gap-2 mt-3 addFood-item">
+									<div class="input-form">
+										<div class="input-group">
+											<select class="foodList-select w-full form-select box foodList" id="" style="border-color:rgb(226, 232, 240)">
+											</select>
+										</div>
+									</div>
+
+									<div class="input-form">
+										<div class="input-group mt-2 sm:mt-0">
+											<input id="" type="number" class="form-control number" placeholder="Number" minlength="1" required>
+											<div class="input-group-text">Portion</div>
+										</div>
+									</div>
+
+									<div class="input-form">
+										<div class="input-group mt-2 sm:mt-0">
+											<input id="" type="text" class="form-control price" placeholder="Price" disabled>
+											<div class="input-group-text">$</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-inline items-start flex-col xl:flex-row first:mt-0 first:pt-0">
+							<div class="form-label xl:w-64 xl:!mr-10">
+								<div class="text-left">
+									<div class="flex items-center">
+										
+									</div>
+								</div>
+							</div>
+							<div class="w-full mt-3 xl:mt-0 flex-1">
+								<div class="sm:grid grid-cols-3 gap-2 mt-3">
+									<div class="input-form">
+										<div class="input-group">
+											
+										</div>
+									</div>
+
+									<div class="input-form">
+					
+									</div>
+
+									<div class="input-form">
+										<div class="input-group mt-2 sm:mt-0">
+											<div class="input-group-text">Total</div>
+											<input id="totalPrice" type="text" class="form-control price" placeholder="Total Price" disabled>
+											<div class="input-group-text">$</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
+							<div class="form-label xl:w-64 xl:!mr-10">
+								<div class="text-left">
+									<div class="flex items-center">
+										<div class="font-medium">FoodOrder Notes</div>
 									</div>
 									<div class="leading-relaxed text-slate-500 text-xs mt-3">
 										<div>
-											Make sure the contact description provides a detailed
-											explanation of your contact so that it is easy to understand and
+											Make sure the foodOrder description provides a detailed
+											explanation of your foodOrder so that it is easy to understand and
 											find your category.
 										</div>
 										<div class="mt-2">
@@ -147,7 +218,7 @@
 			</div>
 			<!-- END: Product Information -->
 			<div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
-				<button type="button" onclick="window.location.href='/Admin/Contact';"
+				<button type="button" onclick="window.location.href='/Admin/FoodOrder';"
 						class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">
 
 					Cancel
@@ -159,17 +230,17 @@
 					Reset
 
 				</button>
-				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-addnew">Save & Add New Contact</button>
+				<button type="button" class="btn py-3 btn-primary w-full md:w-52 btn-addnew">Save & Add New FoodOrder</button>
 			</div>
 		</div>
 		<div class="intro-y col-span-2 hidden 2xl:block">
 			<div class="pt-10 sticky top-0">
 				<ul class="text-slate-500 relative before:content-[''] before:w-[2px] before:bg-slate-200 before:dark:bg-darkmode-600 before:h-full before:absolute before:left-0 before:z-[-1]">
 					<li class="mb-4 border-l-2 pl-5 border-primary dark:border-primary text-primary font-medium section-preview">
-						<a href="#section1">Upload Contact Images</a>
+						<a href="#section1">Upload FoodOrder Images</a>
 					</li>
 					<li class="mb-4 border-l-2 pl-5 border-transparent dark:border-transparent section-preview">
-						<a href="#section2">Contact Information</a>
+						<a href="#section2">FoodOrder Information</a>
 					</li>
 				</ul>
 				<div class="mt-10 bg-warning/20 dark:bg-darkmode-600 border border-warning dark:border-0 rounded-md relative p-5">
@@ -178,7 +249,7 @@
 					<h2 class="text-lg font-medium">
 						Tips
 					</h2>
-					<div class="mt-5 font-medium">Contact</div>
+					<div class="mt-5 font-medium">FoodOrder</div>
 					<div class="leading-relaxed text-xs mt-2 text-slate-600 dark:text-slate-500">
 						<div>
 
@@ -213,13 +284,13 @@
 <!-- END: Content -->
 @section Scripts{
 <script>
-	$('.side-contact').addClass("side-menu--active");
-	$('.side-contactList').addClass("side-menu--active");
-	$('.side-contactList-add').addClass("side-menu--active");
-	$('.side-contact-wrapper').addClass("side-menu__sub-open");
-	$('.side-contactList-wrapper').addClass("side-menu__sub-open");
+	$('.side-MENU').addClass("side-menu--active");
+	$('.side-foodOrder').addClass("side-menu--active");
+	$('.side-foodOrder-add').addClass("side-menu--active");
+	$('.side-MENU-wrapper').addClass("side-menu__sub-open");
+	$('.side-foodOrder-wrapper').addClass("side-menu__sub-open");
 </script>
 <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
-<script src="~/js/contact/contact-addNew.js" type="module"></script>
+<script src="~/js/foodOrder/foodOrder-addNew.js" type="module"></script>
 
 }

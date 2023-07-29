@@ -141,7 +141,7 @@ $(document).ready(async function () {
         `);
     });
 
-
+     
 
 
     //GET LIST EQUIPMENT

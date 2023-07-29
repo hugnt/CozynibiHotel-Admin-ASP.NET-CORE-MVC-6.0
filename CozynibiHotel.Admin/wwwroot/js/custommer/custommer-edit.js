@@ -30,6 +30,7 @@ $(document).ready(async function () {
         Address: "",
         Country: "",
         Comment: "",
+        CheckInCode: 0,
         isActive: false,
         isDeleted: false,
         UpdatedBy: 0,
@@ -261,6 +262,7 @@ $(document).ready(async function () {
         newRecord.Address = address;
         newRecord.Country = country;
         newRecord.Comment = comment;
+        newRecord.CheckInCode = editRecord.checkInCode;
         newRecord.isActive = $('#status-active').prop('checked');
 
         newRecord.CreatedBy = editRecord.createdBy;
@@ -326,6 +328,7 @@ $(document).ready(async function () {
         formData.append("Image", newRecord.Images[0]);
         if (newRecord.RoomId!=0) formData.append("RoomId", newRecord.RoomId);
         formData.append("PhoneNumber", newRecord.PhoneNumber);
+        if (newRecord.CheckInCode != 0) formData.append("CheckInCode", newRecord.CheckInCode);
         formData.append("Email", newRecord.Email);
         formData.append("Address", newRecord.Address);
         formData.append("Country", newRecord.Country);
